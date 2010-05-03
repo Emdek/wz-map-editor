@@ -6,6 +6,9 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QDockWidget>
+#include <QtGui/QMessageBox>
+#include <QtGui/QToolBar>
+#include <QtGui/QStatusBar>
 
 
 namespace WZMapEditor
@@ -17,39 +20,54 @@ MainWindow::MainWindow()
 	this->setWindowState(Qt::WindowMaximized);
 	this->setUnifiedTitleAndToolBarOnMac(true);
 
+// ADD ACTIONS
+	actFileNew = new QAction(QIcon::fromTheme("document-new"), tr("&New"), this);
+	actFileNew->setShortcut(QKeySequence::New);
+	actFileOpen = new QAction(QIcon::fromTheme("document-open"), tr("&Open..."), this);
+	actFileOpen->setShortcut(QKeySequence::Open);
+	actFileSave = new QAction(QIcon::fromTheme("document-save"), tr("&Save..."), this);
+	actFileSave->setShortcut(QKeySequence::Save);
+	actFileSaveAs = new QAction(QIcon::fromTheme("document-save-as"), tr("&Save As..."), this);
+	actFileSaveAs->setShortcut(QKeySequence::SaveAs);
+	actFileExit = new QAction(                                   tr("&Exit"), this);
+	actFileExit->setShortcut(QKeySequence::Quit);
+
+	actViewFullScreen = new QAction(tr("Full &Screen"), this);
+	actViewFullScreen->setCheckable(true);
+	actViewFullScreen->setShortcut(Qt::Key_F11);
+
+	actToolsPreferences = new QAction(tr("&Preferences"), this);
+	actToolsPreferences->setShortcut(QKeySequence::Preferences);
+
+	actHelpAboutQt = new QAction(tr("About &Qt"), this);
+
 // ADD NEW MENUS
 
 	menuFile  = this->menuBar()->addMenu(tr("&File"));
-	menuFileOpen = new QAction(QIcon::fromTheme("document-open"), tr("&Open"), this);
-	menuFileExit = new QAction(                                   tr("&Exit"), this);
-
-	menuFileOpen->setShortcut(QKeySequence::Open);
-	menuFileExit->setShortcut(QKeySequence::Quit);
-
-	menuFile->addAction(menuFileOpen);
+	menuFile->addAction(actFileNew);
+	menuFile->addAction(actFileOpen);
+	menuFile->addAction(actFileSave);
+	menuFile->addAction(actFileSaveAs);
 	menuFile->addSeparator();
-	menuFile->addAction(menuFileExit);
+	menuFile->addAction(actFileExit);
 
 	menuEdit = this->menuBar()->addMenu(tr("&Edit"));
 
 	menuView  = this->menuBar()->addMenu(tr("&View"));
-	menuViewFullScreen = new QAction(tr("Full &Screen"), this);
-	menuViewFullScreen->setCheckable(true);
-
-	menuViewFullScreen->setShortcut(Qt::Key_F11);
-
-	menuView->addAction(menuViewFullScreen);
+	menuView->addAction(actViewFullScreen);
 
 	menuTools = this->menuBar()->addMenu(tr("&Tools"));
-	menuToolsPreferences = new QAction(tr("&Preferences"), this);
-
-	menuToolsPreferences->setShortcut(QKeySequence::Preferences);
-
-	menuTools->addAction(menuToolsPreferences);
+	menuTools->addAction(actToolsPreferences);
 
 	menuHelp  = this->menuBar()->addMenu(tr("&Help"));
-	menuHelpAboutQt = new QAction(tr("About &Qt"), this);
-	menuHelp->addAction(menuHelpAboutQt);
+	menuHelp->addAction(actHelpAboutQt);
+
+// CREATE TOOLBARS
+	toolMain = new QToolBar("Main Toolbar", this);
+	toolMain->addAction(actFileNew);
+	toolMain->addAction(actFileOpen);
+	toolMain->addAction(actFileSave);
+	this->addToolBar(toolMain);
 
 // CREATE DOCKS
 
@@ -80,7 +98,6 @@ MainWindow::MainWindow()
 	layTerrain->addWidget(listTileset);
 
 
-
 ////////// TEMPORARY USE ONLY |||||||||| JUST FOR PREVIEW \\\\\\\\\\
 
 	// ICONS FOR TEXTURES LIST
@@ -108,7 +125,17 @@ MainWindow::MainWindow()
 	comboTilesetType->addItem(tr("Ice"));
 	comboTilesetType->addItem(tr("Nuclear Winter"));
 
+
 ////////// TEMPORARY USE ONLY |||| END |||| JUST FOR PREVIEW \\\\\\\\\\
+
+	statusBar = new QStatusBar(this);
+	statusCoordsX = new QLabel(this);
+	statusCoordsY = new QLabel(this);
+	statusBar->addWidget(statusCoordsX);
+	statusBar->addWidget(statusCoordsY);
+	statusBar->setSizeGripEnabled(true);
+
+	this->setStatusBar(statusBar);
 
 // SET CENTRAL WIDGET
 
@@ -117,12 +144,20 @@ MainWindow::MainWindow()
 
 // CONNECT SIGNALS AND SLOTS
 
-	connect(menuFileExit,       SIGNAL(triggered()),   this, SLOT(close()));
-	connect(menuViewFullScreen, SIGNAL(toggled(bool)), this, SLOT(onMenuViewFullScreen_click(bool)));
+	connect(actFileNew,        SIGNAL(triggered()),   this, SLOT(onActionFileNew()));
+	connect(actFileOpen,       SIGNAL(triggered()),   this, SLOT(onActionFileOpen()));
+	connect(actFileSave,       SIGNAL(triggered()),   this, SLOT(onActionFileSave()));
+	connect(actFileSaveAs,     SIGNAL(triggered()),   this, SLOT(onActionFileSaveAs()));
+	connect(actFileExit,       SIGNAL(triggered()),   this, SLOT(close()));
+	connect(actViewFullScreen, SIGNAL(toggled(bool)), this, SLOT(onActionChangeFullScreen(bool)));
+	connect(actHelpAboutQt,    SIGNAL(triggered()),   this, SLOT(onActionHelpAboutQt()));
+
+	connect(mapEdit, SIGNAL(changeCoordsX(int)), this, SLOT(setStatusCoordsX(int)));
+	connect(mapEdit, SIGNAL(changeCoordsY(int)), this, SLOT(setStatusCoordsY(int)));
 	//this->onMenuViewFullScreen_click(false);
 }
 
-void MainWindow::onMenuViewFullScreen_click (bool value)
+void MainWindow::onActionChangeFullScreen (bool value)
 {
 	switch (value)
 	{
@@ -134,6 +169,41 @@ void MainWindow::onMenuViewFullScreen_click (bool value)
 		this->setWindowState(this->windowState() ^ Qt::WindowFullScreen);
 		break;
 	}
+}
+
+void MainWindow::onActionHelpAboutQt ()
+{
+	QMessageBox::aboutQt(this, "About Qt");
+}
+
+void MainWindow::onActionFileNew ()
+{
+
+}
+
+void MainWindow::onActionFileOpen ()
+{
+
+}
+
+void MainWindow::onActionFileSave ()
+{
+
+}
+
+void MainWindow::onActionFileSaveAs ()
+{
+
+}
+
+void MainWindow::setStatusCoordsX (int coords)
+{
+	statusCoordsX->setText(QString("x:%1").arg(coords));
+}
+
+void MainWindow::setStatusCoordsY (int coords)
+{
+	statusCoordsY->setText(QString("y:%1").arg(coords));
 }
 
 }

@@ -1,5 +1,6 @@
 #include "MapEditorWidget.h"
 
+#include <QTimer>
 
 namespace WZMapEditor
 {
@@ -7,7 +8,9 @@ namespace WZMapEditor
 MapEditorWidget::MapEditorWidget(QWidget *parent)
 	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
+	timer->start(10);
 }
 
 MapEditorWidget::~MapEditorWidget()
@@ -76,6 +79,10 @@ void MapEditorWidget::paintGL()
 /*	glRotatef(rot_x, 1.0, 0.0, 0.0);
 	glRotatef(rot_y, 0.0, 1.0, 0.0);
 	glRotatef(rot_z, 0.0, 0.0, 1.0);*/
+	QCursor c = QCursor(this->cursor());
+	QPoint p = this->mapFromGlobal(c.pos());
+	emit this->changeCoordsX(p.x());
+	emit this->changeCoordsY(p.y());
 }
 
 }
