@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QtGui/QMenu>
 #include <QMouseEvent>
+#include <cstdio>
 
 namespace WZMapEditor
 {
@@ -13,6 +14,14 @@ MapEditorWidget::MapEditorWidget(QWidget *parent)
 	QTimer *timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(repaint()));
 	timer->start(10);
+
+	this->m_moving = false;
+	this->rot_x = 0;
+	this->rot_y = 0;
+	this->rot_z = 0;
+	this->zoom_value = -100.0;
+
+	this->setMouseTracking(true);
 }
 
 MapEditorWidget::~MapEditorWidget()
@@ -77,14 +86,34 @@ void MapEditorWidget::paintGL()
 	//      glEnable (GL_LIGHTING);
 	glEnable (GL_TEXTURE_2D);
 
-	glTranslatef(0.0, -150.0, -700.0);
-/*	glRotatef(rot_x, 1.0, 0.0, 0.0);
-	glRotatef(rot_y, 0.0, 1.0, 0.0);
-	glRotatef(rot_z, 0.0, 0.0, 1.0);*/
+	glTranslatef(0.0, 0.0, this->zoom_value);
+	glRotatef(rot_x / 4.0f, 1.0, 0.0, 0.0);
+	glRotatef(rot_y / 4.0f, 0.0, 1.0, 0.0);
+	glRotatef(rot_z / 4.0f, 0.0, 0.0, 1.0);
+
+	glBegin(GL_TRIANGLES);
+	glVertex3f( 10.0f, -10.0f, 0.0f);
+	glVertex3f( 10.0f,  10.0f, 0.0f);
+	glVertex3f(-10.0f,  10.0f, 0.0f);
+	glEnd();
+
 	QCursor c = QCursor(this->cursor());
 	QPoint p = this->mapFromGlobal(c.pos());
 	emit this->changeCoordsX(p.x());
 	emit this->changeCoordsY(p.y());
+}
+
+void MapEditorWidget::wheelEvent (QWheelEvent *event)
+{
+	this->zoom_value += event->delta() / 8;
+}
+
+void MapEditorWidget::mousePressEvent (QMouseEvent *event)
+{
+	if (event->button() == Qt::LeftButton)
+	{
+		this->m_moving = true;
+	}
 }
 
 void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
@@ -103,6 +132,23 @@ void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
 		menu.addSeparator();
 		menu.exec(mapToGlobal(event->pos()));
 	}
+
+	if (event->button() == Qt::LeftButton)
+	{
+		this->m_moving = false;
+	}
+}
+
+void MapEditorWidget::mouseMoveEvent (QMouseEvent *event)
+{
+	static int last_move_x, last_move_y;
+	if (m_moving == true)
+	{
+		this->rot_z += -(last_move_x - event->pos().x());
+		this->rot_x += -(last_move_y - event->pos().y());
+	}
+	last_move_x = event->pos().x();
+	last_move_y = event->pos().y();
 }
 
 

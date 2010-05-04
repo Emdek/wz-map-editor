@@ -25,7 +25,17 @@ protected:
 	void initializeGL();
 	void paintGL();
 	void resizeGL(int width, int height);
+	void wheelEvent        (QWheelEvent *event);
+	void mousePressEvent   (QMouseEvent *event);
 	void mouseReleaseEvent (QMouseEvent *event);
+	void mouseMoveEvent    (QMouseEvent *event);
+
+private:
+	bool m_moving;
+	int rot_x;
+	int rot_y;
+	int rot_z;
+	float zoom_value;
 };
 
 }
