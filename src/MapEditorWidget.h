@@ -25,7 +25,7 @@ protected:
 	void initializeGL();
 	void paintGL();
 	void resizeGL(int width, int height);
-
+	void mouseReleaseEvent (QMouseEvent *event);
 };
 
 }

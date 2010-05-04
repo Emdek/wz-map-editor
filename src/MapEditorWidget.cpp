@@ -1,6 +1,8 @@
 #include "MapEditorWidget.h"
 
 #include <QTimer>
+#include <QtGui/QMenu>
+#include <QMouseEvent>
 
 namespace WZMapEditor
 {
@@ -84,5 +86,24 @@ void MapEditorWidget::paintGL()
 	emit this->changeCoordsX(p.x());
 	emit this->changeCoordsY(p.y());
 }
+
+void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		QMenu menu;
+
+		QAction *openAct = new QAction("Open...", this);
+
+		menu.addSeparator();
+		menu.addAction(openAct);
+		menu.addAction(openAct);
+		menu.addAction(openAct);
+
+		menu.addSeparator();
+		menu.exec(mapToGlobal(event->pos()));
+	}
+}
+
 
 }

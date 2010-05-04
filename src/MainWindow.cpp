@@ -129,7 +129,7 @@ MainWindow::MainWindow()
 	dockMap      = new QDockWidget(tr("Map"),      this, 0);
 	dockObjects  = new QDockWidget(tr("Objects"),  this, 0);
 	dockTileset->setFeatures (dockTileset->features()  ^ QDockWidget::DockWidgetClosable);
-	dockTerrain->setFeatures (dockTileset->features()  ^ QDockWidget::DockWidgetClosable);
+	dockTerrain->setFeatures (dockTerrain->features()  ^ QDockWidget::DockWidgetClosable);
 	dockLand->setFeatures    (dockLand->features()     ^ QDockWidget::DockWidgetClosable);
 	dockTriangle->setFeatures(dockTriangle->features() ^ QDockWidget::DockWidgetClosable);
 	dockMap->setFeatures     (dockMap->features()      ^ QDockWidget::DockWidgetClosable);
