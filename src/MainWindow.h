@@ -33,13 +33,33 @@ public:
 	QAction *actFileSave;
 	QAction *actFileSaveAs;
 	QAction *actFileExit;
+	QAction *actViewDockTileset;
+	QAction *actViewDockTerrain;
+	QAction *actViewDockLand;
+	QAction *actViewDockTriangle;
+	QAction *actViewDockMap;
+	QAction *actViewDockObjects;
 	QAction *actViewFullScreen;
 	QAction *actToolsPreferences;
 	QAction *actHelpAboutQt;
 
-	QDockWidget *dockTerrain;
+	QAction *actRaiseDockTileset;
+	QAction *actRaiseDockTerrain;
+	QAction *actRaiseDockLand;
+	QAction *actRaiseDockTriangle;
+	QAction *actRaiseDockMap;
+	QAction *actRaiseDockObjects;
+
+	QDockWidget *dockTileset;
 	QComboBox   *comboTileset;
 	QComboBox   *comboTilesetType;
+	QDockWidget *dockTerrain;
+	QComboBox   *comboTerrainGroundType;
+	QComboBox   *comboTerrainRoadType;
+	QDockWidget *dockLand;
+	QDockWidget *dockTriangle;
+	QDockWidget *dockMap;
+	QDockWidget *dockObjects;
 	QListWidget *listTileset;
 
 	QStatusBar  *statusBar;
@@ -56,7 +76,6 @@ public slots:
 
 	void setStatusCoordsX (int coords);
 	void setStatusCoordsY (int coords);
-
 };
 
 }
