@@ -2,11 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
-#include <QtGui/QLabel>
-
 
 class QComboBox;
 class QListWidget;
+class QLabel;
+class QSpinBox;
+class QPushButton;
 
 namespace WZMapEditor
 {
@@ -19,6 +20,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow ();
 
+private:
 	MapEditorWidget *mapEdit;
 
 	QToolBar *toolMain;
@@ -59,6 +61,12 @@ public:
 	QDockWidget *dockLand;
 	QDockWidget *dockTriangle;
 	QDockWidget *dockMap;
+	QSpinBox    *textMapSizeX;
+	QSpinBox    *textMapSizeY;
+	QSpinBox    *textMapOffsetX;
+	QSpinBox    *textMapOffsetY;
+	QPushButton *btnMapResize;
+	QPushButton *btnMapResizeToSelection;
 	QDockWidget *dockObjects;
 	QListWidget *listTileset;
 

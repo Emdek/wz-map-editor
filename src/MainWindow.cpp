@@ -9,6 +9,9 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolBar>
 #include <QtGui/QStatusBar>
+#include <QtGui/QSpinBox>
+#include <QtGui/QPushButton>
+#include <QtGui/QLabel>
 
 
 namespace WZMapEditor
@@ -125,8 +128,14 @@ MainWindow::MainWindow()
 	dockTriangle = new QDockWidget(tr("Triangle"), this, 0);
 	dockMap      = new QDockWidget(tr("Map"),      this, 0);
 	dockObjects  = new QDockWidget(tr("Objects"),  this, 0);
+	dockTileset->setFeatures (dockTileset->features()  ^ QDockWidget::DockWidgetClosable);
+	dockTerrain->setFeatures (dockTileset->features()  ^ QDockWidget::DockWidgetClosable);
+	dockLand->setFeatures    (dockLand->features()     ^ QDockWidget::DockWidgetClosable);
+	dockTriangle->setFeatures(dockTriangle->features() ^ QDockWidget::DockWidgetClosable);
+	dockMap->setFeatures     (dockMap->features()      ^ QDockWidget::DockWidgetClosable);
+	dockObjects->setFeatures (dockObjects->features()  ^ QDockWidget::DockWidgetClosable);
 
-	// CREATE DOCK "TILESET" WIDGETS
+// CREATE WIDGETS FOR DOCK "TILESET"
 	QGridLayout *layTileset  = new QGridLayout;
 	QLabel *labelTileset     = new QLabel(tr("Tileset: "), this);
 	QLabel *labelTilesetType = new QLabel(tr("Tileset Type: "), this);
@@ -154,7 +163,7 @@ MainWindow::MainWindow()
 	dockTilesetContents->setLayout(layTileset);
 	dockTileset->setWidget(dockTilesetContents);
 
-	// CREATE DOCK "TERRAIN" WIDGETS
+// CREATE WIDGETS FOR DOCK "TERRAIN"
 	QGridLayout *layTerrain = new QGridLayout;
 	QLabel *labelTerrainGroundType = new QLabel(tr("Ground Type: "), this);
 	QLabel *labelTerrainRoadType   = new QLabel(tr("Road Type: "), this);
@@ -175,7 +184,46 @@ MainWindow::MainWindow()
 	dockTerrainContents->setLayout(layTerrain);
 	dockTerrain->setWidget(dockTerrainContents);
 
-	// ADD DOCKS TO MAINWINDOW
+// CREATE WIDGETS FOR DOCK "MAP"
+	QGridLayout *layMap = new QGridLayout;
+	QLabel *labelMapSizeX   = new QLabel(tr("Size X: "),   this);
+	QLabel *labelMapSizeY   = new QLabel(tr("Size Y: "),   this);
+	QLabel *labelMapOffsetX = new QLabel(tr("Offset X: "), this);
+	QLabel *labelMapOffsetY = new QLabel(tr("Offset Y: "), this);
+	textMapSizeX   = new QSpinBox(this);
+	textMapSizeX->setMaximum(255);
+	textMapSizeY   = new QSpinBox(this);
+	textMapSizeY->setMaximum(255);
+	textMapOffsetX = new QSpinBox(this);
+	textMapOffsetX->setMaximum(255);
+	textMapOffsetY = new QSpinBox(this);
+	textMapOffsetY->setMaximum(255);
+
+	btnMapResize = new QPushButton(tr("Resize Map"), this);
+	btnMapResize->setFlat(true);
+	btnMapResizeToSelection = new QPushButton(tr("Resize Map to Selection"), this);
+	btnMapResizeToSelection->setFlat(true);
+
+	layMap->setAlignment(Qt::AlignTop);
+	layMap->setContentsMargins(0, 0, 0, 0);
+	layMap->setSpacing(0);
+	layMap->setColumnStretch(1, 100);
+	layMap->addWidget(labelMapSizeX,           1, 0);
+	layMap->addWidget(textMapSizeX,            1, 1);
+	layMap->addWidget(labelMapSizeY,           2, 0);
+	layMap->addWidget(textMapSizeY,            2, 1);
+	layMap->addWidget(labelMapOffsetX,         3, 0);
+	layMap->addWidget(textMapOffsetX,          3, 1);
+	layMap->addWidget(labelMapOffsetY,         4, 0);
+	layMap->addWidget(textMapOffsetY,          4, 1);
+	layMap->addWidget(btnMapResize,            5, 0, 1, 2);
+	layMap->addWidget(btnMapResizeToSelection, 6, 0, 1, 2);
+
+	QWidget *dockMapContents = new QWidget(this);
+	dockMapContents->setLayout(layMap);
+	dockMap->setWidget(dockMapContents);
+
+// ADD DOCKS TO MAINWINDOW
 	this->addDockWidget(Qt::LeftDockWidgetArea, dockTileset);
 	this->addDockWidget(Qt::LeftDockWidgetArea, dockTerrain);
 	this->addDockWidget(Qt::LeftDockWidgetArea, dockLand);
@@ -190,8 +238,6 @@ MainWindow::MainWindow()
 	this->tabifyDockWidget(dockTriangle, dockLand);
 	this->tabifyDockWidget(dockLand,     dockTerrain);
 	this->tabifyDockWidget(dockTerrain,  dockTileset);
-
-
 
 ////////// TEMPORARY USE ONLY |||||||||| JUST FOR PREVIEW \\\\\\\\\\
 
@@ -242,26 +288,25 @@ comboTerrainRoadType->addItem(tr("Track"));
 	this->setCentralWidget(mapEdit);
 
 // CONNECT SIGNALS AND SLOTS
-
-	connect(actFileNew,        SIGNAL(triggered()),   this, SLOT(onActionFileNew()));
-	connect(actFileOpen,       SIGNAL(triggered()),   this, SLOT(onActionFileOpen()));
-	connect(actFileSave,       SIGNAL(triggered()),   this, SLOT(onActionFileSave()));
-	connect(actFileSaveAs,     SIGNAL(triggered()),   this, SLOT(onActionFileSaveAs()));
-	connect(actFileExit,       SIGNAL(triggered()),   this, SLOT(close()));
-	connect(actViewDockTileset,  SIGNAL(toggled(bool)), dockTileset,  SLOT(setShown(bool)));
-	connect(actViewDockTerrain,  SIGNAL(toggled(bool)), dockTerrain,  SLOT(setShown(bool)));
-	connect(actViewDockLand,     SIGNAL(toggled(bool)), dockLand,     SLOT(setShown(bool)));
-	connect(actViewDockTriangle, SIGNAL(toggled(bool)), dockTriangle, SLOT(setShown(bool)));
-	connect(actViewDockMap,      SIGNAL(toggled(bool)), dockMap,      SLOT(setShown(bool)));
-	connect(actViewDockObjects,  SIGNAL(toggled(bool)), dockObjects,  SLOT(setShown(bool)));
-	connect(actViewFullScreen,   SIGNAL(toggled(bool)), this,         SLOT(onActionChangeFullScreen(bool)));
-	connect(actRaiseDockTileset,  SIGNAL(triggered()), dockTileset, SLOT(raise()));
-	connect(actRaiseDockTerrain,  SIGNAL(triggered()), dockTerrain, SLOT(raise()));
-	connect(actRaiseDockLand,     SIGNAL(triggered()), dockLand, SLOT(raise()));
-	connect(actRaiseDockTriangle, SIGNAL(triggered()), dockTriangle, SLOT(raise()));
-	connect(actRaiseDockMap,      SIGNAL(triggered()), dockMap, SLOT(raise()));
-	connect(actRaiseDockObjects,  SIGNAL(triggered()), dockObjects, SLOT(raise()));
-	connect(actHelpAboutQt,    SIGNAL(triggered()),   this, SLOT(onActionHelpAboutQt()));
+	connect(actFileNew,           SIGNAL(triggered()),   this,         SLOT(onActionFileNew()));
+	connect(actFileOpen,          SIGNAL(triggered()),   this,         SLOT(onActionFileOpen()));
+	connect(actFileSave,          SIGNAL(triggered()),   this,         SLOT(onActionFileSave()));
+	connect(actFileSaveAs,        SIGNAL(triggered()),   this,         SLOT(onActionFileSaveAs()));
+	connect(actFileExit,          SIGNAL(triggered()),   this,         SLOT(close()));
+	connect(actViewDockTileset,   SIGNAL(toggled(bool)), dockTileset,  SLOT(setShown(bool)));
+	connect(actViewDockTerrain,   SIGNAL(toggled(bool)), dockTerrain,  SLOT(setShown(bool)));
+	connect(actViewDockLand,      SIGNAL(toggled(bool)), dockLand,     SLOT(setShown(bool)));
+	connect(actViewDockTriangle,  SIGNAL(toggled(bool)), dockTriangle, SLOT(setShown(bool)));
+	connect(actViewDockMap,       SIGNAL(toggled(bool)), dockMap,      SLOT(setShown(bool)));
+	connect(actViewDockObjects,   SIGNAL(toggled(bool)), dockObjects,  SLOT(setShown(bool)));
+	connect(actViewFullScreen,    SIGNAL(toggled(bool)), this,         SLOT(onActionChangeFullScreen(bool)));
+	connect(actRaiseDockTileset,  SIGNAL(triggered()),   dockTileset,  SLOT(raise()));
+	connect(actRaiseDockTerrain,  SIGNAL(triggered()),   dockTerrain,  SLOT(raise()));
+	connect(actRaiseDockLand,     SIGNAL(triggered()),   dockLand,     SLOT(raise()));
+	connect(actRaiseDockTriangle, SIGNAL(triggered()),   dockTriangle, SLOT(raise()));
+	connect(actRaiseDockMap,      SIGNAL(triggered()),   dockMap,      SLOT(raise()));
+	connect(actRaiseDockObjects,  SIGNAL(triggered()),   dockObjects,  SLOT(raise()));
+	connect(actHelpAboutQt,       SIGNAL(triggered()),   this,         SLOT(onActionHelpAboutQt()));
 
 	connect(mapEdit, SIGNAL(changeCoordsX(int)), this, SLOT(setStatusCoordsX(int)));
 	connect(mapEdit, SIGNAL(changeCoordsY(int)), this, SLOT(setStatusCoordsY(int)));
