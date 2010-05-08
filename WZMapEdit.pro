@@ -31,5 +31,11 @@ HEADERS += src/MainWindow.h \
     src/MapInformation.h
 FORMS += src/ui/MainWindow.ui \
     src/ui/ToolBarEditorDialog.ui \
-    src/ui/ShortcutEditorDialog.ui
+    src/ui/ShortcutEditorDialog.ui \
+    src/ui/ObjectsDockWidget.ui \
+    src/ui/MapSettingsDialog.ui \
+    src/ui/TriangleDockWidget.ui \
+    src/ui/LandDockWidget.ui \
+    src/ui/TilesetDockWidget.ui \
+    src/ui/TerrainDockWidget.ui
 RESOURCES += src/resources/resources.qrc

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TilesetDockWidget</class>
+ <widget class="QWidget" name="TilesetDockWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="tilesetComboBox"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="tilesetTypeComboBox"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="tilesetLabel">
+       <property name="text">
+        <string>Tileset:</string>
+       </property>
+       <property name="buddy">
+        <cstring>tilesetComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="tilesetTypeLabel">
+       <property name="text">
+        <string>Tileset Type:</string>
+       </property>
+       <property name="buddy">
+        <cstring>tilesetTypeComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListView" name="listView"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
