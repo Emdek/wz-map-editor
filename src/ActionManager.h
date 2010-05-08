@@ -13,10 +13,20 @@ class ActionManager : public QObject
 	Q_OBJECT
 
 public:
-	ActionManager(QObject *parent = 0);
+	ActionManager(QObject *parent = NULL);
+
+	void registerAction(QAction *action, const QString &name = QString());
+	void registerActions(QList<QAction*> actions);
+	void restoreDefaultShortcut(QAction *action);
+	void restoreDefaultShortcut(const QString &action);
+	QKeySequence getDefaultShortcut(QAction *action);
+	QKeySequence getDefaultShortcut(const QString &action);
+	QAction* getAction(const QString &action);
+	QList<QAction*> actions();
 
 private:
 	QHash<QString, QAction*> m_actions;
+	QHash<QString, QKeySequence> m_defaultShortcuts;
 
 };
 
