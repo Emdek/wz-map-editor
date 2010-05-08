@@ -43,9 +43,26 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuOpenRecent">
+     <property name="title">
+      <string>Open recent</string>
+     </property>
+     <addaction name="openRecentFileAction_1"/>
+     <addaction name="openRecentFileAction_2"/>
+     <addaction name="openRecentFileAction_3"/>
+     <addaction name="openRecentFileAction_4"/>
+     <addaction name="openRecentFileAction_5"/>
+     <addaction name="openRecentFileAction_6"/>
+     <addaction name="openRecentFileAction_7"/>
+     <addaction name="openRecentFileAction_8"/>
+     <addaction name="openRecentFileAction_9"/>
+     <addaction name="openRecentFileAction_10"/>
+     <addaction name="separator"/>
+     <addaction name="actionClearRecentFiles"/>
+    </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionOpenRecent"/>
+    <addaction name="menuOpenRecent"/>
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
@@ -63,6 +80,19 @@
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuDocks">
+     <property name="title">
+      <string>Open recent</string>
+     </property>
+     <addaction name="actionTileset"/>
+     <addaction name="actionTerrain"/>
+     <addaction name="actionLand"/>
+     <addaction name="actionTriangle"/>
+     <addaction name="actionObjects"/>
+    </widget>
+    <addaction name="actionFullscreen"/>
+    <addaction name="separator"/>
+    <addaction name="menuDocks"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -161,9 +191,74 @@
     <string>About Application...</string>
    </property>
   </action>
+  <action name="actionTileset">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tileset</string>
+   </property>
+  </action>
+  <action name="actionTerrain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Terrain</string>
+   </property>
+  </action>
+  <action name="actionLand">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Land</string>
+   </property>
+  </action>
+  <action name="actionTriangle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Triangle</string>
+   </property>
+  </action>
+  <action name="actionObjects">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Objects</string>
+   </property>
+  </action>
+  <action name="openRecentFileAction_1"/>
+  <action name="openRecentFileAction_2"/>
+  <action name="openRecentFileAction_3"/>
+  <action name="openRecentFileAction_4"/>
+  <action name="openRecentFileAction_5"/>
+  <action name="openRecentFileAction_6"/>
+  <action name="openRecentFileAction_7"/>
+  <action name="openRecentFileAction_8"/>
+  <action name="openRecentFileAction_9"/>
+  <action name="openRecentFileAction_10"/>
+  <action name="actionClearRecentFiles">
+   <property name="text">
+    <string>Clear List</string>
+   </property>
+  </action>
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt...</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+  </action>
+  <action name="actionDocks">
+   <property name="text">
+    <string>Docks</string>
    </property>
   </action>
  </widget>
