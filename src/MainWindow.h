@@ -84,6 +84,8 @@ public slots:
 
 	void setStatusCoordsX (int coords);
 	void setStatusCoordsY (int coords);
+
+	void onClick_btnMapResize ();
 };
 
 }

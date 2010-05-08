@@ -191,12 +191,16 @@ MainWindow::MainWindow()
 	QLabel *labelMapOffsetX = new QLabel(tr("Offset X: "), this);
 	QLabel *labelMapOffsetY = new QLabel(tr("Offset Y: "), this);
 	textMapSizeX   = new QSpinBox(this);
+	textMapSizeX->setMinimum(1);
 	textMapSizeX->setMaximum(255);
 	textMapSizeY   = new QSpinBox(this);
+	textMapSizeY->setMinimum(1);
 	textMapSizeY->setMaximum(255);
 	textMapOffsetX = new QSpinBox(this);
+	textMapOffsetX->setMinimum(1);
 	textMapOffsetX->setMaximum(255);
 	textMapOffsetY = new QSpinBox(this);
+	textMapOffsetY->setMinimum(1);
 	textMapOffsetY->setMaximum(255);
 
 	btnMapResize = new QPushButton(tr("Resize Map"), this);
@@ -239,40 +243,6 @@ MainWindow::MainWindow()
 	this->tabifyDockWidget(dockLand,     dockTerrain);
 	this->tabifyDockWidget(dockTerrain,  dockTileset);
 
-////////// TEMPORARY USE ONLY |||||||||| JUST FOR PREVIEW \\\\\\\\\\
-
-	// ICONS FOR TEXTURES LIST
-	QStringList freedesktop;
-	freedesktop << "address-book-new" << "application-exit" << "document-new" << "document-open" << "document-save" << "document-open-recent"
-			<< "document-page-setup"<<"document-print"<<"document-properties"<<"document-revert"<<"document-save-as"<<"edit-copy"<<"edit-cut"
-			<< "edit-delete"<<"edit-find";
-
-#define MAX_LIST freedesktop.size()
-	QListWidgetItem *bla[MAX_LIST];
-	for (int i = 0; i < MAX_LIST; i++)
-	{
-		bla[i] = new QListWidgetItem(QIcon::fromTheme(freedesktop[i]), 0, listTileset, 0);
-		listTileset->addItem(bla[i]);
-	}
-
-	// TILESET NAMES
-
-	comboTileset->addItem(tr("Arizona"));
-	comboTileset->addItem(tr("New York"));
-	comboTileset->addItem(tr("Chicago"));
-	comboTileset->addItem(tr("Moscow"));
-	comboTilesetType->addItem(tr("Sand"));
-	comboTilesetType->addItem(tr("Grass"));
-	comboTilesetType->addItem(tr("Ice"));
-	comboTilesetType->addItem(tr("Nuclear Winter"));
-comboTerrainGroundType->addItem(tr("Red"));
-comboTerrainGroundType->addItem(tr("Yellow"));
-comboTerrainGroundType->addItem(tr("Sand"));
-comboTerrainGroundType->addItem(tr("Brown"));
-comboTerrainRoadType->addItem(tr("Road"));
-comboTerrainRoadType->addItem(tr("Track"));
-////////// TEMPORARY USE ONLY |||| END |||| JUST FOR PREVIEW \\\\\\\\\\
-
 	statusBar = new QStatusBar(this);
 	statusCoordsX = new QLabel(this);
 	statusCoordsY = new QLabel(this);
@@ -307,6 +277,8 @@ comboTerrainRoadType->addItem(tr("Track"));
 	connect(actRaiseDockMap,      SIGNAL(triggered()),   dockMap,      SLOT(raise()));
 	connect(actRaiseDockObjects,  SIGNAL(triggered()),   dockObjects,  SLOT(raise()));
 	connect(actHelpAboutQt,       SIGNAL(triggered()),   this,         SLOT(onActionHelpAboutQt()));
+
+	connect(btnMapResize, SIGNAL(clicked()), this, SLOT(onClick_btnMapResize()));
 
 	connect(mapEdit, SIGNAL(changeCoordsX(int)), this, SLOT(setStatusCoordsX(int)));
 	connect(mapEdit, SIGNAL(changeCoordsY(int)), this, SLOT(setStatusCoordsY(int)));
@@ -367,6 +339,11 @@ void MainWindow::setStatusCoordsX (int coords)
 void MainWindow::setStatusCoordsY (int coords)
 {
 	statusCoordsY->setText(QString("y:%1").arg(coords));
+}
+
+void MainWindow::onClick_btnMapResize ()
+{
+	mapEdit->resizeMap(this->textMapSizeX->value(), this->textMapSizeY->value());
 }
 
 }
