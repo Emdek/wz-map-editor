@@ -1,5 +1,5 @@
-#ifndef QMAPEDITOR_H
-#define QMAPEDITOR_H
+#ifndef MAPEDITORWIDGET_H
+#define MAPEDITORWIDGET_H
 
 #include <QtOpenGL/QGLWidget>
 
@@ -9,33 +9,32 @@ namespace WZMapEditor
 class MapEditorWidget : public QGLWidget
 {
 	Q_OBJECT
+
 public:
-	MapEditorWidget(QWidget *parent = 0);
+	MapEditorWidget(QWidget *parent = NULL);
 	~MapEditorWidget();
 
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 
 signals:
-	void changeCoordsX (int coords);
-	void changeCoordsY (int coords);
-	void changeCoordsZ (int coords);
+	void cooridantesChanged(int x, int y, int z);
 
 public slots:
-	void doMapMoveLeft  ();
-	void doMapMoveRight ();
-	void doMapMoveUp    ();
-	void doMapMoveDown  ();
-	void resizeMap (unsigned int width, unsigned int height);
+	void doMapMoveLeft();
+	void doMapMoveRight();
+	void doMapMoveUp();
+	void doMapMoveDown();
+	void resizeMap(unsigned int width, unsigned int height);
 
 protected:
 	void initializeGL();
 	void paintGL();
 	void resizeGL(int width, int height);
-	void wheelEvent        (QWheelEvent *event);
-	void mousePressEvent   (QMouseEvent *event);
-	void mouseReleaseEvent (QMouseEvent *event);
-	void mouseMoveEvent    (QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 
 private:
 	bool m_moving;
@@ -55,4 +54,4 @@ private:
 
 }
 
-#endif // QMAPEDITOR_H
+#endif // MAPEDITORWIDGET_H

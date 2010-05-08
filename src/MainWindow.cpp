@@ -1,349 +1,140 @@
 #include "MainWindow.h"
 #include "MapEditorWidget.h"
+#include "ui_MainWindow.h"
+#include "ui_TilesetDockWidget.h"
+#include "ui_TerrainDockWidget.h"
+#include "ui_LandDockWidget.h"
+#include "ui_TriangleDockWidget.h"
+#include "ui_ObjectsDockWidget.h"
 
-#include <QtGui/QComboBox>
-#include <QtGui/QListWidget>
-#include <QtGui/QMenuBar>
-#include <QtGui/QVBoxLayout>
+#include <QtCore/QSettings>
+#include <QtGui/QFileDialog>
 #include <QtGui/QDockWidget>
 #include <QtGui/QMessageBox>
-#include <QtGui/QToolBar>
-#include <QtGui/QStatusBar>
-#include <QtGui/QSpinBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QLabel>
 
 
 namespace WZMapEditor
 {
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+	m_mainWindowUi(new Ui::MainWindow()),
+	m_tilesetUi(new Ui::TilesetDockWidget()),
+	m_terrainUi(new Ui::TerrainDockWidget()),
+	m_landUi(new Ui::LandDockWidget()),
+	m_triangleUi(new Ui::TriangleDockWidget()),
+	m_objectsUi(new Ui::ObjectsDockWidget()),
+	m_coordinatesLabel(new QLabel(this))
 {
-	this->setGeometry(0, 0, 800, 600);
-	this->setWindowState(Qt::WindowMaximized);
-	this->setUnifiedTitleAndToolBarOnMac(true);
+	m_mainWindowUi->setupUi(this);
 
-// ADD ACTIONS
-	actFileNew = new QAction(QIcon::fromTheme("document-new"), tr("&New"), this);
-	actFileNew->setShortcut(QKeySequence::New);
-	actFileOpen = new QAction(QIcon::fromTheme("document-open"), tr("&Open..."), this);
-	actFileOpen->setShortcut(QKeySequence::Open);
-	actFileSave = new QAction(QIcon::fromTheme("document-save"), tr("&Save..."), this);
-	actFileSave->setShortcut(QKeySequence::Save);
-	actFileSaveAs = new QAction(QIcon::fromTheme("document-save-as"), tr("&Save As..."), this);
-	actFileSaveAs->setShortcut(QKeySequence::SaveAs);
-	actFileExit = new QAction(                                   tr("&Exit"), this);
-	actFileExit->setShortcut(QKeySequence::Quit);
+	setWindowState(Qt::WindowMaximized);
 
-	actViewFullScreen = new QAction(QIcon::fromTheme("view-fullscreen"), tr("Full &Screen"), this);
-	actViewFullScreen->setCheckable(true);
-	actViewFullScreen->setShortcut(Qt::Key_F11);
-	actViewDockTileset = new QAction(tr("Tileset dock"), this);
-	actViewDockTileset->setCheckable(true);
-	actViewDockTileset->setShortcut(Qt::CTRL + Qt::Key_1);
-	actViewDockTerrain = new QAction(tr("Terrain dock"), this);
-	actViewDockTerrain->setCheckable(true);
-	actViewDockTerrain->setShortcut(Qt::CTRL + Qt::Key_2);
-	actViewDockLand = new QAction(tr("Land dock"), this);
-	actViewDockLand->setCheckable(true);
-	actViewDockLand->setShortcut(Qt::CTRL + Qt::Key_3);
-	actViewDockTriangle = new QAction(tr("Triangle dock"), this);
-	actViewDockTriangle->setCheckable(true);
-	actViewDockTriangle->setShortcut(Qt::CTRL + Qt::Key_4);
-	actViewDockMap = new QAction(tr("Map dock"), this);
-	actViewDockMap->setCheckable(true);
-	actViewDockMap->setShortcut(Qt::CTRL + Qt::Key_5);
-	actViewDockObjects = new QAction(tr("Objects dock"), this);
-	actViewDockObjects->setCheckable(true);
-	actViewDockObjects->setShortcut(Qt::CTRL + Qt::Key_6);
+	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
+	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
+	QDockWidget *landDockWidget = new QDockWidget(tr("Land"), this);
+	QDockWidget *triangleDockWidget = new QDockWidget(tr("Triangle"), this);
+	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
 
-	actRaiseDockTileset  = new QAction(this);
-	actRaiseDockTileset->setShortcut(Qt::Key_1);
-	actRaiseDockTerrain  = new QAction(this);
-	actRaiseDockTerrain->setShortcut(Qt::Key_2);
-	actRaiseDockLand     = new QAction(this);
-	actRaiseDockLand->setShortcut(Qt::Key_3);
-	actRaiseDockTriangle = new QAction(this);
-	actRaiseDockTriangle->setShortcut(Qt::Key_4);
-	actRaiseDockMap      = new QAction(this);
-	actRaiseDockMap->setShortcut(Qt::Key_5);
-	actRaiseDockObjects  = new QAction(this);
-	actRaiseDockObjects->setShortcut(Qt::Key_6);
+	tilesetDockWidget->setObjectName("tilesetDockWidget");
+	terrainDockWidget->setObjectName("terrainDockWidget");
+	landDockWidget->setObjectName("landDockWidget");
+	triangleDockWidget->setObjectName("triangleDockWidget");
+	objectsDockWidget->setObjectName("objectsDockWidget");
 
-	this->addAction(actRaiseDockTileset);
-	this->addAction(actRaiseDockTerrain);
-	this->addAction(actRaiseDockLand);
-	this->addAction(actRaiseDockTriangle);
-	this->addAction(actRaiseDockMap);
-	this->addAction(actRaiseDockObjects);
+	tilesetDockWidget->setWidget(new QWidget(tilesetDockWidget));
+	terrainDockWidget->setWidget(new QWidget(terrainDockWidget));
+	landDockWidget->setWidget(new QWidget(landDockWidget));
+	triangleDockWidget->setWidget(new QWidget(triangleDockWidget));
+	objectsDockWidget->setWidget(new QWidget(objectsDockWidget));
 
-	actToolsPreferences = new QAction(tr("&Preferences"), this);
-	actToolsPreferences->setShortcut(QKeySequence::Preferences);
+	m_tilesetUi->setupUi(tilesetDockWidget->widget());
+	m_terrainUi->setupUi(terrainDockWidget->widget());
+	m_landUi->setupUi(landDockWidget->widget());
+	m_triangleUi->setupUi(triangleDockWidget->widget());
+	m_objectsUi->setupUi(objectsDockWidget->widget());
 
-	actHelpAboutQt = new QAction(tr("About &Qt"), this);
+	addDockWidget(Qt::LeftDockWidgetArea, tilesetDockWidget);
+	addDockWidget(Qt::LeftDockWidgetArea, terrainDockWidget);
+	addDockWidget(Qt::LeftDockWidgetArea, landDockWidget);
+	addDockWidget(Qt::LeftDockWidgetArea, triangleDockWidget);
+	addDockWidget(Qt::LeftDockWidgetArea, objectsDockWidget);
 
-// ADD NEW MENUS
+	setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::West);
+	setTabPosition(Qt::RightDockWidgetArea, QTabWidget::East);
 
-	menuFile  = this->menuBar()->addMenu(tr("&File"));
-	menuFile->addAction(actFileNew);
-	menuFile->addAction(actFileOpen);
-	menuFile->addAction(actFileSave);
-	menuFile->addAction(actFileSaveAs);
-	menuFile->addSeparator();
-	menuFile->addAction(actFileExit);
+	tabifyDockWidget(tilesetDockWidget, terrainDockWidget);
+	tabifyDockWidget(terrainDockWidget, landDockWidget);
+	tabifyDockWidget(landDockWidget, triangleDockWidget);
+	tabifyDockWidget(triangleDockWidget, objectsDockWidget);
 
+	tilesetDockWidget->raise();
 
-	menuEdit = this->menuBar()->addMenu(tr("&Edit"));
+	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionNew);
+	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionOpen);
+	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionSave);
+	m_mainWindowUi->mainToolBar->addSeparator();
+	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionFullscreen);
 
-	menuView  = this->menuBar()->addMenu(tr("&View"));
-	menuView->addAction(actViewDockTileset);
-	menuView->addAction(actViewDockTerrain);
-	menuView->addAction(actViewDockLand);
-	menuView->addAction(actViewDockTriangle);
-	menuView->addAction(actViewDockMap);
-	menuView->addAction(actViewDockObjects);
-	menuView->addSeparator();
-	menuView->addAction(actViewFullScreen);
+	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 
-	menuTools = this->menuBar()->addMenu(tr("&Tools"));
-	menuTools->addAction(actToolsPreferences);
+	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
+	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
+	connect(m_mainWindowUi->actionTileset, SIGNAL(toggled(bool)), tilesetDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionTerrain, SIGNAL(toggled(bool)), terrainDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionLand, SIGNAL(toggled(bool)), landDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionTriangle, SIGNAL(toggled(bool)), triangleDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionObjects, SIGNAL(toggled(bool)), objectsDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionAboutApplication, SIGNAL(triggered()), this, SLOT(actionAboutApplication()));
+	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
+	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
+	connect(tilesetDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTileset, SLOT(setChecked(bool)));
+	connect(terrainDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTerrain, SLOT(setChecked(bool)));
+	connect(landDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionLand, SLOT(setChecked(bool)));
+	connect(triangleDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTriangle, SLOT(setChecked(bool)));
+	connect(objectsDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionObjects, SLOT(setChecked(bool)));
 
-	menuHelp  = this->menuBar()->addMenu(tr("&Help"));
-	menuHelp->addAction(actHelpAboutQt);
-
-// CREATE TOOLBARS
-	toolMain = new QToolBar("Main Toolbar", this);
-	toolMain->addAction(actFileNew);
-	toolMain->addAction(actFileOpen);
-	toolMain->addAction(actFileSave);
-	toolMain->addSeparator();
-	toolMain->addAction(actViewFullScreen);
-	this->addToolBar(toolMain);
-
-// CREATE DOCKS
-
-	dockTileset  = new QDockWidget(tr("Tileset"),  this, 0);
-	dockTerrain  = new QDockWidget(tr("Terrain"),  this, 0);
-	dockLand     = new QDockWidget(tr("Land"),     this, 0);
-	dockTriangle = new QDockWidget(tr("Triangle"), this, 0);
-	dockMap      = new QDockWidget(tr("Map"),      this, 0);
-	dockObjects  = new QDockWidget(tr("Objects"),  this, 0);
-	dockTileset->setFeatures (dockTileset->features()  ^ QDockWidget::DockWidgetClosable);
-	dockTerrain->setFeatures (dockTerrain->features()  ^ QDockWidget::DockWidgetClosable);
-	dockLand->setFeatures    (dockLand->features()     ^ QDockWidget::DockWidgetClosable);
-	dockTriangle->setFeatures(dockTriangle->features() ^ QDockWidget::DockWidgetClosable);
-	dockMap->setFeatures     (dockMap->features()      ^ QDockWidget::DockWidgetClosable);
-	dockObjects->setFeatures (dockObjects->features()  ^ QDockWidget::DockWidgetClosable);
-
-// CREATE WIDGETS FOR DOCK "TILESET"
-	QGridLayout *layTileset  = new QGridLayout;
-	QLabel *labelTileset     = new QLabel(tr("Tileset: "), this);
-	QLabel *labelTilesetType = new QLabel(tr("Tileset Type: "), this);
-
-	comboTileset     = new QComboBox(this);
-	comboTilesetType = new QComboBox(this);
-	listTileset = new QListWidget(this);
-	listTileset->setViewMode(QListView::IconMode);
-	listTileset->setResizeMode(QListView::Adjust);
-	listTileset->setDragEnabled(false);
-	listTileset->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-	listTileset->setSpacing(0);
-
-	layTileset->setAlignment(Qt::AlignTop);
-	layTileset->setContentsMargins(0, 0, 0, 0);
-	layTileset->setSpacing(0);
-	layTileset->setColumnStretch(1, 100);
-	layTileset->addWidget(labelTileset,     1, 0);
-	layTileset->addWidget(comboTileset,     1, 1);
-	layTileset->addWidget(labelTilesetType, 2, 0);
-	layTileset->addWidget(comboTilesetType, 2, 1);
-	layTileset->addWidget(listTileset,      3, 0, 1, 2);
-
-	QWidget *dockTilesetContents = new QWidget(this);
-	dockTilesetContents->setLayout(layTileset);
-	dockTileset->setWidget(dockTilesetContents);
-
-// CREATE WIDGETS FOR DOCK "TERRAIN"
-	QGridLayout *layTerrain = new QGridLayout;
-	QLabel *labelTerrainGroundType = new QLabel(tr("Ground Type: "), this);
-	QLabel *labelTerrainRoadType   = new QLabel(tr("Road Type: "), this);
-
-	comboTerrainGroundType = new QComboBox(this);
-	comboTerrainRoadType   = new QComboBox(this);
-
-	layTerrain->setAlignment(Qt::AlignTop);
-	layTerrain->setContentsMargins(0, 0, 0, 0);
-	layTerrain->setSpacing(0);
-	layTerrain->setColumnStretch(1, 100);
-	layTerrain->addWidget(labelTerrainGroundType, 1, 0);
-	layTerrain->addWidget(comboTerrainGroundType, 1, 1);
-	layTerrain->addWidget(labelTerrainRoadType,   2, 0);
-	layTerrain->addWidget(comboTerrainRoadType,   2, 1);
-
-	QWidget *dockTerrainContents = new QWidget(this);
-	dockTerrainContents->setLayout(layTerrain);
-	dockTerrain->setWidget(dockTerrainContents);
-
-// CREATE WIDGETS FOR DOCK "MAP"
-	QGridLayout *layMap = new QGridLayout;
-	QLabel *labelMapSizeX   = new QLabel(tr("Size X: "),   this);
-	QLabel *labelMapSizeY   = new QLabel(tr("Size Y: "),   this);
-	QLabel *labelMapOffsetX = new QLabel(tr("Offset X: "), this);
-	QLabel *labelMapOffsetY = new QLabel(tr("Offset Y: "), this);
-	textMapSizeX   = new QSpinBox(this);
-	textMapSizeX->setMinimum(1);
-	textMapSizeX->setMaximum(255);
-	textMapSizeY   = new QSpinBox(this);
-	textMapSizeY->setMinimum(1);
-	textMapSizeY->setMaximum(255);
-	textMapOffsetX = new QSpinBox(this);
-	textMapOffsetX->setMinimum(1);
-	textMapOffsetX->setMaximum(255);
-	textMapOffsetY = new QSpinBox(this);
-	textMapOffsetY->setMinimum(1);
-	textMapOffsetY->setMaximum(255);
-
-	btnMapResize = new QPushButton(tr("Resize Map"), this);
-	btnMapResize->setFlat(true);
-	btnMapResizeToSelection = new QPushButton(tr("Resize Map to Selection"), this);
-	btnMapResizeToSelection->setFlat(true);
-
-	layMap->setAlignment(Qt::AlignTop);
-	layMap->setContentsMargins(0, 0, 0, 0);
-	layMap->setSpacing(0);
-	layMap->setColumnStretch(1, 100);
-	layMap->addWidget(labelMapSizeX,           1, 0);
-	layMap->addWidget(textMapSizeX,            1, 1);
-	layMap->addWidget(labelMapSizeY,           2, 0);
-	layMap->addWidget(textMapSizeY,            2, 1);
-	layMap->addWidget(labelMapOffsetX,         3, 0);
-	layMap->addWidget(textMapOffsetX,          3, 1);
-	layMap->addWidget(labelMapOffsetY,         4, 0);
-	layMap->addWidget(textMapOffsetY,          4, 1);
-	layMap->addWidget(btnMapResize,            5, 0, 1, 2);
-	layMap->addWidget(btnMapResizeToSelection, 6, 0, 1, 2);
-
-	QWidget *dockMapContents = new QWidget(this);
-	dockMapContents->setLayout(layMap);
-	dockMap->setWidget(dockMapContents);
-
-// ADD DOCKS TO MAINWINDOW
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockTileset);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockTerrain);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockLand);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockTriangle);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockMap);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockObjects);
-
-	this->setTabPosition(Qt::LeftDockWidgetArea,  QTabWidget::West);
-	this->setTabPosition(Qt::RightDockWidgetArea, QTabWidget::East);
-	this->tabifyDockWidget(dockObjects,  dockMap);
-	this->tabifyDockWidget(dockMap,      dockTriangle);
-	this->tabifyDockWidget(dockTriangle, dockLand);
-	this->tabifyDockWidget(dockLand,     dockTerrain);
-	this->tabifyDockWidget(dockTerrain,  dockTileset);
-
-	statusBar = new QStatusBar(this);
-	statusCoordsX = new QLabel(this);
-	statusCoordsY = new QLabel(this);
-	statusBar->addWidget(statusCoordsX);
-	statusBar->addWidget(statusCoordsY);
-	statusBar->setSizeGripEnabled(true);
-
-	this->setStatusBar(statusBar);
-
-// SET CENTRAL WIDGET
-
-	mapEdit = new MapEditorWidget(this);
-	this->setCentralWidget(mapEdit);
-
-// CONNECT SIGNALS AND SLOTS
-	connect(actFileNew,           SIGNAL(triggered()),   this,         SLOT(onActionFileNew()));
-	connect(actFileOpen,          SIGNAL(triggered()),   this,         SLOT(onActionFileOpen()));
-	connect(actFileSave,          SIGNAL(triggered()),   this,         SLOT(onActionFileSave()));
-	connect(actFileSaveAs,        SIGNAL(triggered()),   this,         SLOT(onActionFileSaveAs()));
-	connect(actFileExit,          SIGNAL(triggered()),   this,         SLOT(close()));
-	connect(actViewDockTileset,   SIGNAL(toggled(bool)), dockTileset,  SLOT(setShown(bool)));
-	connect(actViewDockTerrain,   SIGNAL(toggled(bool)), dockTerrain,  SLOT(setShown(bool)));
-	connect(actViewDockLand,      SIGNAL(toggled(bool)), dockLand,     SLOT(setShown(bool)));
-	connect(actViewDockTriangle,  SIGNAL(toggled(bool)), dockTriangle, SLOT(setShown(bool)));
-	connect(actViewDockMap,       SIGNAL(toggled(bool)), dockMap,      SLOT(setShown(bool)));
-	connect(actViewDockObjects,   SIGNAL(toggled(bool)), dockObjects,  SLOT(setShown(bool)));
-	connect(actViewFullScreen,    SIGNAL(toggled(bool)), this,         SLOT(onActionChangeFullScreen(bool)));
-	connect(actRaiseDockTileset,  SIGNAL(triggered()),   dockTileset,  SLOT(raise()));
-	connect(actRaiseDockTerrain,  SIGNAL(triggered()),   dockTerrain,  SLOT(raise()));
-	connect(actRaiseDockLand,     SIGNAL(triggered()),   dockLand,     SLOT(raise()));
-	connect(actRaiseDockTriangle, SIGNAL(triggered()),   dockTriangle, SLOT(raise()));
-	connect(actRaiseDockMap,      SIGNAL(triggered()),   dockMap,      SLOT(raise()));
-	connect(actRaiseDockObjects,  SIGNAL(triggered()),   dockObjects,  SLOT(raise()));
-	connect(actHelpAboutQt,       SIGNAL(triggered()),   this,         SLOT(onActionHelpAboutQt()));
-
-	connect(btnMapResize, SIGNAL(clicked()), this, SLOT(onClick_btnMapResize()));
-
-	connect(mapEdit, SIGNAL(changeCoordsX(int)), this, SLOT(setStatusCoordsX(int)));
-	connect(mapEdit, SIGNAL(changeCoordsY(int)), this, SLOT(setStatusCoordsY(int)));
-	//this->onMenuViewFullScreen_click(false);
-
-	actViewDockTileset->setChecked(true);
-	actViewDockTerrain->setChecked(true);
-	actViewDockLand->setChecked(true);
-	actViewDockTriangle->setChecked(true);
-	actViewDockMap->setChecked(true);
-	actViewDockObjects->setChecked(true);
+	restoreGeometry(QSettings().value("geometry").toByteArray());
+	restoreState(QSettings().value("windowState").toByteArray());
 }
 
-void MainWindow::onActionChangeFullScreen (bool value)
+MainWindow::~MainWindow()
 {
-	switch (value)
-	{
-	case true:
-		this->setWindowState(this->windowState() | Qt::WindowFullScreen);
-		break;
+	delete m_mainWindowUi;
+	delete m_tilesetUi;
+	delete m_terrainUi;
+	delete m_landUi;
+	delete m_triangleUi;
+	delete m_objectsUi;
+}
 
-	case false:
-		this->setWindowState(this->windowState() ^ Qt::WindowFullScreen);
-		break;
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	QSettings().setValue("geometry", saveGeometry());
+	QSettings().setValue("windowState", saveState());
+
+	QMainWindow::closeEvent(event);
+}
+
+void MainWindow::actionFullscreen(bool checked)
+{
+	if (checked)
+	{
+		setWindowState(this->windowState() | Qt::WindowFullScreen);
+	}
+	else
+	{
+		setWindowState(this->windowState() ^ Qt::WindowFullScreen);
 	}
 }
 
-void MainWindow::onActionHelpAboutQt ()
+void MainWindow::actionAboutApplication()
 {
-	QMessageBox::aboutQt(this, "About Qt");
+	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>Warzone 2100 Map Editor %1</b><br />Map viewer and editor for Warzone 2100.").arg(QApplication::instance()->applicationVersion())));
 }
 
-void MainWindow::onActionFileNew ()
+void MainWindow::updateCoordinates(int x, int y, int z)
 {
-
-}
-
-void MainWindow::onActionFileOpen ()
-{
-
-}
-
-void MainWindow::onActionFileSave ()
-{
-
-}
-
-void MainWindow::onActionFileSaveAs ()
-{
-
-}
-
-void MainWindow::setStatusCoordsX (int coords)
-{
-	statusCoordsX->setText(QString("x:%1").arg(coords));
-}
-
-void MainWindow::setStatusCoordsY (int coords)
-{
-	statusCoordsY->setText(QString("y:%1").arg(coords));
-}
-
-void MainWindow::onClick_btnMapResize ()
-{
-	mapEdit->resizeMap(this->textMapSizeX->value(), this->textMapSizeY->value());
+	m_coordinatesLabel->setText(QString("x: %1 y: %2 z: %3").arg(x).arg(y).arg(z));
 }
 
 }

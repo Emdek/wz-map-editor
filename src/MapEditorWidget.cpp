@@ -1,50 +1,50 @@
 #include "MapEditorWidget.h"
 
 #include <QtGui/QMenu>
-#include <QMouseEvent>
+#include <QtGui/QMouseEvent>
 
 #include <cstdio>
 
 namespace WZMapEditor
 {
 
-MapEditorWidget::MapEditorWidget(QWidget *parent)
-	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+MapEditorWidget::MapEditorWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-	this->m_moving = false;
-	this->rot_x = 0;
-	this->rot_y = 0;
-	this->rot_z = 0;
-	this->zoom_value = -20.0;
+	m_moving = false;
+	rot_x = 0;
+	rot_y = 0;
+	rot_z = 0;
+	zoom_value = -20.0;
 
-	this->setMouseTracking(true);
+	setMouseTracking(true);
 
-	this->map_width = 7;
-	this->map_height = 5;
+	map_width = 7;
+	map_height = 5;
 
-	this->map_move_x = 0;
-	this->map_move_y = 0;
+	map_move_x = 0;
+	map_move_y = 0;
 
-	QAction *moveLeft  = new QAction(this);
+	QAction *moveLeft = new QAction(this);
 	QAction *moveRight = new QAction(this);
-	QAction *moveUp    = new QAction(this);
-	QAction *moveDown  = new QAction(this);
-	moveLeft-> setShortcut(Qt::Key_Left);
+	QAction *moveUp = new QAction(this);
+	QAction *moveDown = new QAction(this);
+
+	moveLeft->setShortcut(Qt::Key_Left);
 	moveRight->setShortcut(Qt::Key_Right);
-	moveUp->   setShortcut(Qt::Key_Up);
+	moveUp-> setShortcut(Qt::Key_Up);
 	moveDown-> setShortcut(Qt::Key_Down);
 
-	this->addAction(moveLeft);
-	this->addAction(moveRight);
-	this->addAction(moveUp);
-	this->addAction(moveDown);
+	addAction(moveLeft);
+	addAction(moveRight);
+	addAction(moveUp);
+	addAction(moveDown);
 
-	connect(moveLeft,  SIGNAL(triggered()), this, SLOT(doMapMoveLeft()));
+	connect(moveLeft, SIGNAL(triggered()), this, SLOT(doMapMoveLeft()));
 	connect(moveRight, SIGNAL(triggered()), this, SLOT(doMapMoveRight()));
-	connect(moveUp,    SIGNAL(triggered()), this, SLOT(doMapMoveUp()));
-	connect(moveDown,  SIGNAL(triggered()), this, SLOT(doMapMoveDown()));
+	connect(moveUp, SIGNAL(triggered()), this, SLOT(doMapMoveUp()));
+	connect(moveDown, SIGNAL(triggered()), this, SLOT(doMapMoveDown()));
 
-	this->setFocus();
+	setFocus();
 }
 
 MapEditorWidget::~MapEditorWidget()
@@ -109,29 +109,28 @@ void MapEditorWidget::paintGL()
 	//      glEnable (GL_LIGHTING);
 	glEnable (GL_TEXTURE_2D);
 
-	glTranslatef(0.0f, 0.0f, this->zoom_value);
+	glTranslatef(0.0f, 0.0f, zoom_value);
 	glRotatef(rot_x / 4.0f, 1.0, 0.0, 0.0);
 	glRotatef(rot_y / 4.0f, 0.0, 1.0, 0.0);
 	glRotatef(rot_z / 4.0f, 0.0, 0.0, 1.0);
-	glTranslatef(this->map_move_x * 0.2f, this->map_move_y * 0.2f, 0.0f);
+	glTranslatef(this->map_move_x * 0.2f, map_move_y * 0.2f, 0.0f);
 
 	// this moves objects drawing position
 	// simple hack to set center in really center of map - not on left-bottom edge
-	int center_factor_x = (this->map_width  * 1.0f) / 2;
-	int center_factor_y = (this->map_height * 1.0f) / 2;
+	int center_factor_x = (map_width  * 1.0f) / 2;
+	int center_factor_y = (map_height * 1.0f) / 2;
 
-	int i, j;
-	for (i = 1; i <= this->map_width; i++)
+	for (int i = 1; i <= map_width; ++i)
 	{
-		for (j = 1; j <= this->map_height; j++)
+		for (int j = 1; j <= map_height; ++j)
 		{
 			glBegin(GL_TRIANGLES);
 			glColor3f(1.0f , 0.0f, 0.0f);
 			glVertex3f(1.0f * i - center_factor_x,        1.0f * j - center_factor_y - 1.0f, 0.0f);
-			
+
 			glColor3f(0.0f, 1.0f, 0.0f);
 			glVertex3f(1.0f * i - center_factor_x,        1.0f * j - center_factor_y,        0.0f);
-			
+
 			glColor3f(0.0f, 0.0f, 1.0f);
 			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y,        0.0f);
 			glEnd();
@@ -153,15 +152,16 @@ void MapEditorWidget::paintGL()
 
 void MapEditorWidget::wheelEvent (QWheelEvent *event)
 {
-	this->zoom_value += event->delta() / 32;
-	this->repaint();
+	zoom_value += event->delta() / 32;
+
+	repaint();
 }
 
 void MapEditorWidget::mousePressEvent (QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
 	{
-		this->m_moving = true;
+		m_moving = true;
 	}
 }
 
@@ -179,56 +179,62 @@ void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton)
 	{
-		this->m_moving = false;
+		m_moving = false;
 	}
 }
 
 void MapEditorWidget::mouseMoveEvent (QMouseEvent *event)
 {
 	static int last_move_x, last_move_y;
+
 	if (m_moving == true)
 	{
-		this->rot_z += -(last_move_x - event->pos().x());
-		this->rot_x += -(last_move_y - event->pos().y());
+		rot_z += -(last_move_x - event->pos().x());
+		rot_x += -(last_move_y - event->pos().y());
 
-		this->repaint();
+		repaint();
 	}
+
 	last_move_x = event->pos().x();
 	last_move_y = event->pos().y();
 
-	emit this->changeCoordsX(event->pos().x());
-	emit this->changeCoordsY(event->pos().y());
+	emit cooridantesChanged(event->pos().x(), event->pos().y(), 0);
 }
 
 void MapEditorWidget::resizeMap (unsigned int width, unsigned int height)
 {
-	this->map_width  = width;
-	this->map_height = height;
-	this->repaint();
+	map_width  = width;
+	map_height = height;
+
+	repaint();
 }
 
 void MapEditorWidget::doMapMoveLeft()
 {
-	this->map_move_x += 1;
-	this->repaint();
+	map_move_x += 1;
+
+	repaint();
 }
 
 void MapEditorWidget::doMapMoveRight()
 {
-	this->map_move_x -= 1;
-	this->repaint();
+	map_move_x -= 1;
+
+	repaint();
 }
 
 void MapEditorWidget::doMapMoveUp()
 {
-	this->map_move_y -= 1;
-	this->repaint();
+	map_move_y -= 1;
+
+	repaint();
 }
 
 void MapEditorWidget::doMapMoveDown()
 {
-	this->map_move_y += 1;
-	this->repaint();
+	map_move_y += 1;
+
+	repaint();
 }
 
 }
