@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Shortcut Manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/icons/warzone2100mapeditor.png</normaloff>:/icons/warzone2100mapeditor.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLineEdit" name="filterLineEdit">
@@ -111,7 +115,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

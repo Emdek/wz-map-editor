@@ -1,1 +1,11 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/">
+        <file>icons/edit-select.png</file>
+        <file>icons/help-contents.png</file>
+        <file>icons/transform-move.png</file>
+        <file>icons/warzone2100mapeditor.png</file>
+        <file>icons/zoom-in.png</file>
+        <file>icons/zoom-original.png</file>
+        <file>icons/zoom-out.png</file>
+    </qresource>
+</RCC>

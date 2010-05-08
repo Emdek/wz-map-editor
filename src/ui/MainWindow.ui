@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>732</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Warzone 2100 Map Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/icons/warzone2100mapeditor.png</normaloff>:/icons/warzone2100mapeditor.png</iconset>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -369,6 +373,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

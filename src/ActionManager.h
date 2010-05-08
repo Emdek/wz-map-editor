@@ -3,6 +3,8 @@
 
 #include <QtCore/QObject>
 
+#include <QtGui/QAction>
+
 namespace WZMapEditor
 {
 
@@ -13,9 +15,8 @@ class ActionManager : public QObject
 public:
 	ActionManager(QObject *parent = 0);
 
-signals:
-
-public slots:
+private:
+	QHash<QString, QAction*> m_actions;
 
 };
 
