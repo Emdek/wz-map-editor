@@ -34,27 +34,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	m_mainWindowUi->setupUi(this);
 
-	ActionManager::registerAction(m_mainWindowUi->actionNew);
-	ActionManager::registerAction(m_mainWindowUi->actionOpen);
-	ActionManager::registerAction(m_mainWindowUi->actionOpenRecent);
-	ActionManager::registerAction(m_mainWindowUi->actionSave);
-	ActionManager::registerAction(m_mainWindowUi->actionSaveAs);
-	ActionManager::registerAction(m_mainWindowUi->actionExit);
-	ActionManager::registerAction(m_mainWindowUi->actionUndo);
-	ActionManager::registerAction(m_mainWindowUi->actionRedo);
-	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
-	ActionManager::registerAction(m_mainWindowUi->actionTileset);
-	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
-	ActionManager::registerAction(m_mainWindowUi->actionLand);
-	ActionManager::registerAction(m_mainWindowUi->actionTriangle);
-	ActionManager::registerAction(m_mainWindowUi->actionObjects);
-	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionHelp);
-	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
-	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
-
 	setWindowState(Qt::WindowMaximized);
 
 	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
@@ -80,6 +59,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_landUi->setupUi(landDockWidget->widget());
 	m_triangleUi->setupUi(triangleDockWidget->widget());
 	m_objectsUi->setupUi(objectsDockWidget->widget());
+
+	m_mainWindowUi->menuDocks->addAction(tilesetDockWidget->toggleViewAction());
+	m_mainWindowUi->menuDocks->addAction(terrainDockWidget->toggleViewAction());
+	m_mainWindowUi->menuDocks->addAction(landDockWidget->toggleViewAction());
+	m_mainWindowUi->menuDocks->addAction(triangleDockWidget->toggleViewAction());
+	m_mainWindowUi->menuDocks->addAction(objectsDockWidget->toggleViewAction());
+
+	tilesetDockWidget->toggleViewAction()->setObjectName("actionTileset");
+	terrainDockWidget->toggleViewAction()->setObjectName("actionTerrain");
+	landDockWidget->toggleViewAction()->setObjectName("actionLand");
+	triangleDockWidget->toggleViewAction()->setObjectName("actionTriangle");
+	objectsDockWidget->toggleViewAction()->setObjectName("actionObjects");
 
 	addDockWidget(Qt::LeftDockWidgetArea, tilesetDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, terrainDockWidget);
@@ -117,13 +108,29 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionAboutApplication->setIcon(QIcon(":/icons/warzone2100mapeditor.png"));
 	m_mainWindowUi->actionAboutQt->setIcon(QIcon(":/icons/qt.png"));
 
+	ActionManager::registerAction(m_mainWindowUi->actionNew);
+	ActionManager::registerAction(m_mainWindowUi->actionOpen);
+	ActionManager::registerAction(m_mainWindowUi->actionOpenRecent);
+	ActionManager::registerAction(m_mainWindowUi->actionSave);
+	ActionManager::registerAction(m_mainWindowUi->actionSaveAs);
+	ActionManager::registerAction(m_mainWindowUi->actionExit);
+	ActionManager::registerAction(m_mainWindowUi->actionUndo);
+	ActionManager::registerAction(m_mainWindowUi->actionRedo);
+	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
+	ActionManager::registerAction(tilesetDockWidget->toggleViewAction());
+	ActionManager::registerAction(terrainDockWidget->toggleViewAction());
+	ActionManager::registerAction(landDockWidget->toggleViewAction());
+	ActionManager::registerAction(triangleDockWidget->toggleViewAction());
+	ActionManager::registerAction(objectsDockWidget->toggleViewAction());
+	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionHelp);
+	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
+	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
+
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
-	connect(m_mainWindowUi->actionTileset, SIGNAL(toggled(bool)), tilesetDockWidget, SLOT(setVisible(bool)));
-	connect(m_mainWindowUi->actionTerrain, SIGNAL(toggled(bool)), terrainDockWidget, SLOT(setVisible(bool)));
-	connect(m_mainWindowUi->actionLand, SIGNAL(toggled(bool)), landDockWidget, SLOT(setVisible(bool)));
-	connect(m_mainWindowUi->actionTriangle, SIGNAL(toggled(bool)), triangleDockWidget, SLOT(setVisible(bool)));
-	connect(m_mainWindowUi->actionObjects, SIGNAL(toggled(bool)), objectsDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
 	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
@@ -131,11 +138,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionAboutApplication, SIGNAL(triggered()), this, SLOT(actionAboutApplication()));
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
-	connect(tilesetDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTileset, SLOT(setChecked(bool)));
-	connect(terrainDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTerrain, SLOT(setChecked(bool)));
-	connect(landDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionLand, SLOT(setChecked(bool)));
-	connect(triangleDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTriangle, SLOT(setChecked(bool)));
-	connect(objectsDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionObjects, SLOT(setChecked(bool)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
 
 	m_mainWindowUi->mainToolbar->reload();
