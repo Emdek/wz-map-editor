@@ -15,7 +15,7 @@ class ActionManager : public QObject
 public:
 	ActionManager(QObject *parent = NULL);
 
-	void registerAction(QAction *action, const QString &name = QString());
+	void registerAction(QAction *action, QString name = QString());
 	void registerActions(QList<QAction*> actions);
 	void restoreDefaultShortcut(QAction *action);
 	void restoreDefaultShortcut(const QString &action);
@@ -26,7 +26,6 @@ public:
 
 private:
 	QHash<QString, QAction*> m_actions;
-	QHash<QString, QKeySequence> m_defaultShortcuts;
 
 };
 

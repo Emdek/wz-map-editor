@@ -2,9 +2,9 @@
 #define SETTINGMANAGER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QSettings>
-
-#include <QtGui/QFont>
+#include <QtCore/QHash>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
 
 namespace WZMapEditor
 {

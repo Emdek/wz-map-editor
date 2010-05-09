@@ -1,26 +1,15 @@
 #include "ActionManager.h"
+#include "SettingManager.h"
+
 
 namespace WZMapEditor
 {
 
 ActionManager::ActionManager(QObject *parent) : QObject(parent)
 {
-	m_defaultShortcuts["actionNew"] = QKeySequence::New;
-	m_defaultShortcuts["actionOpen"] = QKeySequence::Open;
-	m_defaultShortcuts["actionSave"] = QKeySequence::Save;
-	m_defaultShortcuts["actionSaveAs"] = QKeySequence::SaveAs;
-	m_defaultShortcuts["actionExit"] = QKeySequence::Quit;
-	m_defaultShortcuts["actionUndo"] = QKeySequence::Undo;
-	m_defaultShortcuts["actionRedo"] = QKeySequence::Redo;
-	m_defaultShortcuts["actionHelp"] = QKeySequence::HelpContents;
-	m_defaultShortcuts["actionTileset"] = QKeySequence(Qt::CTRL, Qt::Key_1);
-	m_defaultShortcuts["actionTerrain"] = QKeySequence(Qt::CTRL, Qt::Key_2);
-	m_defaultShortcuts["actionLand"] = QKeySequence(Qt::CTRL, Qt::Key_3);
-	m_defaultShortcuts["actionTriangle"] = QKeySequence(Qt::CTRL, Qt::Key_4);
-	m_defaultShortcuts["actionObjects"] = QKeySequence(Qt::CTRL, Qt::Key_5);
 }
 
-void ActionManager::registerAction(QAction *action, const QString &name)
+void ActionManager::registerAction(QAction *action, QString name)
 {
 	if (!action)
 	{
@@ -31,7 +20,7 @@ void ActionManager::registerAction(QAction *action, const QString &name)
 	{
 		if (action->objectName().isEmpty())
 		{
-			QString tmpName = "action_%1";
+			QString tmpName = "_%1";
 			int number = 0;
 
 			while (m_actions.contains(tmpName.arg(number)))
@@ -39,17 +28,17 @@ void ActionManager::registerAction(QAction *action, const QString &name)
 				++number;
 			}
 
-			m_actions[tmpName.arg(number)] = action;
+			name = tmpName.arg(number);
 		}
 		else
 		{
-			m_actions[action->objectName()] = action;
+			name = action->objectName().mid(6);
 		}
 	}
-	else
-	{
-		m_actions[name] = action;
-	}
+
+	action->setShortcut(QKeySequence(SettingManager::defaultValue("actions/" + name).toString()));
+
+	m_actions[name] = action;
 }
 
 void ActionManager::registerActions(QList<QAction*> actions)
@@ -72,9 +61,9 @@ void ActionManager::restoreDefaultShortcut(QAction *action)
 
 void ActionManager::restoreDefaultShortcut(const QString &action)
 {
-	if (m_defaultShortcuts.contains(action) && m_actions.contains(action))
+	if (m_actions.contains(action))
 	{
-		m_actions[action]->setShortcut(m_defaultShortcuts[action]);
+		m_actions[action]->setShortcut(getDefaultShortcut(action));
 	}
 }
 
@@ -94,7 +83,7 @@ QKeySequence ActionManager::getDefaultShortcut(QAction *action)
 
 QKeySequence ActionManager::getDefaultShortcut(const QString &action)
 {
-	return m_defaultShortcuts.value(action, QKeySequence());
+	return QKeySequence(SettingManager::defaultValue("actions/" + action).toString());
 }
 
 QAction* ActionManager::getAction(const QString &action)
