@@ -61,13 +61,33 @@ void ActionManager::registerActions(QList<QAction*> actions)
 	}
 }
 
+void ActionManager::setShortcut(QAction *action, const QKeySequence &shortcut)
+{
+	QString key = m_instance->getActions().key(action);
+
+	if (!key.isEmpty())
+	{
+		setShortcut(key, shortcut);
+	}
+}
+
+void ActionManager::setShortcut(const QString &action, const QKeySequence &shortcut)
+{
+	if (m_instance->getActions().contains(action))
+	{
+		m_instance->getActions().value(action)->setShortcut(shortcut);
+
+		SettingManager::setValue("actions/" + action, shortcut.toString());
+	}
+}
+
 void ActionManager::restoreDefaultShortcut(QAction *action)
 {
 	QString key = m_instance->getActions().key(action);
 
 	if (!key.isEmpty())
 	{
-		return restoreDefaultShortcut(key);
+		restoreDefaultShortcut(key);
 	}
 }
 

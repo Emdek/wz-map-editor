@@ -15,6 +15,8 @@ public:
 	static void createInstance(QObject *parent = NULL);
 	static void registerAction(QAction *action, QString name = QString());
 	static void registerActions(QList<QAction*> actions);
+	static void setShortcut(QAction *action, const QKeySequence &shortcut);
+	static void setShortcut(const QString &action, const QKeySequence &shortcut);
 	static void restoreDefaultShortcut(QAction *action);
 	static void restoreDefaultShortcut(const QString &action);
 	static QKeySequence getDefaultShortcut(QAction *action);

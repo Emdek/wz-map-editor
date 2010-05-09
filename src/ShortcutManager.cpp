@@ -1,10 +1,9 @@
 #include "ShortcutManager.h"
 #include "ShortcutEditorDelegate.h"
+#include "ActionManager.h"
 #include "MainWindow.h"
 
 #include "ui_ShortcutEditorDialog.h"
-
-#include <QtCore/QSettings>
 
 #include <QtGui/QDialog>
 #include <QtGui/QMessageBox>
@@ -74,9 +73,7 @@ void ShortcutManager::save()
 {
 	for (int i = 0; i < m_actions.count(); ++i)
 	{
-		m_actions.at(i)->setShortcut(QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
-
-		QSettings().setValue(QString("Shortcuts/%1").arg(m_actions.at(i)->objectName()), m_actions.at(i)->shortcut().toString());
+		ActionManager::setShortcut(m_actions.at(i), QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
 	}
 }
 
@@ -86,18 +83,13 @@ void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 	{
 		for (int i = 0; i < m_actions.count(); ++i)
 		{
-//			m_mainWindow->restoreDefaultShortcut(m_actions.at(i));
+			ActionManager::restoreDefaultShortcut(m_actions.at(i));
 
 			m_managerUi->shortcutsView->item(i, 1)->setText(m_actions.at(i)->shortcut().toString(QKeySequence::NativeText));
 		}
 	}
 	else
 	{
-		if (m_managerUi->buttonBox->standardButton(button) == QDialogButtonBox::Cancel)
-		{
-//			m_mainWindow->loadShortcuts();
-		}
-
 		deleteLater();
 	}
 }
@@ -106,7 +98,7 @@ QString ShortcutManager::restoreDefaultShortcut(int index)
 {
 	if (index >= 0 && index < m_actions.count())
 	{
-//		m_mainWindow->restoreDefaultShortcut(m_actions.at(index));
+		ActionManager::restoreDefaultShortcut(m_actions.at(index));
 
 		return m_actions.at(index)->shortcut().toString(QKeySequence::NativeText);
 	}

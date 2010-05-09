@@ -3,6 +3,7 @@
 #include "ActionManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
+
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
 #include "ui_TerrainDockWidget.h"
