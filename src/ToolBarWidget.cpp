@@ -1,7 +1,6 @@
 #include "ToolBarWidget.h"
 
 #include <QtCore/QSettings>
-
 #include <QtGui/QMenu>
 
 namespace WZMapEditor
@@ -10,8 +9,8 @@ namespace WZMapEditor
 ToolBarWidget::ToolBarWidget(QMainWindow *parent) : QToolBar(parent),
 	m_dirty(true)
 {
-	connect(this, SIGNAL(configureRequested(ToolBarWidget*)), parent, SLOT(actionConfigureToolBars(ToolBarWidget*)));
-	connect(this, SIGNAL(lockRequested(bool)), parent, SLOT(actionLockToolBars(bool)));
+	connect(this, SIGNAL(configureRequested(ToolBarWidget*)), parent, SLOT(actionToolbarsConfiguration(ToolBarWidget*)));
+//FIXME	connect(this, SIGNAL(lockRequested(bool)), parent, SLOT(actionLockToolBars(bool)));
 }
 
 void ToolBarWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -59,31 +58,7 @@ void ToolBarWidget::restoreDefaults()
 {
 	m_actions.clear();
 
-	if (objectName() == "mainToolBar")
-	{
-		m_actions.append("actionNew");
-		m_actions.append("actionOpen");
-		m_actions.append(QString());
-		m_actions.append("actionSave");
-		m_actions.append("actionSaveAs");
-		m_actions.append(QString());
-		m_actions.append("actionUndo");
-		m_actions.append("actionRedo");
-	}
-	else if (objectName() == "formatToolBar")
-	{
-		m_actions.append("actionBold");
-		m_actions.append("actionItalic");
-		m_actions.append("actionUnderline");
-		m_actions.append(QString());
-		m_actions.append("actionAlignLeft");
-		m_actions.append("actionAlignCenter");
-		m_actions.append("actionAlignRight");
-		m_actions.append("actionAlignJustify");
-		m_actions.append(QString());
-		m_actions.append("actionOrderedList");
-		m_actions.append("actionUnorderedList");
-	}
+///FIXME port to SettingManager
 
 	QSettings().remove(QString("ToolBars/%1").arg(objectName()));
 

@@ -69,8 +69,8 @@
           <bool>false</bool>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/go-previous.png</normaloff>:/icons/go-previous.png</iconset>
+          <iconset resource="../resources/resources.qrc">
+           <normaloff>:/icons/arrow-left.png</normaloff>:/icons/arrow-left.png</iconset>
          </property>
         </widget>
        </item>
@@ -80,8 +80,8 @@
           <bool>false</bool>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/go-next.png</normaloff>:/icons/go-next.png</iconset>
+          <iconset resource="../resources/resources.qrc">
+           <normaloff>:/icons/arrow-right.png</normaloff>:/icons/arrow-right.png</iconset>
          </property>
         </widget>
        </item>
@@ -107,8 +107,8 @@
           <bool>false</bool>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/go-down.png</normaloff>:/icons/go-down.png</iconset>
+          <iconset resource="../resources/resources.qrc">
+           <normaloff>:/icons/arrow-down.png</normaloff>:/icons/arrow-down.png</iconset>
          </property>
         </widget>
        </item>
@@ -118,8 +118,8 @@
           <bool>false</bool>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/go-up.png</normaloff>:/icons/go-up.png</iconset>
+          <iconset resource="../resources/resources.qrc">
+           <normaloff>:/icons/arrow-up.png</normaloff>:/icons/arrow-up.png</iconset>
          </property>
         </widget>
        </item>

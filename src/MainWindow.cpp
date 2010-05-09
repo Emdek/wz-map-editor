@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "SettingManager.h"
 #include "ActionManager.h"
+#include "ShortcutManager.h"
+#include "ToolBarManager.h"
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
 #include "ui_TerrainDockWidget.h"
@@ -127,6 +129,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionLand, SIGNAL(toggled(bool)), landDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionTriangle, SIGNAL(toggled(bool)), triangleDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(toggled(bool)), objectsDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
+	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
+	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
 	connect(m_mainWindowUi->actionAboutApplication, SIGNAL(triggered()), this, SLOT(actionAboutApplication()));
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
@@ -168,6 +173,24 @@ void MainWindow::actionFullscreen(bool checked)
 	{
 		setWindowState(this->windowState() ^ Qt::WindowFullScreen);
 	}
+}
+
+void MainWindow::actionShortcutsConfiguration()
+{
+	new ShortcutManager(ActionManager::actions(), this);
+}
+
+void MainWindow::actionToolbarsConfiguration(ToolBarWidget *toolbar)
+{
+	QList<ToolBarWidget*> toolbars;
+	toolbars.append(m_mainWindowUi->mainToolBar);
+
+	new ToolBarManager(ActionManager::actions(), toolbars, toolbar, this);
+}
+
+void MainWindow::actionApplicationConfiguration()
+{
+
 }
 
 void MainWindow::actionAboutApplication()

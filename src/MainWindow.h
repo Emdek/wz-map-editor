@@ -17,6 +17,8 @@ namespace Ui
 namespace WZMapEditor
 {
 
+class ToolBarWidget;
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -27,6 +29,9 @@ public:
 
 public slots:
 	void actionFullscreen(bool checked);
+	void actionShortcutsConfiguration();
+	void actionToolbarsConfiguration(ToolBarWidget *toolbar = NULL);
+	void actionApplicationConfiguration();
 	void actionAboutApplication();
 	void updateCoordinates(int x, int y, int z);
 

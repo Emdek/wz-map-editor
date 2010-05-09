@@ -23,5 +23,10 @@
         <file>icons/document-open-recent.png</file>
         <file>icons/edit-clear.png</file>
         <file>icons/qt.png</file>
+        <file>icons/arrow-down.png</file>
+        <file>icons/arrow-left.png</file>
+        <file>icons/arrow-right.png</file>
+        <file>icons/arrow-up.png</file>
+        <file>icons/edit-clear-locationbar-rtl.png</file>
     </qresource>
 </RCC>

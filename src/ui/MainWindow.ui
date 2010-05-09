@@ -66,6 +66,7 @@
     <addaction name="actionFullscreen"/>
     <addaction name="separator"/>
     <addaction name="menuDocks"/>
+    <addaction name="actionToolbars"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -124,7 +125,7 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QToolBar" name="mainToolBar">
+  <widget class="WZMapEditor::ToolBarWidget" name="mainToolBar">
    <property name="windowTitle">
     <string>Main Toolbar</string>
    </property>
@@ -285,6 +286,11 @@
     <string>Application Configuration...</string>
    </property>
   </action>
+  <action name="actionToolbars">
+   <property name="text">
+    <string>Toolbars</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -292,6 +298,11 @@
    <extends>QWidget</extends>
    <header>src/MapEditorWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WZMapEditor::ToolBarWidget</class>
+   <extends>QToolBar</extends>
+   <header>src/ToolBarWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>
