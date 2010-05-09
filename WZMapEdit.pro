@@ -37,5 +37,6 @@ FORMS += src/ui/MainWindow.ui \
     src/ui/TriangleDockWidget.ui \
     src/ui/LandDockWidget.ui \
     src/ui/TilesetDockWidget.ui \
-    src/ui/TerrainDockWidget.ui
+    src/ui/TerrainDockWidget.ui \
+    src/ui/PreferencesDialog.ui
 RESOURCES += src/resources/resources.qrc

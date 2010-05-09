@@ -129,6 +129,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionLand, SIGNAL(toggled(bool)), landDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionTriangle, SIGNAL(toggled(bool)), triangleDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(toggled(bool)), objectsDockWidget, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolBar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
 	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
 	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
@@ -140,6 +141,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(landDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionLand, SLOT(setChecked(bool)));
 	connect(triangleDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTriangle, SLOT(setChecked(bool)));
 	connect(objectsDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionObjects, SLOT(setChecked(bool)));
+	connect(m_mainWindowUi->mainToolBar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
+
+	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());
 
 	restoreGeometry(QSettings().value("geometry").toByteArray());
 	restoreState(QSettings().value("windowState").toByteArray());
@@ -196,6 +200,13 @@ void MainWindow::actionApplicationConfiguration()
 void MainWindow::actionAboutApplication()
 {
 	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>Warzone 2100 Map Editor %1</b><br />Map viewer and editor for Warzone 2100.").arg(QApplication::instance()->applicationVersion())));
+}
+
+void MainWindow::actionLockToolBars(bool lock)
+{
+	QSettings().setValue("toolBarsLocked", lock);
+
+	m_mainWindowUi->mainToolBar->setMovable(!lock);
 }
 
 void MainWindow::updateCoordinates(int x, int y, int z)

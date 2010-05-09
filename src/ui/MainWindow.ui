@@ -63,10 +63,16 @@
      <addaction name="actionTriangle"/>
      <addaction name="actionObjects"/>
     </widget>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+     <addaction name="actionMainToolbar"/>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="separator"/>
     <addaction name="menuDocks"/>
-    <addaction name="actionToolbars"/>
+    <addaction name="menuToolbars"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -190,7 +196,7 @@
   </action>
   <action name="actionShortcutsConfiguration">
    <property name="text">
-    <string>Shortcuts Configuration...</string>
+    <string>Configure Shortcuts...</string>
    </property>
   </action>
   <action name="actionHelp">
@@ -246,6 +252,14 @@
     <string>Objects</string>
    </property>
   </action>
+  <action name="actionMainToolbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Main Toolbar</string>
+   </property>
+  </action>
   <action name="openRecentFileAction_1"/>
   <action name="openRecentFileAction_2"/>
   <action name="openRecentFileAction_3"/>
@@ -278,12 +292,12 @@
   </action>
   <action name="actionToolbarsConfiguration">
    <property name="text">
-    <string>Toolbars Configuration...</string>
+    <string>Configure Toolbars...</string>
    </property>
   </action>
   <action name="actionApplicationConfiguration">
    <property name="text">
-    <string>Application Configuration...</string>
+    <string>Preferences...</string>
    </property>
   </action>
   <action name="actionToolbars">

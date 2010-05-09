@@ -33,6 +33,7 @@ public slots:
 	void actionToolbarsConfiguration(ToolBarWidget *toolbar = NULL);
 	void actionApplicationConfiguration();
 	void actionAboutApplication();
+	void actionLockToolBars(bool lock);
 	void updateCoordinates(int x, int y, int z);
 
 protected:

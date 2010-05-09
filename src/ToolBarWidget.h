@@ -24,6 +24,8 @@ public slots:
 	void setActions(const QStringList &actions);
 
 protected:
+	void showEvent(QShowEvent *event);
+	void hideEvent(QHideEvent *event);
 	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
@@ -33,6 +35,7 @@ private:
 signals:
 	void configureRequested(ToolBarWidget *toolBar);
 	void lockRequested(bool locked);
+	void visibilityChanged(bool visible);
 };
 
 }

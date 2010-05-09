@@ -10,7 +10,21 @@ ToolBarWidget::ToolBarWidget(QMainWindow *parent) : QToolBar(parent),
 	m_dirty(true)
 {
 	connect(this, SIGNAL(configureRequested(ToolBarWidget*)), parent, SLOT(actionToolbarsConfiguration(ToolBarWidget*)));
-//FIXME	connect(this, SIGNAL(lockRequested(bool)), parent, SLOT(actionLockToolBars(bool)));
+	connect(this, SIGNAL(lockRequested(bool)), parent, SLOT(actionLockToolBars(bool)));
+}
+
+void ToolBarWidget::showEvent(QShowEvent *event)
+{
+	emit visibilityChanged(true);
+
+	QToolBar::showEvent(event);
+}
+
+void ToolBarWidget::hideEvent(QHideEvent *event)
+{
+	emit visibilityChanged(false);
+
+	QToolBar::hideEvent(event);
 }
 
 void ToolBarWidget::contextMenuEvent(QContextMenuEvent *event)
