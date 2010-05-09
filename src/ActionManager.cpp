@@ -5,7 +5,19 @@ namespace WZMapEditor
 
 ActionManager::ActionManager(QObject *parent) : QObject(parent)
 {
-///FIXME set default shortcuts here...
+	m_defaultShortcuts["actionNew"] = QKeySequence::New;
+	m_defaultShortcuts["actionOpen"] = QKeySequence::Open;
+	m_defaultShortcuts["actionSave"] = QKeySequence::Save;
+	m_defaultShortcuts["actionSaveAs"] = QKeySequence::SaveAs;
+	m_defaultShortcuts["actionExit"] = QKeySequence::Quit;
+	m_defaultShortcuts["actionUndo"] = QKeySequence::Undo;
+	m_defaultShortcuts["actionRedo"] = QKeySequence::Redo;
+	m_defaultShortcuts["actionHelp"] = QKeySequence::HelpContents;
+	m_defaultShortcuts["actionTileset"] = QKeySequence(Qt::CTRL, Qt::Key_1);
+	m_defaultShortcuts["actionTerrain"] = QKeySequence(Qt::CTRL, Qt::Key_2);
+	m_defaultShortcuts["actionLand"] = QKeySequence(Qt::CTRL, Qt::Key_3);
+	m_defaultShortcuts["actionTriangle"] = QKeySequence(Qt::CTRL, Qt::Key_4);
+	m_defaultShortcuts["actionObjects"] = QKeySequence(Qt::CTRL, Qt::Key_5);
 }
 
 void ActionManager::registerAction(QAction *action, const QString &name)
