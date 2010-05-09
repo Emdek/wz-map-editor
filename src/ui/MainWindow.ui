@@ -42,13 +42,6 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionUndo"/>
-    <addaction name="actionRedo"/>
-   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
@@ -60,7 +53,6 @@
      <addaction name="actionTileset"/>
      <addaction name="actionTerrain"/>
      <addaction name="actionLand"/>
-     <addaction name="actionTriangle"/>
      <addaction name="actionObjects"/>
     </widget>
     <widget class="QMenu" name="menuToolbars">
@@ -124,6 +116,15 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionResizeMap"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
@@ -143,6 +144,12 @@
    </attribute>
   </widget>
   <action name="actionNew">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
@@ -296,6 +303,12 @@
    </property>
   </action>
   <action name="actionApplicationConfiguration">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Preferences...</string>
    </property>
@@ -303,6 +316,14 @@
   <action name="actionToolbars">
    <property name="text">
     <string>Toolbars</string>
+   </property>
+  </action>
+  <action name="actionResizeMap">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Resize Map...</string>
    </property>
   </action>
  </widget>

@@ -12,7 +12,6 @@ namespace Ui
 	class TilesetDockWidget;
 	class TerrainDockWidget;
 	class LandDockWidget;
-	class TriangleDockWidget;
 	class ObjectsDockWidget;
 }
 
@@ -47,7 +46,6 @@ private:
 	Ui::TilesetDockWidget *m_tilesetUi;
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::LandDockWidget *m_landUi;
-	Ui::TriangleDockWidget *m_triangleUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
 	QList<QDockWidget*> m_docks;
 	QLabel *m_coordinatesLabel;

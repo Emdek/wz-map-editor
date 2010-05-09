@@ -8,7 +8,6 @@
 #include "ui_TilesetDockWidget.h"
 #include "ui_TerrainDockWidget.h"
 #include "ui_LandDockWidget.h"
-#include "ui_TriangleDockWidget.h"
 #include "ui_ObjectsDockWidget.h"
 
 #include <QtCore/QSettings>
@@ -24,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
 	m_terrainUi(new Ui::TerrainDockWidget()),
 	m_landUi(new Ui::LandDockWidget()),
-	m_triangleUi(new Ui::TriangleDockWidget()),
 	m_objectsUi(new Ui::ObjectsDockWidget()),
 	m_coordinatesLabel(new QLabel(this))
 {
@@ -38,37 +36,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
 	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
 	QDockWidget *landDockWidget = new QDockWidget(tr("Land"), this);
-	QDockWidget *triangleDockWidget = new QDockWidget(tr("Triangle"), this);
 	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
 
 	tilesetDockWidget->setObjectName("tilesetDockWidget");
 	terrainDockWidget->setObjectName("terrainDockWidget");
 	landDockWidget->setObjectName("landDockWidget");
-	triangleDockWidget->setObjectName("triangleDockWidget");
 	objectsDockWidget->setObjectName("objectsDockWidget");
 
 	tilesetDockWidget->setWidget(new QWidget(tilesetDockWidget));
 	terrainDockWidget->setWidget(new QWidget(terrainDockWidget));
 	landDockWidget->setWidget(new QWidget(landDockWidget));
-	triangleDockWidget->setWidget(new QWidget(triangleDockWidget));
 	objectsDockWidget->setWidget(new QWidget(objectsDockWidget));
 
 	m_tilesetUi->setupUi(tilesetDockWidget->widget());
 	m_terrainUi->setupUi(terrainDockWidget->widget());
 	m_landUi->setupUi(landDockWidget->widget());
-	m_triangleUi->setupUi(triangleDockWidget->widget());
 	m_objectsUi->setupUi(objectsDockWidget->widget());
 
 	addDockWidget(Qt::LeftDockWidgetArea, tilesetDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, terrainDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, landDockWidget);
-	addDockWidget(Qt::LeftDockWidgetArea, triangleDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, objectsDockWidget);
 
 	m_docks.append(tilesetDockWidget);
 	m_docks.append(terrainDockWidget);
 	m_docks.append(landDockWidget);
-	m_docks.append(triangleDockWidget);
 	m_docks.append(objectsDockWidget);
 
 	setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::West);
@@ -76,8 +68,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	tabifyDockWidget(tilesetDockWidget, terrainDockWidget);
 	tabifyDockWidget(terrainDockWidget, landDockWidget);
-	tabifyDockWidget(landDockWidget, triangleDockWidget);
-	tabifyDockWidget(triangleDockWidget, objectsDockWidget);
+	tabifyDockWidget(landDockWidget, objectsDockWidget);
 
 	tilesetDockWidget->raise();
 
@@ -113,7 +104,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionTileset);
 	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
 	ActionManager::registerAction(m_mainWindowUi->actionLand);
-	ActionManager::registerAction(m_mainWindowUi->actionTriangle);
 	ActionManager::registerAction(m_mainWindowUi->actionObjects);
 	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
@@ -127,7 +117,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionLand, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
-	connect(m_mainWindowUi->actionTriangle, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
@@ -152,7 +141,6 @@ MainWindow::~MainWindow()
 	delete m_tilesetUi;
 	delete m_terrainUi;
 	delete m_landUi;
-	delete m_triangleUi;
 	delete m_objectsUi;
 }
 
