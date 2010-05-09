@@ -3,6 +3,7 @@
 #include "ActionManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
+#include "DockWidget.h"
 
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
@@ -36,11 +37,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	setWindowState(Qt::WindowMaximized);
 
-	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
-	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
-	QDockWidget *landDockWidget = new QDockWidget(tr("Land"), this);
-	QDockWidget *triangleDockWidget = new QDockWidget(tr("Triangle"), this);
-	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
+	DockWidget *tilesetDockWidget = new DockWidget(tr("Tileset"), this);
+	DockWidget *terrainDockWidget = new DockWidget(tr("Terrain"), this);
+	DockWidget *landDockWidget = new DockWidget(tr("Land"), this);
+	DockWidget *triangleDockWidget = new DockWidget(tr("Triangle"), this);
+	DockWidget *objectsDockWidget = new DockWidget(tr("Objects"), this);
 
 	tilesetDockWidget->setObjectName("tilesetDockWidget");
 	terrainDockWidget->setObjectName("terrainDockWidget");

@@ -17,7 +17,8 @@ SOURCES += src/main.cpp \
     src/ToolBarWidget.cpp \
     src/SettingManager.cpp \
     src/MapParser.cpp \
-    src/MapInformation.cpp
+    src/MapInformation.cpp \
+    src/DockWidget.cpp
 HEADERS += src/MainWindow.h \
     src/MapEditorWidget.h \
     src/ActionManager.h \
@@ -28,7 +29,8 @@ HEADERS += src/MainWindow.h \
     src/ToolBarWidget.h \
     src/SettingManager.h \
     src/MapParser.h \
-    src/MapInformation.h
+    src/MapInformation.h \
+    src/DockWidget.h
 FORMS += src/ui/MainWindow.ui \
     src/ui/ToolBarEditorDialog.ui \
     src/ui/ShortcutEditorDialog.ui \
