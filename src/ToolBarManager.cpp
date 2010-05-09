@@ -1,9 +1,9 @@
 #include "ToolBarManager.h"
 #include "ToolBarWidget.h"
+#include "ActionManager.h"
+#include "SettingManager.h"
 
 #include "ui_ToolBarEditorDialog.h"
-
-#include <QtCore/QSettings>
 
 #include <QtGui/QDialog>
 #include <QtGui/QMessageBox>
@@ -13,10 +13,9 @@
 namespace WZMapEditor
 {
 
-ToolBarManager::ToolBarManager(QList<QAction*> actions, QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar, QObject *parent) : QObject(parent),
+ToolBarManager::ToolBarManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar, QObject *parent) : QObject(parent),
 	m_managerUi(new Ui::ToolBarEditorDialog()),
 	m_toolBars(toolBars),
-	m_availableActions(actions),
 	m_currentToolBar(-1),
 	m_isCurrentModified(false)
 {
@@ -82,17 +81,16 @@ void ToolBarManager::loadToolBar(int index)
 
 	m_managerUi->currentActionsListWidget->clear();
 	m_managerUi->availableActionsListWidget->clear();
-
 	m_managerUi->availableActionsListWidget->addItem(tr("--- separator ---"));
 
 	QList<QAction*> toolBarActions = m_toolBars.at(index)->actions();
 
-	for (int i = 0; i < m_availableActions.count(); ++i)
+	for (int i = 0; i < ActionManager::actions().count(); ++i)
 	{
-		if (!toolBarActions.contains(m_availableActions.at(i)))
+		if (!toolBarActions.contains(ActionManager::actions().at(i)))
 		{
-			QListWidgetItem *item = new QListWidgetItem(m_availableActions.at(i)->icon(), m_availableActions.at(i)->text(), m_managerUi->availableActionsListWidget);
-			item->setData(Qt::UserRole, m_availableActions.at(i)->objectName());
+			QListWidgetItem *item = new QListWidgetItem(ActionManager::actions().at(i)->icon(), ActionManager::actions().at(i)->text(), m_managerUi->availableActionsListWidget);
+			item->setData(Qt::UserRole, ActionManager::actions().at(i)->objectName());
 
 			m_managerUi->availableActionsListWidget->addItem(item);
 		}
@@ -241,21 +239,23 @@ void ToolBarManager::saveToolBar()
 
 	for (int i = 0; i < m_managerUi->currentActionsListWidget->count(); ++i)
 	{
-		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
+		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString().mid(6));
 	}
 
+	SettingManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
+
 	m_toolBars.at(m_currentToolBar)->setVisible(m_managerUi->showCheckBox->isChecked());
-	m_toolBars.at(m_currentToolBar)->setActions(actions);
-	m_toolBars.at(m_currentToolBar)->load(m_availableActions);
+	m_toolBars.at(m_currentToolBar)->reload();
 
 	setModified(false);
 }
 
 void ToolBarManager::restoreToolBar()
 {
+	SettingManager::restore("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName());
+
 	m_toolBars.at(m_currentToolBar)->setVisible(true);
-	m_toolBars.at(m_currentToolBar)->restoreDefaults();
-	m_toolBars.at(m_currentToolBar)->load(m_availableActions);
+	m_toolBars.at(m_currentToolBar)->reload();
 
 	setModified(false);
 

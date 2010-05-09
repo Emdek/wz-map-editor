@@ -13,25 +13,24 @@
 namespace WZMapEditor
 {
 
-ShortcutManager::ShortcutManager(QList<QAction*> actions, MainWindow *parent) : QObject(parent),
+ShortcutManager::ShortcutManager(MainWindow *parent) : QObject(parent),
 	m_managerUi(new Ui::ShortcutEditorDialog()),
-	m_mainWindow(parent),
-	m_actions(actions)
+	m_mainWindow(parent)
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	m_managerUi->setupUi(&managerDialog);
 
 	m_managerUi->shortcutsView->setColumnCount(2);
-	m_managerUi->shortcutsView->setRowCount(actions.count());
+	m_managerUi->shortcutsView->setRowCount(ActionManager::actions().count());
 	m_managerUi->shortcutsView->setItemDelegate(new ShortcutEditorDelegate(this));
 
-	for (int i = 0; i < actions.count(); ++i)
+	for (int i = 0; i < ActionManager::actions().count(); ++i)
 	{
-		QTableWidgetItem *descriptionItem = new QTableWidgetItem(actions.at(i)->icon(), actions.at(i)->text());
-		descriptionItem->setToolTip(actions.at(i)->text());
+		QTableWidgetItem *descriptionItem = new QTableWidgetItem(ActionManager::actions().at(i)->icon(), ActionManager::actions().at(i)->text());
+		descriptionItem->setToolTip(ActionManager::actions().at(i)->text());
 		descriptionItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
-		QTableWidgetItem *editingItem = new QTableWidgetItem(actions.at(i)->shortcut().toString(QKeySequence::NativeText));
+		QTableWidgetItem *editingItem = new QTableWidgetItem(ActionManager::actions().at(i)->shortcut().toString(QKeySequence::NativeText));
 		editingItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
 		m_managerUi->shortcutsView->setItem(i, 0, descriptionItem);
@@ -56,7 +55,7 @@ ShortcutManager::~ShortcutManager()
 
 void ShortcutManager::filter(const QString &filter)
 {
-	for (int i = 0; i < m_actions.count(); ++i)
+	for (int i = 0; i < ActionManager::actions().count(); ++i)
 	{
 		if (filter.isEmpty() || m_managerUi->shortcutsView->item(i, 0)->text().contains(filter, Qt::CaseInsensitive) || m_managerUi->shortcutsView->item(i, 1)->text().contains(filter, Qt::CaseInsensitive))
 		{
@@ -71,9 +70,9 @@ void ShortcutManager::filter(const QString &filter)
 
 void ShortcutManager::save()
 {
-	for (int i = 0; i < m_actions.count(); ++i)
+	for (int i = 0; i < ActionManager::actions().count(); ++i)
 	{
-		ActionManager::setShortcut(m_actions.at(i), QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
+		ActionManager::setShortcut(ActionManager::actions().at(i), QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
 	}
 }
 
@@ -81,11 +80,11 @@ void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 {
 	if (m_managerUi->buttonBox->standardButton(button) == QDialogButtonBox::RestoreDefaults)
 	{
-		for (int i = 0; i < m_actions.count(); ++i)
+		for (int i = 0; i < ActionManager::actions().count(); ++i)
 		{
-			ActionManager::restoreDefaultShortcut(m_actions.at(i));
+			ActionManager::restoreDefaultShortcut(ActionManager::actions().at(i));
 
-			m_managerUi->shortcutsView->item(i, 1)->setText(m_actions.at(i)->shortcut().toString(QKeySequence::NativeText));
+			m_managerUi->shortcutsView->item(i, 1)->setText(ActionManager::actions().at(i)->shortcut().toString(QKeySequence::NativeText));
 		}
 	}
 	else
@@ -96,11 +95,11 @@ void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 
 QString ShortcutManager::restoreDefaultShortcut(int index)
 {
-	if (index >= 0 && index < m_actions.count())
+	if (index >= 0 && index < ActionManager::actions().count())
 	{
-		ActionManager::restoreDefaultShortcut(m_actions.at(index));
+		ActionManager::restoreDefaultShortcut(ActionManager::actions().at(index));
 
-		return m_actions.at(index)->shortcut().toString(QKeySequence::NativeText);
+		return ActionManager::actions().at(index)->shortcut().toString(QKeySequence::NativeText);
 	}
 
 	return QString();

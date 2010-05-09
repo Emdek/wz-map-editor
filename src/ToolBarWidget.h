@@ -15,26 +15,15 @@ class ToolBarWidget : public QToolBar
 public:
 	ToolBarWidget(QMainWindow *parent = NULL);
 
-	void setObjectName(const QString &name);
-
 public slots:
-	void configure();
-	void restoreDefaults();
-	void load(QList<QAction*> actions);
-	void setActions(const QStringList &actions);
+	void reload();
 
 protected:
 	void showEvent(QShowEvent *event);
 	void hideEvent(QHideEvent *event);
 	void contextMenuEvent(QContextMenuEvent *event);
 
-private:
-	QStringList m_actions;
-	bool m_dirty;
-
 signals:
-	void configureRequested(ToolBarWidget *toolBar);
-	void lockRequested(bool locked);
 	void visibilityChanged(bool visible);
 };
 

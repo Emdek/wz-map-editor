@@ -22,7 +22,7 @@ class ToolBarManager : public QObject
 	Q_OBJECT
 
 public:
-	ToolBarManager(QList<QAction*> actions, QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar = NULL, QObject *parent = NULL);
+	ToolBarManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar = NULL, QObject *parent = NULL);
 	~ToolBarManager();
 
 public slots:
@@ -41,7 +41,6 @@ public slots:
 private:
 	Ui::ToolBarEditorDialog *m_managerUi;
 	QList<ToolBarWidget*> m_toolBars;
-	QList<QAction*> m_availableActions;
 	int m_currentToolBar;
 	bool m_isCurrentModified;
 

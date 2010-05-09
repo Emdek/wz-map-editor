@@ -10,6 +10,11 @@ SettingManager* SettingManager::m_instance = NULL;
 
 SettingManager::SettingManager(QObject *parent) : QObject(parent)
 {
+	QStringList mainToolbar;
+	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen";
+
+	m_defaultSettings["toolbars/mainToolbar"] = QVariant(mainToolbar);
+
 	m_defaultSettings["actions/New"] = QVariant(QKeySequence(QKeySequence::New).toString());
 	m_defaultSettings["actions/Open"] = QVariant(QKeySequence(QKeySequence::Open).toString());
 	m_defaultSettings["actions/Save"] = QVariant(QKeySequence(QKeySequence::Save).toString());

@@ -21,7 +21,7 @@ class ShortcutManager : public QObject
 	Q_OBJECT
 
 public:
-	ShortcutManager(QList<QAction*> actions, MainWindow *parent = NULL);
+	ShortcutManager(MainWindow *parent = NULL);
 	~ShortcutManager();
 
 	QString restoreDefaultShortcut(int index);
@@ -35,7 +35,6 @@ public slots:
 private:
 	Ui::ShortcutEditorDialog *m_managerUi;
 	MainWindow *m_mainWindow;
-	QList<QAction*> m_actions;
 };
 
 }

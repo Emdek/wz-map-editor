@@ -1,16 +1,14 @@
 #include "ToolBarWidget.h"
+#include "ActionManager.h"
+#include "SettingManager.h"
 
-#include <QtCore/QSettings>
 #include <QtGui/QMenu>
 
 namespace WZMapEditor
 {
 
-ToolBarWidget::ToolBarWidget(QMainWindow *parent) : QToolBar(parent),
-	m_dirty(true)
+ToolBarWidget::ToolBarWidget(QMainWindow *parent) : QToolBar(parent)
 {
-	connect(this, SIGNAL(configureRequested(ToolBarWidget*)), parent, SLOT(actionToolbarsConfiguration(ToolBarWidget*)));
-	connect(this, SIGNAL(lockRequested(bool)), parent, SLOT(actionLockToolBars(bool)));
 }
 
 void ToolBarWidget::showEvent(QShowEvent *event)
@@ -41,88 +39,29 @@ void ToolBarWidget::contextMenuEvent(QContextMenuEvent *event)
 	QAction *actionConfigure = menu.addAction(QIcon(":/icons/configure-toolbars.png"), tr("Configure Toolbars..."));
 
 	connect(actionShow, SIGNAL(toggled(bool)), this, SLOT(setVisible(bool)));
-	connect(actionLock, SIGNAL(toggled(bool)), this, SIGNAL(lockRequested(bool)));
-	connect(actionConfigure, SIGNAL(triggered()), this, SLOT(configure()));
+	connect(actionLock, SIGNAL(toggled(bool)), parent(), SLOT(actionLockToolBars(bool)));
+	connect(actionConfigure, SIGNAL(triggered()), parent(), SLOT(actionToolbarsConfiguration()));
 
 	menu.exec(event->globalPos());
 }
 
-void ToolBarWidget::setObjectName(const QString &name)
+void ToolBarWidget::reload()
 {
-	QObject::setObjectName(name);
+	clear();
 
-	if (QSettings().contains(QString("ToolBars/%1").arg(name)))
+	QStringList actions = SettingManager::value("toolbars/" + objectName()).toStringList();
+
+	for (int i = 0; i < actions.count(); ++i)
 	{
-		m_actions = QSettings().value(QString("ToolBars/%1").arg(name), QStringList()).toStringList();
-	}
-	else
-	{
-		restoreDefaults();
-	}
-
-	m_dirty = true;
-}
-
-void ToolBarWidget::configure()
-{
-	emit configureRequested(this);
-}
-
-void ToolBarWidget::restoreDefaults()
-{
-	m_actions.clear();
-
-///FIXME port to SettingManager
-
-	QSettings().remove(QString("ToolBars/%1").arg(objectName()));
-
-	m_dirty = true;
-}
-
-void ToolBarWidget::load(QList<QAction*> actions)
-{
-	if (!m_dirty)
-	{
-		return;
-	}
-
-	QList<QAction*> currentActions = this->actions();
-
-	for (int i = 0; i < currentActions.count(); ++i)
-	{
-		removeAction(currentActions.at(i));
-	}
-
-	for (int i = 0; i < m_actions.count(); ++i)
-	{
-		if (m_actions.at(i).isEmpty())
+		if (actions.at(i).isEmpty())
 		{
 			addSeparator();
 		}
 		else
 		{
-			for (int j = 0; j < actions.count(); ++j)
-			{
-				if (m_actions.at(i) == actions.at(j)->objectName())
-				{
-					addAction(actions.at(j));
-
-					break;
-				}
-			}
+			addAction(ActionManager::getAction(actions.at(i)));
 		}
 	}
-
-	m_dirty = false;
-}
-
-void ToolBarWidget::setActions(const QStringList &actions)
-{
-	m_actions = actions;
-
-	QSettings().setValue(QString("ToolBars/%1").arg(objectName()), m_actions);
-
-	m_dirty = true;
 }
 
 }

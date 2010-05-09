@@ -131,7 +131,7 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="WZMapEditor::ToolBarWidget" name="mainToolBar">
+  <widget class="WZMapEditor::ToolBarWidget" name="mainToolbar">
    <property name="windowTitle">
     <string>Main Toolbar</string>
    </property>

@@ -30,7 +30,7 @@ public:
 public slots:
 	void actionFullscreen(bool checked);
 	void actionShortcutsConfiguration();
-	void actionToolbarsConfiguration(ToolBarWidget *toolbar = NULL);
+	void actionToolbarsConfiguration();
 	void actionApplicationConfiguration();
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);

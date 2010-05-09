@@ -97,12 +97,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	tilesetDockWidget->raise();
 
-	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionNew);
-	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionOpen);
-	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionSave);
-	m_mainWindowUi->mainToolBar->addSeparator();
-	m_mainWindowUi->mainToolBar->addAction(m_mainWindowUi->actionFullscreen);
-
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 
 	m_mainWindowUi->actionNew->setIcon(QIcon::fromTheme("document-new", QIcon(":/icons/document-new.png")));
@@ -130,7 +124,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionLand, SIGNAL(toggled(bool)), landDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionTriangle, SIGNAL(toggled(bool)), triangleDockWidget, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(toggled(bool)), objectsDockWidget, SLOT(setVisible(bool)));
-	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolBar, SLOT(setVisible(bool)));
+	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
 	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
 	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
@@ -142,7 +136,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(landDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionLand, SLOT(setChecked(bool)));
 	connect(triangleDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionTriangle, SLOT(setChecked(bool)));
 	connect(objectsDockWidget, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionObjects, SLOT(setChecked(bool)));
-	connect(m_mainWindowUi->mainToolBar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
+	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
+
+	m_mainWindowUi->mainToolbar->reload();
 
 	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());
 
@@ -182,15 +178,21 @@ void MainWindow::actionFullscreen(bool checked)
 
 void MainWindow::actionShortcutsConfiguration()
 {
-	new ShortcutManager(ActionManager::actions(), this);
+	new ShortcutManager(this);
 }
 
-void MainWindow::actionToolbarsConfiguration(ToolBarWidget *toolbar)
+void MainWindow::actionToolbarsConfiguration()
 {
+	ToolBarWidget *toolbar = NULL;
 	QList<ToolBarWidget*> toolbars;
-	toolbars.append(m_mainWindowUi->mainToolBar);
+	toolbars.append(m_mainWindowUi->mainToolbar);
 
-	new ToolBarManager(ActionManager::actions(), toolbars, toolbar, this);
+	if (sender()->inherits("ToolBarWidget"))
+	{
+		toolbar = qobject_cast<ToolBarWidget*>(sender());
+	}
+
+	new ToolBarManager(toolbars, toolbar, this);
 }
 
 void MainWindow::actionApplicationConfiguration()
@@ -207,7 +209,7 @@ void MainWindow::actionLockToolBars(bool lock)
 {
 	QSettings().setValue("toolBarsLocked", lock);
 
-	m_mainWindowUi->mainToolBar->setMovable(!lock);
+	m_mainWindowUi->mainToolbar->setMovable(!lock);
 }
 
 void MainWindow::updateCoordinates(int x, int y, int z)
