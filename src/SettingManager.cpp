@@ -18,11 +18,12 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	m_defaultSettings["actions/Undo"] = QVariant(QKeySequence(QKeySequence::Undo).toString());
 	m_defaultSettings["actions/Redo"] = QVariant(QKeySequence(QKeySequence::Redo).toString());
 	m_defaultSettings["actions/Help"] = QVariant(QKeySequence(QKeySequence::HelpContents).toString());
-	m_defaultSettings["actions/Tileset"] = QVariant(QKeySequence(Qt::CTRL, Qt::Key_1).toString());
-	m_defaultSettings["actions/Terrain"] = QVariant(QKeySequence(Qt::CTRL, Qt::Key_2).toString());
-	m_defaultSettings["actions/Land"] = QVariant(QKeySequence(Qt::CTRL, Qt::Key_3).toString());
-	m_defaultSettings["actions/Triangle"] = QVariant(QKeySequence(Qt::CTRL, Qt::Key_4).toString());
-	m_defaultSettings["actions/Objects"] = QVariant(QKeySequence(Qt::CTRL, Qt::Key_5).toString());
+	m_defaultSettings["actions/Tileset"] = QVariant(QKeySequence("Ctrl+1").toString());
+	m_defaultSettings["actions/Terrain"] = QVariant(QKeySequence("Ctrl+2").toString());
+	m_defaultSettings["actions/Land"] = QVariant(QKeySequence("Ctrl+3").toString());
+	m_defaultSettings["actions/Triangle"] = QVariant(QKeySequence("Ctrl+4").toString());
+	m_defaultSettings["actions/Objects"] = QVariant(QKeySequence("Ctrl+5").toString());
+	m_defaultSettings["actions/ConfigureApplication"] = QVariant(QKeySequence(QKeySequence::Preferences).toString());
 
 ///FIXME insert settings here...
 }
@@ -35,6 +36,11 @@ void SettingManager::createInstance(QObject *parent)
 void SettingManager::restore(const QString &key)
 {
 	QSettings().setValue(key, m_instance->defaultValue(key));
+}
+
+void SettingManager::setValue(const QString &key, const QVariant &value)
+{
+	QSettings().setValue(key, value);
 }
 
 QVariant SettingManager::keyValue(const QString &key)

@@ -5,11 +5,18 @@
 namespace WZMapEditor
 {
 
+ActionManager* ActionManager::m_instance = NULL;
+
 ActionManager::ActionManager(QObject *parent) : QObject(parent)
 {
 }
 
-void ActionManager::registerAction(QAction *action, QString name)
+void ActionManager::createInstance(QObject *parent)
+{
+	m_instance = new ActionManager(parent);
+}
+
+void ActionManager::addAction(QAction *action, QString name)
 {
 	if (!action)
 	{
@@ -41,17 +48,22 @@ void ActionManager::registerAction(QAction *action, QString name)
 	m_actions[name] = action;
 }
 
+void ActionManager::registerAction(QAction *action, QString name)
+{
+	m_instance->addAction(action, name);
+}
+
 void ActionManager::registerActions(QList<QAction*> actions)
 {
 	for (int i = 0; i < actions.count(); ++i)
 	{
-		registerAction(actions.at(i));
+		m_instance->addAction(actions.at(i));
 	}
 }
 
 void ActionManager::restoreDefaultShortcut(QAction *action)
 {
-	QString key = m_actions.key(action);
+	QString key = m_instance->getActions().key(action);
 
 	if (!key.isEmpty())
 	{
@@ -61,15 +73,15 @@ void ActionManager::restoreDefaultShortcut(QAction *action)
 
 void ActionManager::restoreDefaultShortcut(const QString &action)
 {
-	if (m_actions.contains(action))
+	if (m_instance->getActions().contains(action))
 	{
-		m_actions[action]->setShortcut(getDefaultShortcut(action));
+		m_instance->getActions().value(action)->setShortcut(getDefaultShortcut(action));
 	}
 }
 
 QKeySequence ActionManager::getDefaultShortcut(QAction *action)
 {
-	QString key = m_actions.key(action);
+	QString key = m_instance->getActions().key(action);
 
 	if (key.isEmpty())
 	{
@@ -88,13 +100,17 @@ QKeySequence ActionManager::getDefaultShortcut(const QString &action)
 
 QAction* ActionManager::getAction(const QString &action)
 {
-	return m_actions.value(action, NULL);
+	return m_instance->getActions().value(action, NULL);
 }
 
+QHash<QString, QAction*> ActionManager::getActions()
+{
+	return m_actions;
+}
 
 QList<QAction*> ActionManager::actions()
 {
-	return m_actions.values();
+	return m_instance->getActions().values();
 }
 
 }

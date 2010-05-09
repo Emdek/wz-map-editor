@@ -1,5 +1,6 @@
 #include "MainWindow.h"
-#include "MapEditorWidget.h"
+#include "SettingManager.h"
+#include "ActionManager.h"
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
 #include "ui_TerrainDockWidget.h"
@@ -25,7 +26,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_objectsUi(new Ui::ObjectsDockWidget()),
 	m_coordinatesLabel(new QLabel(this))
 {
+	SettingManager::createInstance(this);
+	ActionManager::createInstance(this);
+
 	m_mainWindowUi->setupUi(this);
+
+	ActionManager::registerAction(m_mainWindowUi->actionNew);
+	ActionManager::registerAction(m_mainWindowUi->actionOpen);
+	ActionManager::registerAction(m_mainWindowUi->actionOpenRecent);
+	ActionManager::registerAction(m_mainWindowUi->actionSave);
+	ActionManager::registerAction(m_mainWindowUi->actionSaveAs);
+	ActionManager::registerAction(m_mainWindowUi->actionExit);
+	ActionManager::registerAction(m_mainWindowUi->actionUndo);
+	ActionManager::registerAction(m_mainWindowUi->actionRedo);
+	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
+	ActionManager::registerAction(m_mainWindowUi->actionTileset);
+	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
+	ActionManager::registerAction(m_mainWindowUi->actionLand);
+	ActionManager::registerAction(m_mainWindowUi->actionTriangle);
+	ActionManager::registerAction(m_mainWindowUi->actionObjects);
+	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
+	ActionManager::registerAction(m_mainWindowUi->actionHelp);
+	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
+	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
 	setWindowState(Qt::WindowMaximized);
 
