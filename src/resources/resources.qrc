@@ -7,5 +7,17 @@
         <file>icons/zoom-in.png</file>
         <file>icons/zoom-original.png</file>
         <file>icons/zoom-out.png</file>
+        <file>icons/application-exit.png</file>
+        <file>icons/configure-shortcuts.png</file>
+        <file>icons/configure-toolbars.png</file>
+        <file>icons/configure.png</file>
+        <file>icons/document-open.png</file>
+        <file>icons/document-properties.png</file>
+        <file>icons/document-save-as.png</file>
+        <file>icons/document-save.png</file>
+        <file>icons/edit-redo.png</file>
+        <file>icons/edit-undo.png</file>
+        <file>icons/view-fullscreen.png</file>
+        <file>icons/view-restore.png</file>
     </qresource>
 </RCC>
