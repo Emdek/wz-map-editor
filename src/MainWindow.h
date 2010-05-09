@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include <QtGui/QDockWidget>
 #include <QtGui/QLabel>
+
 
 namespace Ui
 {
@@ -34,6 +36,7 @@ public slots:
 	void actionApplicationConfiguration();
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);
+	void actionToggleDock();
 	void updateCoordinates(int x, int y, int z);
 
 protected:
@@ -46,7 +49,7 @@ private:
 	Ui::LandDockWidget *m_landUi;
 	Ui::TriangleDockWidget *m_triangleUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
-
+	QList<QDockWidget*> m_docks;
 	QLabel *m_coordinatesLabel;
 };
 

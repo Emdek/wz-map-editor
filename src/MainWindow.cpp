@@ -3,7 +3,6 @@
 #include "ActionManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
-#include "DockWidget.h"
 
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
@@ -14,7 +13,6 @@
 
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
-#include <QtGui/QDockWidget>
 #include <QtGui/QMessageBox>
 
 
@@ -37,11 +35,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	setWindowState(Qt::WindowMaximized);
 
-	DockWidget *tilesetDockWidget = new DockWidget(tr("Tileset"), this);
-	DockWidget *terrainDockWidget = new DockWidget(tr("Terrain"), this);
-	DockWidget *landDockWidget = new DockWidget(tr("Land"), this);
-	DockWidget *triangleDockWidget = new DockWidget(tr("Triangle"), this);
-	DockWidget *objectsDockWidget = new DockWidget(tr("Objects"), this);
+	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
+	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
+	QDockWidget *landDockWidget = new QDockWidget(tr("Land"), this);
+	QDockWidget *triangleDockWidget = new QDockWidget(tr("Triangle"), this);
+	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
 
 	tilesetDockWidget->setObjectName("tilesetDockWidget");
 	terrainDockWidget->setObjectName("terrainDockWidget");
@@ -61,23 +59,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_triangleUi->setupUi(triangleDockWidget->widget());
 	m_objectsUi->setupUi(objectsDockWidget->widget());
 
-	m_mainWindowUi->menuDocks->addAction(tilesetDockWidget->toggleViewAction());
-	m_mainWindowUi->menuDocks->addAction(terrainDockWidget->toggleViewAction());
-	m_mainWindowUi->menuDocks->addAction(landDockWidget->toggleViewAction());
-	m_mainWindowUi->menuDocks->addAction(triangleDockWidget->toggleViewAction());
-	m_mainWindowUi->menuDocks->addAction(objectsDockWidget->toggleViewAction());
-
-	tilesetDockWidget->toggleViewAction()->setObjectName("actionTileset");
-	terrainDockWidget->toggleViewAction()->setObjectName("actionTerrain");
-	landDockWidget->toggleViewAction()->setObjectName("actionLand");
-	triangleDockWidget->toggleViewAction()->setObjectName("actionTriangle");
-	objectsDockWidget->toggleViewAction()->setObjectName("actionObjects");
-
 	addDockWidget(Qt::LeftDockWidgetArea, tilesetDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, terrainDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, landDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, triangleDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, objectsDockWidget);
+
+	m_docks.append(tilesetDockWidget);
+	m_docks.append(terrainDockWidget);
+	m_docks.append(landDockWidget);
+	m_docks.append(triangleDockWidget);
+	m_docks.append(objectsDockWidget);
 
 	setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::West);
 	setTabPosition(Qt::RightDockWidgetArea, QTabWidget::East);
@@ -118,11 +110,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionUndo);
 	ActionManager::registerAction(m_mainWindowUi->actionRedo);
 	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
-	ActionManager::registerAction(tilesetDockWidget->toggleViewAction());
-	ActionManager::registerAction(terrainDockWidget->toggleViewAction());
-	ActionManager::registerAction(landDockWidget->toggleViewAction());
-	ActionManager::registerAction(triangleDockWidget->toggleViewAction());
-	ActionManager::registerAction(objectsDockWidget->toggleViewAction());
+	ActionManager::registerAction(m_mainWindowUi->actionTileset);
+	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
+	ActionManager::registerAction(m_mainWindowUi->actionLand);
+	ActionManager::registerAction(m_mainWindowUi->actionTriangle);
+	ActionManager::registerAction(m_mainWindowUi->actionObjects);
 	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
@@ -132,6 +124,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
+	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
+	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
+	connect(m_mainWindowUi->actionLand, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
+	connect(m_mainWindowUi->actionTriangle, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
+	connect(m_mainWindowUi->actionObjects, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
 	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
@@ -213,6 +210,44 @@ void MainWindow::actionLockToolBars(bool lock)
 	QSettings().setValue("toolBarsLocked", lock);
 
 	m_mainWindowUi->mainToolbar->setMovable(!lock);
+}
+
+void MainWindow::actionToggleDock()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+
+	if (!action)
+	{
+		return;
+	}
+
+	QString name = action->objectName().mid(6);
+
+	for (int i = 0; i < m_docks.count(); ++i)
+	{
+		if (m_docks.at(i)->objectName().startsWith(name, Qt::CaseInsensitive))
+		{
+			if (m_docks.at(i)->isVisible())
+			{
+				if (childAt(m_docks.at(i)->pos()) == m_docks.at(i))
+				{
+					m_docks.at(i)->close();
+				}
+				else
+				{
+					m_docks.at(i)->raise();
+				}
+			}
+			else
+			{
+				m_docks.at(i)->show();
+				m_docks.at(i)->raise();
+			}
+
+			break;
+		}
+
+	}
 }
 
 void MainWindow::updateCoordinates(int x, int y, int z)

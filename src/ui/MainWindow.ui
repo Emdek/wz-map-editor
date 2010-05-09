@@ -49,6 +49,31 @@
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuDocks">
+     <property name="title">
+      <string>Docks</string>
+     </property>
+     <addaction name="actionTileset"/>
+     <addaction name="actionTerrain"/>
+     <addaction name="actionLand"/>
+     <addaction name="actionTriangle"/>
+     <addaction name="actionObjects"/>
+    </widget>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+     <addaction name="actionMainToolbar"/>
+    </widget>
+    <addaction name="actionFullscreen"/>
+    <addaction name="separator"/>
+    <addaction name="menuDocks"/>
+    <addaction name="menuToolbars"/>
+   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -98,26 +123,6 @@
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-    <widget class="QMenu" name="menuToolbars">
-     <property name="title">
-      <string>Toolbars</string>
-     </property>
-     <addaction name="actionMainToolbar"/>
-    </widget>
-    <widget class="QMenu" name="menuDocks">
-     <property name="title">
-      <string>Docks</string>
-     </property>
-    </widget>
-    <addaction name="actionFullscreen"/>
-    <addaction name="separator"/>
-    <addaction name="menuDocks"/>
-    <addaction name="menuToolbars"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -209,7 +214,7 @@
   </action>
   <action name="actionTileset">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Tileset</string>
@@ -217,7 +222,7 @@
   </action>
   <action name="actionTerrain">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Terrain</string>
@@ -225,7 +230,7 @@
   </action>
   <action name="actionLand">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Land</string>
@@ -233,7 +238,7 @@
   </action>
   <action name="actionTriangle">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Triangle</string>
@@ -241,7 +246,7 @@
   </action>
   <action name="actionObjects">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Objects</string>
