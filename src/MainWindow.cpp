@@ -3,6 +3,7 @@
 #include "ActionManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
+#include "PreferencesManager.h"
 
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
@@ -185,7 +186,7 @@ void MainWindow::actionToolbarsConfiguration()
 
 void MainWindow::actionApplicationConfiguration()
 {
-
+	new PreferencesManager(this);
 }
 
 void MainWindow::actionAboutApplication()

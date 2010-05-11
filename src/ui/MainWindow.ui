@@ -75,14 +75,6 @@
     <addaction name="actionAboutApplication"/>
     <addaction name="actionAboutQt"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="actionShortcutsConfiguration"/>
-    <addaction name="actionToolbarsConfiguration"/>
-    <addaction name="actionApplicationConfiguration"/>
-   </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
@@ -124,6 +116,14 @@
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="actionResizeMap"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionShortcutsConfiguration"/>
+    <addaction name="actionToolbarsConfiguration"/>
+    <addaction name="actionApplicationConfiguration"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -307,7 +307,7 @@
     <bool>false</bool>
    </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Preferences...</string>

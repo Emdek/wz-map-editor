@@ -5,7 +5,6 @@
 
 #include "ui_ShortcutEditorDialog.h"
 
-#include <QtGui/QDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QApplication>
 #include <QtGui/QTableWidgetItem>

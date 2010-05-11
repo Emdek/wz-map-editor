@@ -3,8 +3,9 @@
 
 #include <QtCore/QObject>
 
-#include <QtGui/QAction>
-#include <QtGui/QAbstractButton>
+
+class QAbstractButton;
+class QKeySequence;
 
 namespace Ui
 {

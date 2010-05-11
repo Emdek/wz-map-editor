@@ -28,5 +28,8 @@
         <file>icons/arrow-right.png</file>
         <file>icons/arrow-up.png</file>
         <file>icons/edit-clear-locationbar-rtl.png</file>
+        <file>tilesets/arizona.xml</file>
+        <file>tilesets/rockies.xml</file>
+        <file>tilesets/urban.xml</file>
     </qresource>
 </RCC>

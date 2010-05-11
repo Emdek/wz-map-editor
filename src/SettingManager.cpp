@@ -13,6 +13,8 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	QStringList mainToolbar;
 	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen";
 
+	m_defaultSettings["texturesPath"] = QVariant(QString());
+
 	m_defaultSettings["toolbars/mainToolbar"] = QVariant(mainToolbar);
 
 	m_defaultSettings["actions/New"] = QVariant(QKeySequence(QKeySequence::New).toString());

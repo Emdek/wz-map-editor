@@ -20,7 +20,7 @@
       <widget class="QComboBox" name="tilesetComboBox"/>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="tilesetTypeComboBox"/>
+      <widget class="QComboBox" name="tileTypeComboBox"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="tilesetLabel">
@@ -33,19 +33,35 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="tilesetTypeLabel">
+      <widget class="QLabel" name="tileTypeLabel">
        <property name="text">
-        <string>Tileset Type:</string>
+        <string>Tile Type:</string>
        </property>
        <property name="buddy">
-        <cstring>tilesetTypeComboBox</cstring>
+        <cstring>tileTypeComboBox</cstring>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QListView" name="listView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="viewMode">
+      <enum>QListView::IconMode</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

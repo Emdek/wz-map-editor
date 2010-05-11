@@ -5,7 +5,6 @@
 
 #include "ui_ToolBarEditorDialog.h"
 
-#include <QtGui/QDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QApplication>

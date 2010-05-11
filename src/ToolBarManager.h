@@ -1,11 +1,10 @@
 #ifndef TOOLBARMANAGER_H
 #define TOOLBARMANAGER_H
 
-#include <QtCore/QHash>
 #include <QtCore/QObject>
 
-#include <QtGui/QToolBar>
-#include <QtGui/QAbstractButton>
+
+class QAbstractButton;
 
 namespace Ui
 {
@@ -46,7 +45,6 @@ private:
 
 signals:
 	void toolBarChanged();
-
 };
 
 }
