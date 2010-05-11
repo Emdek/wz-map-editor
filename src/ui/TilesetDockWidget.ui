@@ -6,21 +6,37 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>398</width>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QComboBox" name="tilesetComboBox"/>
+      <widget class="QComboBox" name="tilesetComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="tileTypeComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <item>
         <property name="text">
          <string>All</string>
@@ -30,6 +46,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="tilesetLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Tileset:</string>
        </property>
@@ -40,6 +62,12 @@
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="tileTypeLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Tile Type:</string>
        </property>
@@ -59,6 +87,12 @@
    </item>
    <item>
     <widget class="QListWidget" name="listWidget">
+     <property name="lineWidth">
+      <number>6</number>
+     </property>
+     <property name="midLineWidth">
+      <number>5</number>
+     </property>
      <property name="autoScrollMargin">
       <number>16</number>
      </property>

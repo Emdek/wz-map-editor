@@ -30,6 +30,8 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	m_defaultSettings["actions/Land"] = QVariant(QKeySequence("Ctrl+3").toString());
 	m_defaultSettings["actions/Objects"] = QVariant(QKeySequence("Ctrl+4").toString());
 	m_defaultSettings["actions/ApplicationConfiguration"] = QVariant(QKeySequence(QKeySequence::Preferences).toString());
+	m_defaultSettings["actions/ApplicationConfiguration"] = QVariant(QKeySequence(QKeySequence::Preferences).toString());
+	m_defaultSettings["actions/Fullscreen"] = QVariant(QKeySequence("F11").toString());
 
 ///FIXME insert settings here...
 }
