@@ -4,6 +4,9 @@
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
 #include "PreferencesManager.h"
+#include "Tileset.h"
+#include "MapInformation.h"
+#include "MapParser.h"
 
 #include "ui_MainWindow.h"
 #include "ui_TilesetDockWidget.h"
@@ -14,6 +17,9 @@
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+
+
+#include <QDebug>
 
 
 namespace WZMapEditor
@@ -73,6 +79,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	tilesetDockWidget->raise();
 
+	QFileInfoList tilesetList = QDir(":/tilesets/").entryInfoList();
+
+	for (int i = 0; i < tilesetList.count(); ++i)
+	{
+		Tileset *tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), this);
+
+		m_tilesetUi->tilesetComboBox->addItem(tileset->name());
+
+		m_tilesets.append(tileset);
+	}
+
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 
 	m_mainWindowUi->actionNew->setIcon(QIcon::fromTheme("document-new", QIcon(":/icons/document-new.png")));
@@ -127,6 +144,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
+	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
+	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
+	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
+
+	showTileset();
 
 	m_mainWindowUi->mainToolbar->reload();
 
@@ -235,7 +257,31 @@ void MainWindow::actionToggleDock()
 
 			break;
 		}
+	}
+}
 
+void MainWindow::showTileset(int index)
+{
+	if (index < 0)
+	{
+		index = m_tilesetUi->tilesetComboBox->currentIndex();
+	}
+
+	m_tilesetUi->listWidget->clear();
+	m_tilesetUi->tileTypeComboBox->setMaxCount(1);
+	m_tilesetUi->tileTypeComboBox->setMaxCount(100);
+
+	if (index < m_tilesets.count())
+	{
+		Tileset *tileset = m_tilesets.at(index);
+		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), (m_tilesetUi->tileTypeComboBox->currentIndex() - 1));
+
+		m_tilesetUi->tileTypeComboBox->addItems(tileset->categories());
+
+		for (int i = 0; i < tiles.count(); ++i)
+		{
+			m_tilesetUi->listWidget->addItem(new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString(), m_tilesetUi->listWidget));
+		}
 	}
 }
 

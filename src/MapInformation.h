@@ -10,18 +10,18 @@ namespace WZMapEditor
 
 enum MapObjectType
 {
-	MAPOBJECT_FEATURE,
-	MAPOBJECT_STRUCTURE,
-	MAPOBJECT_DROID,
-	MAPOBJECT_OBJECT
+	MapObjectTypeFeature,
+	MapObjectTypeStructure,
+	MapObjectTypeDroid,
+	MapObjectTypeObject
 };
 
 
 enum TilesetType
 {
-	TILESET_ARIZONA = 0,
-	TILESET_URBAN = 1,
-	TILESET_ROCKIES = 2
+	TilesetTypeArizona = 0,
+	TilesetTypeUrban = 1,
+	TilesetTypeRockies = 2
 };
 
 struct MapTile

@@ -1,5 +1,4 @@
-<tileset>
-	<name>Arizona</name>
+<tileset name="Arizona">
 	<categories>
 		<category name="Yellow Dirt" id="0" />
 		<category name="Yellow Dirt Shrubs" id="1" />

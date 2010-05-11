@@ -42,30 +42,6 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-    <widget class="QMenu" name="menuDocks">
-     <property name="title">
-      <string>Docks</string>
-     </property>
-     <addaction name="actionTileset"/>
-     <addaction name="actionTerrain"/>
-     <addaction name="actionLand"/>
-     <addaction name="actionObjects"/>
-    </widget>
-    <widget class="QMenu" name="menuToolbars">
-     <property name="title">
-      <string>Toolbars</string>
-     </property>
-     <addaction name="actionMainToolbar"/>
-    </widget>
-    <addaction name="actionFullscreen"/>
-    <addaction name="separator"/>
-    <addaction name="menuDocks"/>
-    <addaction name="menuToolbars"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -124,6 +100,30 @@
     <addaction name="actionShortcutsConfiguration"/>
     <addaction name="actionToolbarsConfiguration"/>
     <addaction name="actionApplicationConfiguration"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuDocks">
+     <property name="title">
+      <string>Docks</string>
+     </property>
+     <addaction name="actionTileset"/>
+     <addaction name="actionTerrain"/>
+     <addaction name="actionLand"/>
+     <addaction name="actionObjects"/>
+    </widget>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+     <addaction name="actionMainToolbar"/>
+    </widget>
+    <addaction name="actionFullscreen"/>
+    <addaction name="separator"/>
+    <addaction name="menuDocks"/>
+    <addaction name="menuToolbars"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -288,6 +288,9 @@
    </property>
   </action>
   <action name="actionFullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Fullscreen</string>
    </property>

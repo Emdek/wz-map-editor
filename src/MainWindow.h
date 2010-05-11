@@ -19,6 +19,7 @@ namespace WZMapEditor
 {
 
 class ToolBarWidget;
+class Tileset;
 
 class MainWindow : public QMainWindow
 {
@@ -36,6 +37,7 @@ public slots:
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);
 	void actionToggleDock();
+	void showTileset(int tileset = -1);
 	void updateCoordinates(int x, int y, int z);
 
 protected:
@@ -48,6 +50,7 @@ private:
 	Ui::LandDockWidget *m_landUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
 	QList<QDockWidget*> m_docks;
+	QList<Tileset*> m_tilesets;
 	QLabel *m_coordinatesLabel;
 };
 
