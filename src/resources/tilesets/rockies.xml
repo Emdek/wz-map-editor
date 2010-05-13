@@ -70,12 +70,12 @@
 		<transition northWest="7" northEast="7" southEast="5" southWest="7" id="65" />
 		<transition northWest="7" northEast="5" southEast="5" southWest="5" id="66" />
 		<transition northWest="7" northEast="7" southEast="5" southWest="5" id="67" />
-		<transition northWest="8" northEast="8" southEast="1" southWest="1" id="14" />
-		<transition northWest="1" northEast="8" southEast="1" southWest="1" id="15" />
-		<transition northWest="8" northEast="8" southEast="8" southWest="1" id="16" />
-		<transition northWest="2" northEast="2" southEast="8" southWest="8" id="31" />
-		<transition northWest="2" northEast="8" southEast="8" southWest="8" id="32" />
-		<transition northWest="2" northEast="2" southEast="8" southWest="2" id="33" />
+		<transition northWest="8" northEast="8" southEast="1" southWest="1" backgrounds="8" id="14" />
+		<transition northWest="1" northEast="8" southEast="1" southWest="1" backgrounds="8" id="15" />
+		<transition northWest="8" northEast="8" southEast="8" southWest="1" backgrounds="8" id="16" />
+		<transition northWest="2" northEast="2" southEast="8" southWest="8" backgrounds="8" id="31" />
+		<transition northWest="2" northEast="8" southEast="8" southWest="8" backgrounds="8" id="32" />
+		<transition northWest="2" northEast="2" southEast="8" southWest="2" backgrounds="8" id="33" />
 		<transition northWest="12" northEast="12" southEast="5" southWest="5" id="44" />
 		<transition northWest="5" northEast="12" southEast="12" southWest="12" id="9" />
 		<transition northWest="12" northEast="5" southEast="5" southWest="5" hidden="true" id="9" />

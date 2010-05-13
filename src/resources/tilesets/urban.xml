@@ -1,3 +1,91 @@
 <tileset name="Urban">
-
+	<categories>
+		<category name="Dark Ground" id="1" />
+		<category name="Light Debris" id="2" />
+		<category name="Tiles" id="3" />
+		<category name="Dark Tiles" id="4" />
+		<category name="Brown Rocks" id="5" />
+		<category name="Grass" id="6" />
+		<category name="Water" id="7" type="water" />
+		<category name="Road" id="8" type="road" />
+		<category name="Crater" id="9" type="crater" />
+		<category name="Cliff" id="10" type="cliff" />
+		<category name="Other" id="11" type="other" />
+	</categories>
+	<tiles>
+		<tile category="1" id="0" />
+		<tile category="2" id="7" />
+		<tile category="2" id="8" />
+		<tile category="2" id="78" />
+		<tile category="3" id="51" />
+		<tile category="3" id="74" />
+		<tile category="4" id="18" />
+		<tile category="5" id="22" />
+		<tile category="6" id="50" />
+		<tile category="7" id="17" />
+		<tile category="8" id="40" />
+		<tile category="8" id="41" />
+		<tile category="8" id="42" />
+		<tile category="8" id="43" />
+		<tile category="8" id="44" />
+		<tile category="8" id="45" />
+		<tile category="8" id="46" />
+		<tile category="9" backgrounds="1" id="57" />
+		<tile category="9" backgrounds="2" id="55" />
+		<tile category="9" backgrounds="3" id="56" />
+		<tile category="9" id="62" />
+		<tile category="9" id="63" />
+		<tile category="9" id="64" />
+		<tile category="9" id="65" />
+		<tile category="9" id="66" />
+		<tile category="9" id="67" />
+		<tile category="10" id="69" />
+		<tile category="10" id="70" />
+		<tile category="11" backgrounds="1" id="1" />
+		<tile category="11" backgrounds="1" id="2" />
+		<tile category="11" backgrounds="1" id="32" />
+		<tile category="11" backgrounds="2" id="5" />
+		<tile category="11" backgrounds="3" id="20" />
+		<tile category="11" backgrounds="3" id="21" />
+		<tile category="11" backgrounds="3" id="28" />
+		<tile category="11" backgrounds="3" id="48" />
+		<tile category="11" backgrounds="3" id="52" />
+		<tile category="11" backgrounds="3" id="59" />
+		<tile category="11" backgrounds="3" id="61" />
+		<tile category="11" backgrounds="5" id="31" />
+		<tile category="11" backgrounds="5" id="36" />
+	</tiles>
+	<transitions>
+		<transition northWest="1" northEast="2" southEast="2" southWest="1" id="6" />
+		<transition northWest="2" northEast="2" southEast="1" southWest="2" id="4" />
+		<transition northWest="2" northEast="1" southEast="1" southWest="1" id="3" />
+		<transition northWest="3" northEast="3" southEast="3" southWest="4" id="11" />
+		<transition northWest="4" northEast="3" southEast="3" southWest="4" id="12" />
+		<transition northWest="3" northEast="2" southEast="2" southWest="3" id="27" />
+		<transition northWest="2" northEast="3" southEast="2" southWest="2" id="29" />
+		<transition northWest="3" northEast="3" southEast="3" southWest="2" id="30" />
+		<transition northWest="5" northEast="1" southEast="1" southWest="5" id="33" />
+		<transition northWest="5" northEast="5" southEast="1" southWest="5" id="34" />
+		<transition northWest="5" northEast="1" southEast="1" southWest="1" id="35" />
+		<transition northWest="6" northEast="6" southEast="5" southWest="6" id="37" />
+		<transition northWest="6" northEast="5" southEast="5" southWest="5" id="38" />
+		<transition northWest="5" northEast="6" southEast="6" southWest="5" id="39" />
+		<transition northWest="2" northEast="2" southEast="5" southWest="2" id="72" />
+		<transition northWest="2" northEast="5" southEast="5" southWest="5" id="73" />
+		<transition northWest="5" northEast="2" southEast="2" southWest="5" id="60" />
+		<transition northWest="5" northEast="3" southEast="3" southWest="5" id="71" />
+		<transition northWest="5" northEast="3" southEast="3" southWest="3" id="75" />
+		<transition northWest="5" northEast="5" southEast="3" southWest="5" id="76" />
+		<transition northWest="2" northEast="6" southEast="6" southWest="2" id="77" />
+		<transition northWest="6" northEast="2" southEast="6" southWest="6" id="79" />
+		<transition northWest="2" northEast="2" southEast="2" southWest="6" id="58" />
+		<transition northWest="7" northEast="7" southEast="3" southWest="3" backgrounds="7" id="14" />
+		<transition northWest="3" northEast="7" southEast="3" southWest="3" backgrounds="7" id="15" />
+		<transition northWest="7" northEast="7" southEast="7" southWest="3" backgrounds="7" id="16" />
+		<transition northWest="2" northEast="2" southEast="7" southWest="7" backgrounds="7" id="24" />
+		<transition northWest="2" northEast="7" southEast="7" southWest="7" backgrounds="7" id="25" />
+		<transition northWest="2" northEast="2" southEast="7" southWest="2" backgrounds="7" id="26" />
+		<transition northWest="2" northEast="10" southEast="2" southWest="2" id="68" />
+		<transition northWest="10" northEast="2" southEast="10" southWest="10" hidden="true" id="68" />
+	</transitions>
 </tileset>
