@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>298</height>
+    <width>256</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,6 +40,46 @@
        <item>
         <property name="text">
          <string>All</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Ground</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Water</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Roads</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tracks</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Craters</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cliffs</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Transitions</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Other</string>
         </property>
        </item>
       </widget>
@@ -75,6 +115,16 @@
         <cstring>tileTypeComboBox</cstring>
        </property>
       </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="tileCategoryLabel">
+       <property name="text">
+        <string>Tile Category:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="tileCategoryComboBox"/>
      </item>
     </layout>
    </item>

@@ -97,13 +97,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionUndo->setIcon(QIcon::fromTheme("edit-undo", QIcon(":/icons/edit-undo.png")));
 	m_mainWindowUi->actionRedo->setIcon(QIcon::fromTheme("edit-redo", QIcon(":/icons/edit-redo.png")));
 	m_mainWindowUi->actionFullscreen->setIcon(QIcon::fromTheme("view-fullscreen", QIcon(":/icons/view-fullscreen.png")));
-
 	m_mainWindowUi->actionShortcutsConfiguration->setIcon(QIcon::fromTheme("configure-shortcuts", QIcon(":/icons/configure-shortcuts.png")));
 	m_mainWindowUi->actionToolbarsConfiguration->setIcon(QIcon::fromTheme("configure-toolbars", QIcon(":/icons/configure-toolbars.png")));
 	m_mainWindowUi->actionApplicationConfiguration->setIcon(QIcon::fromTheme("configure", QIcon(":/icons/configure.png")));
 	m_mainWindowUi->actionHelp->setIcon(QIcon::fromTheme("help-contents", QIcon(":/icons/help-contents.png")));
 	m_mainWindowUi->actionAboutApplication->setIcon(QIcon(":/icons/warzone2100mapeditor.png"));
 	m_mainWindowUi->actionAboutQt->setIcon(QIcon(":/icons/qt.png"));
+
+	m_tilesetUi->tileTypeComboBox->setItemData(0, TileTypeAll);
+	m_tilesetUi->tileTypeComboBox->setItemData(1, TileTypeGround);
+	m_tilesetUi->tileTypeComboBox->setItemData(2, TileTypeWater);
+	m_tilesetUi->tileTypeComboBox->setItemData(3, TileTypeRoad);
+	m_tilesetUi->tileTypeComboBox->setItemData(4, TileTypeTracks);
+	m_tilesetUi->tileTypeComboBox->setItemData(5, TileTypeCrater);
+	m_tilesetUi->tileTypeComboBox->setItemData(6, TileTypeCliff);
+	m_tilesetUi->tileTypeComboBox->setItemData(7, TileTypeTransition);
+	m_tilesetUi->tileTypeComboBox->setItemData(8, TileTypeOther);
 
 	ActionManager::registerAction(m_mainWindowUi->actionNew);
 	ActionManager::registerAction(m_mainWindowUi->actionOpen);
@@ -142,6 +151,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
 	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
+	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
 
@@ -267,17 +277,21 @@ void MainWindow::showTileset(int index)
 	if (index < m_tilesets.count())
 	{
 		Tileset *tileset = m_tilesets.at(index);
-		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileTypeComboBox->currentIndex());
 
-		if (index != m_tilesetUi->tilesetComboBox->currentIndex() || m_tilesetUi->tileTypeComboBox->count() == 1)
+		if (index != m_tilesetUi->tilesetComboBox->currentIndex() || !m_tilesetUi->tileCategoryComboBox->count())
 		{
-			m_tilesetUi->tileTypeComboBox->clear();
-			m_tilesetUi->tileTypeComboBox->addItems(tileset->categories());
+			m_tilesetUi->tileCategoryComboBox->clear();
+			m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
 		}
+
+		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
 
 		for (int i = 0; i < tiles.count(); ++i)
 		{
-			m_tilesetUi->listWidget->addItem(new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString(), m_tilesetUi->listWidget));
+			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString("Tile ID: %1").arg(tiles.at(i).id), m_tilesetUi->listWidget);
+			item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
+
+			m_tilesetUi->listWidget->addItem(item);
 		}
 	}
 }
