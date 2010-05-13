@@ -53,11 +53,13 @@ public:
 
 protected:
 	TileType stringToType(const QString &type);
+	QList<int> stringToBackgrounds(const QString &backgrounds);
 
 private:
 	QString m_name;
 	QString m_directory;
 	QStringList m_categories;
+	QList<QList<int> > m_categoryBackgrounds;
 	QList<TileType> m_categoryTypes;
 	QList<TileInformation> m_tiles;
 };
