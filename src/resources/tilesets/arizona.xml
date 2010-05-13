@@ -11,6 +11,7 @@
 		<category name="Tracks" id="9" type="tracks" backgrounds="3" />
 		<category name="Crater" id="10" type="crater" />
 		<category name="Cliff" id="11" type="cliff" />
+		<category name="Other" id="12" type="other" />
 	</categories>
 	<tiles>
 		<tile category="1" id="12" />
@@ -55,6 +56,8 @@
 		<tile category="10" id="70" />
 		<tile category="11" id="18" />
 		<tile category="11" id="71" />
+		<tile category="12" ignore="true" id="60" />
+		<tile category="12" ignore="true" id="61" />
 	</tiles>
 	<transitions>
 		<transition northWest="3" northEast="4" southEast="4" southWest="3" id="34" />

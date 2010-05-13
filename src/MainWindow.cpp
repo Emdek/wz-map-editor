@@ -288,7 +288,7 @@ void MainWindow::showTileset(int index)
 
 		for (int i = 0; i < tiles.count(); ++i)
 		{
-			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString("Tile ID: %1").arg(tiles.at(i).id), m_tilesetUi->listWidget);
+			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString(), m_tilesetUi->listWidget);
 			item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
 
 			m_tilesetUi->listWidget->addItem(item);
