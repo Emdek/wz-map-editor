@@ -6,6 +6,9 @@
 #include <QtGui/QPixmap>
 
 
+#include <QDebug>
+
+
 namespace WZMapEditor
 {
 
@@ -29,6 +32,8 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 	}
 
 	m_directory = "tertilesc" + QString::number(tileset) + "hw-%1";
+
+	m_categories.append(tr("All"));
 
 	QFile file(fileName);
 	file.open(QFile::ReadOnly | QFile::Text);
@@ -59,10 +64,10 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 				TileInformation tile;
 				tile.id = attributes.value("id").toString().toInt();
 				tile.category = attributes.value("category").toString().toInt();
-				tile.transitionNorth = -1;
-				tile.transitionEast = -1;
-				tile.transitionSouth = -1;
-				tile.transitionWest = -1;
+				tile.transitionNorth = 0;
+				tile.transitionEast = 0;
+				tile.transitionSouth = 0;
+				tile.transitionWest = 0;
 				tile.type = TileTypeNormal;
 
 				m_tiles.append(tile);
@@ -94,18 +99,18 @@ QList<TileInformation> Tileset::tiles(bool includeTransitions, int category)
 
 	for (int i = 0; i < m_tiles.count(); ++i)
 	{
-		if (!includeTransitions && m_tiles.at(i).category < 0)
+		if (!includeTransitions && !m_tiles.at(i).category)
 		{
 			continue;
 		}
 
-		if (category < 0 || (category >= 0 && (m_tiles.at(i).category == category || (includeTransitions && (m_tiles.at(i).transitionNorth == category || m_tiles.at(i).transitionEast == category || m_tiles.at(i).transitionSouth == category || m_tiles.at(i).transitionWest == category)))))
+		if (!category || (category > 0 && (m_tiles.at(i).category == category || m_tiles.at(i).transitionNorth == category || m_tiles.at(i).transitionEast == category || m_tiles.at(i).transitionSouth == category || m_tiles.at(i).transitionWest == category)))
 		{
 			tiles.append(m_tiles.at(i));
 		}
 	}
 
-	return m_tiles;
+	return tiles;
 }
 
 }

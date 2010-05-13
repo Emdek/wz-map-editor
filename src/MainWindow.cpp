@@ -19,9 +19,6 @@
 #include <QtGui/QMessageBox>
 
 
-#include <QDebug>
-
-
 namespace WZMapEditor
 {
 
@@ -37,8 +34,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::createInstance(this);
 
 	m_mainWindowUi->setupUi(this);
-
-	setWindowState(Qt::WindowMaximized);
 
 	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
 	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
@@ -130,6 +125,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
 	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
+	showTileset();
+
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
 	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
@@ -147,8 +144,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
-
-	showTileset();
 
 	m_mainWindowUi->mainToolbar->reload();
 
@@ -268,15 +263,17 @@ void MainWindow::showTileset(int index)
 	}
 
 	m_tilesetUi->listWidget->clear();
-	m_tilesetUi->tileTypeComboBox->setMaxCount(1);
-	m_tilesetUi->tileTypeComboBox->setMaxCount(100);
 
 	if (index < m_tilesets.count())
 	{
 		Tileset *tileset = m_tilesets.at(index);
-		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), (m_tilesetUi->tileTypeComboBox->currentIndex() - 1));
+		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileTypeComboBox->currentIndex());
 
-		m_tilesetUi->tileTypeComboBox->addItems(tileset->categories());
+		if (index != m_tilesetUi->tilesetComboBox->currentIndex() || m_tilesetUi->tileTypeComboBox->count() == 1)
+		{
+			m_tilesetUi->tileTypeComboBox->clear();
+			m_tilesetUi->tileTypeComboBox->addItems(tileset->categories());
+		}
 
 		for (int i = 0; i < tiles.count(); ++i)
 		{

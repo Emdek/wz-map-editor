@@ -1,47 +1,47 @@
 <tileset name="Arizona">
 	<categories>
-		<category name="Yellow Dirt" id="0" />
-		<category name="Yellow Dirt Shrubs" id="1" />
-		<category name="Red Dirt" id="2" />
-		<category name="Red Clay" id="3" />
-		<category name="Dark Clay" id="4" />
-		<category name="Tiles" id="5" />
-		<category name="Water" id="6" />
-		<category name="Road" id="7" />
-		<category name="Tracks" id="8" />
+		<category name="Yellow Dirt" id="1" />
+		<category name="Yellow Dirt Shrubs" id="2" />
+		<category name="Red Dirt" id="3" />
+		<category name="Red Clay" id="4" />
+		<category name="Dark Clay" id="5" />
+		<category name="Tiles" id="6" />
+		<category name="Water" id="7" />
+		<category name="Road" id="8" />
+		<category name="Tracks" id="9" />
 	</categories>
 	<tiles>
-		<tile category="0" id="12" />
-		<tile category="0" id="55" />
-		<tile category="1" id="0" />
-		<tile category="1" id="9" />
-		<tile category="1" id="11" />
-		<tile category="2" id="44" />
-		<tile category="2" id="76" />
-		<tile category="2" id="48" />
-		<tile category="2" id="53" />
-		<tile category="2" id="54" />
-		<tile category="2" id="74" />
-		<tile category="2" id="56" />
-		<tile category="3" id="5" />
-		<tile category="3" id="6" />
-		<tile category="3" id="7" />
-		<tile category="3" id="8" />
-		<tile category="4" id="23" />
-		<tile category="4" id="62" />
-		<tile category="5" id="22" />
-		<tile category="5" id="77" />
-		<tile category="6" id="17" />
-		<tile category="7" id="37" />
-		<tile category="7" id="47" />
-		<tile category="7" id="57" />
-		<tile category="7" id="59" />
-		<tile category="8" id="49" />
-		<tile category="8" id="50" />
-		<tile category="8" id="51" />
-		<tile category="8" id="52" />
-		<tile category="8" id="72" />
-		<tile category="8" id="73" />
+		<tile category="1" id="12" />
+		<tile category="1" id="55" />
+		<tile category="2" id="0" />
+		<tile category="2" id="9" />
+		<tile category="2" id="11" />
+		<tile category="3" id="44" />
+		<tile category="3" id="76" />
+		<tile category="3" id="48" />
+		<tile category="3" id="53" />
+		<tile category="3" id="54" />
+		<tile category="3" id="74" />
+		<tile category="3" id="56" />
+		<tile category="4" id="5" />
+		<tile category="4" id="6" />
+		<tile category="4" id="7" />
+		<tile category="4" id="8" />
+		<tile category="5" id="23" />
+		<tile category="5" id="62" />
+		<tile category="6" id="22" />
+		<tile category="6" id="77" />
+		<tile category="7" id="17" />
+		<tile category="8" id="37" />
+		<tile category="8" id="47" />
+		<tile category="8" id="57" />
+		<tile category="8" id="59" />
+		<tile category="9" id="49" />
+		<tile category="9" id="50" />
+		<tile category="9" id="51" />
+		<tile category="9" id="52" />
+		<tile category="9" id="72" />
+		<tile category="9" id="73" />
 	</tiles>
 	<transitions>
 		<transition north="" east="" south="" west="" id="" />

@@ -39,7 +39,7 @@ public:
 	QString name();
 	QPixmap pixmap(TileInformation tile, int size = 64);
 	QList<QString> categories();
-	QList<TileInformation> tiles(bool includeTransitions, int category = -1);
+	QList<TileInformation> tiles(bool includeTransitions, int category = 0);
 
 private:
 	QString m_name;
