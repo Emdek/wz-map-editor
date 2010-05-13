@@ -1,0 +1,62 @@
+1. INTRODUCTION
+
+Tileset XML files contains definitions of tiles and objects available for Arizona, Urban and Rockies themes. They are stored in src/resources/tilesets/ directory.
+
+
+2. STRUCTURE
+
+Each file should contain tags hierarchy similar to the following:
+
+<tileset name="Arizona">
+	<categories>
+		<category name="Yellow Dirt" id="1" />
+		<category name="Yellow Dirt Shrubs" id="2" />
+	</categories>
+	<tiles>
+		<tile category="1" id="12" />
+		<tile category="2" id="0" />
+	</tiles>
+	<transitions>
+		<transition northWest="3" northEast="4" southEast="4" southWest="3" id="34" />
+		<transition northWest="3" northEast="3" southEast="4" southWest="3" id="35" />
+	</transitions>
+</tileset>
+
+
+2.1 TAGS
+
+tileset - document root
+categories - root for categories
+category - single category definition
+tiles - root for solid tileset
+tile - single solid tile definition
+transitions - root for transition tileset
+transition - single transition tile definition
+
+
+2.2 ATTRIBUTES
+
+tileset:
+	name - name of tileset, required
+
+category:
+	name - name of category, required
+	id - numeric identifier of category, must start from 1 and each next category must increment it by 1, required
+	type - default type for tiles associated with this category, possible values: ground (default), water, road, tracks, crater, cliff; optional
+	backgrounds - identifiers of categories of tiles that should be placed under that tiles associated with this category (usually water), separated using comma, optional
+
+tile:
+	category - identifier of category to which tile belongs to, required
+
+transition:
+	northWest - identifier of category into which tile transitions in north - west corner, required
+	northEast - identifier of category into which tile transitions in north - east corner, required
+	southEast - identifier of category into which tile transitions in south - east corner, required
+	southWest - identifier of category into which tile transitions in south - west corner, required
+	hidden - tile should be hidden in application user interface, optional
+	ignore - tile should be ignored when automatically generating map, optional
+
+Common attributes of tile and transition:
+	id - tile identifier (corresponding to tile file name), required
+	type - type of tile, possible values: ground (default), water, road, tracks, crater, cliff; optional
+	backgrounds - identifiers of categories of tiles that should be placed under that tile (usually water), separated using comma, optional

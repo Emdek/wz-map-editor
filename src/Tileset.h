@@ -28,6 +28,7 @@ Q_DECLARE_FLAGS(TileTypes, TileType)
 struct TileInformation
 {
 	bool visible;
+	bool ignore;
 	int id;
 	int category;
 	int transitionNorthWest;
