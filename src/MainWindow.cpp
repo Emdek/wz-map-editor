@@ -81,6 +81,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 
+	QActionGroup *mouseMode = new QActionGroup(this);
+	mouseMode->addAction(m_mainWindowUi->actionMouseModeView);
+	mouseMode->addAction(m_mainWindowUi->actionMouseModeSelect);
+	mouseMode->addAction(m_mainWindowUi->actionMouseModeMove);
+	mouseMode->setExclusive(true);
+
 	m_mainWindowUi->actionNew->setIcon(QIcon::fromTheme("document-new", QIcon(":/icons/document-new.png")));
 	m_mainWindowUi->actionOpen->setIcon(QIcon::fromTheme("document-open", QIcon(":/icons/document-open.png")));
 	m_mainWindowUi->menuOpenRecent->setIcon(QIcon::fromTheme("document-open-recent", QIcon(":/icons/document-open-recent.png")));
@@ -91,6 +97,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionUndo->setIcon(QIcon::fromTheme("edit-undo", QIcon(":/icons/edit-undo.png")));
 	m_mainWindowUi->actionRedo->setIcon(QIcon::fromTheme("edit-redo", QIcon(":/icons/edit-redo.png")));
 	m_mainWindowUi->actionFullscreen->setIcon(QIcon::fromTheme("view-fullscreen", QIcon(":/icons/view-fullscreen.png")));
+	m_mainWindowUi->action3DView->setIcon(QIcon(":/icons/view-3d.png"));
+	m_mainWindowUi->actionMouseModeView->setIcon(QIcon(":/icons/input-mouse.png"));
+	m_mainWindowUi->actionMouseModeSelect->setIcon(QIcon(":/icons/edit-select.png"));
+	m_mainWindowUi->actionMouseModeMove->setIcon(QIcon(":/icons/transform-move.png"));;
 	m_mainWindowUi->actionShortcutsConfiguration->setIcon(QIcon::fromTheme("configure-shortcuts", QIcon(":/icons/configure-shortcuts.png")));
 	m_mainWindowUi->actionToolbarsConfiguration->setIcon(QIcon::fromTheme("configure-toolbars", QIcon(":/icons/configure-toolbars.png")));
 	m_mainWindowUi->actionApplicationConfiguration->setIcon(QIcon::fromTheme("configure", QIcon(":/icons/configure.png")));
@@ -117,10 +127,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionUndo);
 	ActionManager::registerAction(m_mainWindowUi->actionRedo);
 	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
+	ActionManager::registerAction(m_mainWindowUi->action3DView);
 	ActionManager::registerAction(m_mainWindowUi->actionTileset);
 	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
 	ActionManager::registerAction(m_mainWindowUi->actionLand);
 	ActionManager::registerAction(m_mainWindowUi->actionObjects);
+	ActionManager::registerAction(m_mainWindowUi->actionMouseModeView);
+	ActionManager::registerAction(m_mainWindowUi->actionMouseModeSelect);
+	ActionManager::registerAction(m_mainWindowUi->actionMouseModeMove);
 	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
@@ -132,6 +146,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
+	connect(m_mainWindowUi->action3DView, SIGNAL(triggered(bool)), this, SLOT(action3DView(bool)));
 	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionLand, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
@@ -152,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->mainToolbar->reload();
 
+	action3DView(true);
 	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());
 
 	restoreGeometry(QSettings().value("geometry").toByteArray());
@@ -185,6 +201,12 @@ void MainWindow::actionFullscreen(bool checked)
 	{
 		setWindowState(this->windowState() ^ Qt::WindowFullScreen);
 	}
+}
+
+void MainWindow::action3DView(bool checked)
+{
+	m_mainWindowUi->map2DViewWidget->setVisible(!checked);
+	m_mainWindowUi->map3DViewWidget->setVisible(checked);
 }
 
 void MainWindow::actionShortcutsConfiguration()

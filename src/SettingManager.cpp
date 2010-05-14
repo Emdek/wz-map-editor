@@ -12,7 +12,7 @@ SettingManager* SettingManager::m_instance = NULL;
 SettingManager::SettingManager(QObject *parent) : QObject(parent)
 {
 	QStringList mainToolbar;
-	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen";
+	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
 
 	m_defaultSettings["dataPath"] = QVariant(QString());
 

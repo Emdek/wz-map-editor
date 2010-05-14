@@ -31,5 +31,8 @@
         <file>tilesets/arizona.xml</file>
         <file>tilesets/rockies.xml</file>
         <file>tilesets/urban.xml</file>
+        <file>images/tile.png</file>
+        <file>icons/view-3d.png</file>
+        <file>icons/input-mouse.png</file>
     </qresource>
 </RCC>

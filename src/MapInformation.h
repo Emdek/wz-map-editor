@@ -11,6 +11,14 @@
 namespace WZMapEditor
 {
 
+enum FlipType
+{
+	FlipTypeNone = 0,
+	FlipTypeVertical,
+	FlipTypeHorizontal,
+	FlipTypeDiagonal
+};
+
 enum MapObjectType
 {
 	MapObjectTypeFeature,
@@ -21,7 +29,10 @@ enum MapObjectType
 
 struct MapTile
 {
-
+	bool gateway;
+	int rotation;
+	FlipType flip;
+	QPoint position;
 };
 
 struct Gateway

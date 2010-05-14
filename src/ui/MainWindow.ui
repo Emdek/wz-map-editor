@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
-    <height>498</height>
+    <width>800</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,9 @@
     <item row="0" column="0">
      <widget class="WZMapEditor::Map3DViewWidget" name="map3DViewWidget" native="true"/>
     </item>
+    <item row="1" column="0">
+     <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget" native="true"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -41,7 +44,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>798</width>
+     <width>800</width>
      <height>25</height>
     </rect>
    </property>
@@ -96,14 +99,6 @@
     <addaction name="separator"/>
     <addaction name="actionResizeMap"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="actionShortcutsConfiguration"/>
-    <addaction name="actionToolbarsConfiguration"/>
-    <addaction name="actionApplicationConfiguration"/>
-   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
@@ -124,14 +119,38 @@
      <addaction name="actionMainToolbar"/>
     </widget>
     <addaction name="actionFullscreen"/>
+    <addaction name="action3DView"/>
     <addaction name="separator"/>
     <addaction name="menuDocks"/>
     <addaction name="menuToolbars"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionShortcutsConfiguration"/>
+    <addaction name="actionToolbarsConfiguration"/>
+    <addaction name="actionApplicationConfiguration"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuMouseMode">
+     <property name="title">
+      <string>Mouse Mode</string>
+     </property>
+     <addaction name="actionMouseModeView"/>
+     <addaction name="actionMouseModeSelect"/>
+     <addaction name="actionMouseModeMove"/>
+    </widget>
+    <addaction name="menuMouseMode"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuTools"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -332,6 +351,44 @@
     <string>Resize Map...</string>
    </property>
   </action>
+  <action name="action3DView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>3D View</string>
+   </property>
+  </action>
+  <action name="actionMouseModeView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View</string>
+   </property>
+  </action>
+  <action name="actionMouseModeSelect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+  </action>
+  <action name="actionMouseModeMove">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -343,6 +400,12 @@
    <class>WZMapEditor::Map3DViewWidget</class>
    <extends>QWidget</extends>
    <header>src/Map3DViewWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>WZMapEditor::Map2DViewWidget</class>
+   <extends>QWidget</extends>
+   <header>src/Map2DViewWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
