@@ -1,18 +1,19 @@
-#ifndef MAPEDITORWIDGET_H
-#define MAPEDITORWIDGET_H
+#ifndef MAP3DVIEWWIDGET_H
+#define MAP3DVIEWWIDGET_H
 
 #include <QtOpenGL/QGLWidget>
+
 
 namespace WZMapEditor
 {
 
-class MapEditorWidget : public QGLWidget
+class Map3DViewWidget : public QGLWidget
 {
 	Q_OBJECT
 
 public:
-	MapEditorWidget(QWidget *parent = NULL);
-	~MapEditorWidget();
+	Map3DViewWidget(QWidget *parent = NULL);
+	~Map3DViewWidget();
 
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
@@ -54,4 +55,4 @@ private:
 
 }
 
-#endif // MAPEDITORWIDGET_H
+#endif // MAP3DVIEWWIDGET_H

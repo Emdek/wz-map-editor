@@ -1,14 +1,15 @@
-#include "MapEditorWidget.h"
+#include "Map3DViewWidget.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 
 #include <cstdio>
 
+
 namespace WZMapEditor
 {
 
-MapEditorWidget::MapEditorWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
 	m_moving = false;
 	rot_x = 0;
@@ -47,22 +48,22 @@ MapEditorWidget::MapEditorWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 	setFocus();
 }
 
-MapEditorWidget::~MapEditorWidget()
+Map3DViewWidget::~Map3DViewWidget()
 {
 }
 
 
-QSize MapEditorWidget::minimumSizeHint() const
+QSize Map3DViewWidget::minimumSizeHint() const
 {
 	return QSize(50, 50);
 }
 
-QSize MapEditorWidget::sizeHint() const
+QSize Map3DViewWidget::sizeHint() const
 {
 	return QSize(320, 240);
 }
 
-void MapEditorWidget::initializeGL()
+void Map3DViewWidget::initializeGL()
 {
 	qglClearColor(QColor(0, 0, 32, 0));
 
@@ -81,7 +82,7 @@ void MapEditorWidget::initializeGL()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void MapEditorWidget::resizeGL(int width, int height)
+void Map3DViewWidget::resizeGL(int width, int height)
 {
 	//      int size = qMin(width, height);
 	//      glViewport((width - size) / 2, (height - size) / 2, size, size);
@@ -101,7 +102,7 @@ void MapEditorWidget::resizeGL(int width, int height)
 	paintGL();
 }
 
-void MapEditorWidget::paintGL()
+void Map3DViewWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -150,14 +151,14 @@ void MapEditorWidget::paintGL()
 
 }
 
-void MapEditorWidget::wheelEvent (QWheelEvent *event)
+void Map3DViewWidget::wheelEvent (QWheelEvent *event)
 {
 	zoom_value += event->delta() / 32;
 
 	repaint();
 }
 
-void MapEditorWidget::mousePressEvent (QMouseEvent *event)
+void Map3DViewWidget::mousePressEvent (QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
 	{
@@ -165,7 +166,7 @@ void MapEditorWidget::mousePressEvent (QMouseEvent *event)
 	}
 }
 
-void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
+void Map3DViewWidget::mouseReleaseEvent (QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton)
 	{
@@ -183,7 +184,7 @@ void MapEditorWidget::mouseReleaseEvent (QMouseEvent *event)
 	}
 }
 
-void MapEditorWidget::mouseMoveEvent (QMouseEvent *event)
+void Map3DViewWidget::mouseMoveEvent (QMouseEvent *event)
 {
 	static int last_move_x, last_move_y;
 
@@ -201,7 +202,7 @@ void MapEditorWidget::mouseMoveEvent (QMouseEvent *event)
 	emit cooridantesChanged(event->pos().x(), event->pos().y(), 0);
 }
 
-void MapEditorWidget::resizeMap (unsigned int width, unsigned int height)
+void Map3DViewWidget::resizeMap (unsigned int width, unsigned int height)
 {
 	map_width  = width;
 	map_height = height;
@@ -209,28 +210,28 @@ void MapEditorWidget::resizeMap (unsigned int width, unsigned int height)
 	repaint();
 }
 
-void MapEditorWidget::doMapMoveLeft()
+void Map3DViewWidget::doMapMoveLeft()
 {
 	map_move_x += 1;
 
 	repaint();
 }
 
-void MapEditorWidget::doMapMoveRight()
+void Map3DViewWidget::doMapMoveRight()
 {
 	map_move_x -= 1;
 
 	repaint();
 }
 
-void MapEditorWidget::doMapMoveUp()
+void Map3DViewWidget::doMapMoveUp()
 {
 	map_move_y -= 1;
 
 	repaint();
 }
 
-void MapEditorWidget::doMapMoveDown()
+void Map3DViewWidget::doMapMoveDown()
 {
 	map_move_y += 1;
 
