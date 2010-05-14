@@ -23,7 +23,7 @@ public:
 	~PreferencesManager();
 
 public slots:
-	void selectTexturesPath();
+	void selectDataPath();
 	void save();
 	void dialogButtonCliked(QAbstractButton *button);
 

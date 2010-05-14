@@ -28,7 +28,7 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 		tileset = 1;
 	}
 
-	m_directory = "tertilesc" + QString::number(tileset) + "hw-%1";
+	m_directory = QString("texpages%1tertilesc%2hw-").arg(QDir::separator()).arg(tileset) + "%1";
 	m_categories.append(tr("All"));
 	m_categoryBackgrounds.append(QList<int>());
 	m_categoryTypes.append(TileTypeOther);
@@ -148,7 +148,7 @@ QString Tileset::name()
 
 QPixmap Tileset::pixmap(TileInformation tile, int size)
 {
-	return QPixmap(SettingManager::value("texturesPath").toString() + QDir::separator() + m_directory.arg(size) + QDir::separator() + QString("tile-%1%2.png").arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
+	return QPixmap(SettingManager::value("dataPath").toString() + QDir::separator() + m_directory.arg(size) + QDir::separator() + QString("tile-%1%2.png").arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
 }
 
 QList<QString> Tileset::categories()

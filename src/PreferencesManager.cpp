@@ -17,13 +17,13 @@ PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	m_managerUi->setupUi(&managerDialog);
-	m_managerUi->texturesPathLineEdit->setCompleter(new QCompleter(new FileSystemCompleterModel(this), this));
-	m_managerUi->texturesPathLineEdit->setText(SettingManager::value("texturesPath").toString());
+	m_managerUi->dataPathLineEdit->setCompleter(new QCompleter(new FileSystemCompleterModel(this), this));
+	m_managerUi->dataPathLineEdit->setText(SettingManager::value("dataPath").toString());
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(&managerDialog, SIGNAL(accepted()), this, SLOT(save()));
 	connect(m_managerUi->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonCliked(QAbstractButton*)));
-	connect(m_managerUi->selectTexturesPathButton, SIGNAL(clicked()), this, SLOT(selectTexturesPath()));
+	connect(m_managerUi->selectDataPathButton, SIGNAL(clicked()), this, SLOT(selectDataPath()));
 
 	managerDialog.exec();
 }
@@ -33,14 +33,14 @@ PreferencesManager::~PreferencesManager()
 	delete m_managerUi;
 }
 
-void PreferencesManager::selectTexturesPath()
+void PreferencesManager::selectDataPath()
 {
-	m_managerUi->texturesPathLineEdit->setText(QFileDialog::getExistingDirectory(QApplication::topLevelWidgets().at(0), tr("Select textures path"), m_managerUi->texturesPathLineEdit->text()));
+	m_managerUi->dataPathLineEdit->setText(QFileDialog::getExistingDirectory(QApplication::topLevelWidgets().at(0), tr("Select Data Path"), m_managerUi->dataPathLineEdit->text()));
 }
 
 void PreferencesManager::save()
 {
-	SettingManager::setValue("texturesPath", m_managerUi->texturesPathLineEdit->text());
+	SettingManager::setValue("dataPath", m_managerUi->dataPathLineEdit->text());
 }
 
 void PreferencesManager::dialogButtonCliked(QAbstractButton *button)

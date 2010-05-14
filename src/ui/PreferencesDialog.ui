@@ -24,19 +24,19 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="texturesPathLabel">
+      <widget class="QLabel" name="dataPathLabel">
        <property name="text">
-        <string>Textures Path:</string>
+        <string>Data Path:</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <layout class="QHBoxLayout" name="texturesPathLayout">
        <item>
-        <widget class="QLineEdit" name="texturesPathLineEdit"/>
+        <widget class="QLineEdit" name="dataPathLineEdit"/>
        </item>
        <item>
-        <widget class="QToolButton" name="selectTexturesPathButton">
+        <widget class="QToolButton" name="selectDataPathButton">
          <property name="text">
           <string/>
          </property>
