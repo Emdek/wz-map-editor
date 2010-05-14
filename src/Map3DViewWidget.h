@@ -22,6 +22,7 @@ public:
 	QSize sizeHint() const;
 
 public slots:
+	void setZoom(qreal zoom);
 	void doMapMoveLeft();
 	void doMapMoveRight();
 	void doMapMoveUp();
@@ -36,6 +37,7 @@ protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
+	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
 	MapInformation* m_mapInformation;
@@ -46,10 +48,11 @@ private:
 	int m_rotationZ;
 	int m_offsetX;
 	int m_offsetY;
-	float m_zoom;
+	qreal m_zoom;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
+	void zoomChanged(qreal zoom);
 };
 
 }

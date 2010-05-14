@@ -62,10 +62,12 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 			{
 				QXmlStreamAttributes attributes = reader.attributes();
 				TileInformation tile;
+				tile.valid = true;
 				tile.visible = !attributes.hasAttribute("hidden");
 				tile.ignore = attributes.hasAttribute("ignore");
 				tile.id = attributes.value("id").toString().toInt();
 				tile.category = attributes.value("category").toString().toInt();
+				tile.tileset = m_type;
 				tile.backgrounds = (attributes.hasAttribute("backgrounds")?stringToBackgrounds(attributes.value("backgrounds").toString()):m_categoryBackgrounds.at(tile.category));
 
 				if (reader.name().toString() == "tile")
@@ -103,6 +105,21 @@ void Tileset::load(QObject *parent)
 
 		m_tilesets[tileset->type()] = tileset;
 	}
+}
+
+QPixmap Tileset::pixmap(TileInformation tile, int size)
+{
+	return QPixmap(QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png").arg(SettingManager::value("dataPath").toString() + QDir::separator()).arg(QDir::separator()).arg(static_cast<int>(tile.tileset)).arg(size).arg(QDir::separator()).arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
+}
+
+QPixmap Tileset::pixmap(TilesetType tileset, int tile, int size)
+{
+	if (m_tilesets.value(tileset, NULL))
+	{
+		return pixmap(m_tilesets[tileset]->tile(tile), size);
+	}
+
+	return QPixmap();
 }
 
 Tileset* Tileset::tileset(TilesetType type)
@@ -180,9 +197,20 @@ QString Tileset::name()
 	return m_name;
 }
 
-QPixmap Tileset::pixmap(TileInformation tile, int size)
+TileInformation Tileset::tile(int tile)
 {
-	return QPixmap(QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png").arg(SettingManager::value("dataPath").toString() + QDir::separator()).arg(QDir::separator()).arg(static_cast<int>(m_type)).arg(size).arg(QDir::separator()).arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
+	for (int i = 0; i < m_tiles.count(); ++i)
+	{
+		if (m_tiles.at(i).id == tile)
+		{
+			return m_tiles.at(i);
+		}
+	}
+
+	TileInformation empty;
+	empty.valid = false;
+
+	return empty;
 }
 
 QList<QString> Tileset::categories()

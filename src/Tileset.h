@@ -34,6 +34,7 @@ Q_DECLARE_FLAGS(TileTypes, TileType)
 
 struct TileInformation
 {
+	bool valid;
 	bool visible;
 	bool ignore;
 	int id;
@@ -43,6 +44,7 @@ struct TileInformation
 	int transitionSouthEast;
 	int transitionSouthWest;
 	TileType type;
+	TilesetType tileset;
 	QList<int> backgrounds;
 };
 
@@ -54,14 +56,16 @@ public:
 	Tileset(const QString &fileName, QObject *parent = 0);
 
 	static void load(QObject *parent = NULL);
+	static QPixmap pixmap(TileInformation tile, int size = 64);
+	static QPixmap pixmap(TilesetType tileset, int tile, int size = 64);
 	static Tileset* tileset(TilesetType type);
 	static QStringList names();
 
 	TilesetType type();
 	QString name();
-	QPixmap pixmap(TileInformation tile, int size = 64);
+	TileInformation tile(int tile);
 	QList<QString> categories();
-	QList<TileInformation> tiles(bool includeTransitions, int category = 0, TileTypes types = TileTypeAll);
+	QList<TileInformation> tiles(bool includeTransitions = true, int category = 0, TileTypes types = TileTypeAll);
 
 protected:
 	TileType stringToType(const QString &type);
