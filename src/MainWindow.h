@@ -52,7 +52,6 @@ private:
 	Ui::ObjectsDockWidget *m_objectsUi;
 	MapInformation *m_mapInformation;
 	QList<QDockWidget*> m_docks;
-	QList<Tileset*> m_tilesets;
 	QLabel *m_coordinatesLabel;
 };
 

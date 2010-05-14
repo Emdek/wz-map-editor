@@ -53,6 +53,11 @@ class Tileset : public QObject
 public:
 	Tileset(const QString &fileName, QObject *parent = 0);
 
+	static void load(QObject *parent = NULL);
+	static Tileset* tileset(TilesetType type);
+	static QStringList names();
+
+	TilesetType type();
 	QString name();
 	QPixmap pixmap(TileInformation tile, int size = 64);
 	QList<QString> categories();
@@ -63,8 +68,8 @@ protected:
 	QList<int> stringToBackgrounds(const QString &backgrounds);
 
 private:
+	TilesetType m_type;
 	QString m_name;
-	QString m_directory;
 	QStringList m_categories;
 	QList<QList<int> > m_categoryBackgrounds;
 	QList<TileType> m_categoryTypes;

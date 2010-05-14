@@ -9,26 +9,26 @@
 namespace WZMapEditor
 {
 
+QHash<TilesetType, Tileset*> m_tilesets;
+
 Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 {
 	QFileInfo informationPath(fileName);
 	QString tilesetName = informationPath.completeBaseName();
-	int tileset;
 
 	if (tilesetName == "urban")
 	{
-		tileset = 2;
+		m_type = TilesetTypeUrban;
 	}
 	else if (tilesetName == "rockies")
 	{
-		tileset = 3;
+		m_type = TilesetTypeRockies;
 	}
 	else
 	{
-		tileset = 1;
+		m_type = TilesetTypeArizona;
 	}
 
-	m_directory = QString("texpages%1tertilesc%2hw-").arg(QDir::separator()).arg(tileset) + "%1";
 	m_categories.append(tr("All"));
 	m_categoryBackgrounds.append(QList<int>());
 	m_categoryTypes.append(TileTypeOther);
@@ -93,6 +93,35 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 	file.close();
 }
 
+void Tileset::load(QObject *parent)
+{
+	QFileInfoList tilesetList = QDir(":/tilesets/").entryInfoList();
+
+	for (int i = 0; i < tilesetList.count(); ++i)
+	{
+		Tileset * tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), parent);
+
+		m_tilesets[tileset->type()] = tileset;
+	}
+}
+
+Tileset* Tileset::tileset(TilesetType type)
+{
+	return m_tilesets.value(type, NULL);
+}
+
+QStringList Tileset::names()
+{
+	QStringList names;
+
+	foreach (Tileset *tileset, m_tilesets)
+	{
+		names.append(tileset->name());
+	}
+
+	return names;
+}
+
 TileType Tileset::stringToType(const QString &type)
 {
 	if (type.isEmpty())
@@ -141,6 +170,11 @@ QList<int> Tileset::stringToBackgrounds(const QString &backgrounds)
 	return numbers;
 }
 
+TilesetType Tileset::type()
+{
+	return m_type;
+}
+
 QString Tileset::name()
 {
 	return m_name;
@@ -148,7 +182,7 @@ QString Tileset::name()
 
 QPixmap Tileset::pixmap(TileInformation tile, int size)
 {
-	return QPixmap(SettingManager::value("dataPath").toString() + QDir::separator() + m_directory.arg(size) + QDir::separator() + QString("tile-%1%2.png").arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
+	return QPixmap(QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png").arg(SettingManager::value("dataPath").toString() + QDir::separator()).arg(QDir::separator()).arg(static_cast<int>(m_type)).arg(size).arg(QDir::separator()).arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
 }
 
 QList<QString> Tileset::categories()

@@ -1,5 +1,6 @@
 #include "Map3DViewWidget.h"
 #include "MapInformation.h"
+#include "Tileset.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
@@ -114,38 +115,37 @@ void Map3DViewWidget::paintGL()
 		{
 			glBegin(GL_TRIANGLES);
 			glColor3f(1.0f , 0.0f, 0.0f);
-			glVertex3f(1.0f * i - center_factor_x,        1.0f * j - center_factor_y - 1.0f, 0.0f);
+			glVertex3f(1.0f * i - center_factor_x, 1.0f * j - center_factor_y - 1.0f, 0.0f);
 
 			glColor3f(0.0f, 1.0f, 0.0f);
-			glVertex3f(1.0f * i - center_factor_x,        1.0f * j - center_factor_y,        0.0f);
+			glVertex3f(1.0f * i - center_factor_x, 1.0f * j - center_factor_y, 0.0f);
 
 			glColor3f(0.0f, 0.0f, 1.0f);
-			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y,        0.0f);
+			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y,  0.0f);
 			glEnd();
 
 			glBegin(GL_TRIANGLES);
 			glColor3f(1.0f , 0.0f, 0.0f);
-			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y,        0.0f);
+			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y, 0.0f);
 
 			glColor3f(0.0f, 1.0f, 0.0f);
 			glVertex3f(1.0f * i - center_factor_x - 1.0f, 1.0f * j - center_factor_y - 1.0f, 0.0f);
 
 			glColor3f(0.0f, 0.0f, 1.0f);
-			glVertex3f(1.0f * i - center_factor_x,        1.0f * j - center_factor_y - 1.0f, 0.0f);
+			glVertex3f(1.0f * i - center_factor_x, 1.0f * j - center_factor_y - 1.0f, 0.0f);
 			glEnd();
 		}
 	}
-
 }
 
-void Map3DViewWidget::wheelEvent (QWheelEvent *event)
+void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 {
 	m_zoom += event->delta() / 32;
 
 	repaint();
 }
 
-void Map3DViewWidget::mousePressEvent (QMouseEvent *event)
+void Map3DViewWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
 	{
@@ -153,7 +153,7 @@ void Map3DViewWidget::mousePressEvent (QMouseEvent *event)
 	}
 }
 
-void Map3DViewWidget::mouseReleaseEvent (QMouseEvent *event)
+void Map3DViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton)
 	{
@@ -171,7 +171,7 @@ void Map3DViewWidget::mouseReleaseEvent (QMouseEvent *event)
 	}
 }
 
-void Map3DViewWidget::mouseMoveEvent (QMouseEvent *event)
+void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	static int last_move_x, last_move_y;
 

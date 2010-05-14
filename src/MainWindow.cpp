@@ -75,16 +75,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	tilesetDockWidget->raise();
 
-	QFileInfoList tilesetList = QDir(":/tilesets/").entryInfoList();
+	Tileset::load(this);
 
-	for (int i = 0; i < tilesetList.count(); ++i)
-	{
-		Tileset *tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), this);
-
-		m_tilesetUi->tilesetComboBox->addItem(tileset->name());
-
-		m_tilesets.append(tileset);
-	}
+	m_tilesetUi->tilesetComboBox->addItems(Tileset::names());
 
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 
@@ -276,10 +269,10 @@ void MainWindow::showTileset(int index)
 
 	m_tilesetUi->listWidget->clear();
 
-	if (index < m_tilesets.count())
-	{
-		Tileset *tileset = m_tilesets.at(index);
+	Tileset *tileset = Tileset::tileset(static_cast<TilesetType>(index + 1));
 
+	if (tileset)
+	{
 		if (index != m_tilesetUi->tilesetComboBox->currentIndex() || !m_tilesetUi->tileCategoryComboBox->count())
 		{
 			m_tilesetUi->tileCategoryComboBox->clear();

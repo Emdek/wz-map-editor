@@ -1,5 +1,6 @@
 #include "Map2DViewWidget.h"
 #include "MapInformation.h"
+#include "Tileset.h"
 
 
 namespace WZMapEditor
