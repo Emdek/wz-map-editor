@@ -7,6 +7,8 @@
 namespace WZMapEditor
 {
 
+class MapInformation;
+
 class Map2DViewWidget : public QWidget
 {
 	Q_OBJECT
@@ -14,6 +16,11 @@ class Map2DViewWidget : public QWidget
 public:
 	Map2DViewWidget(QWidget *parent = NULL);
 
+	void setMapInformation(MapInformation *data);
+	MapInformation* mapInformation();
+
+private:
+	MapInformation* m_mapInformation;
 };
 
 }

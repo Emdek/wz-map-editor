@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_terrainUi(new Ui::TerrainDockWidget()),
 	m_landUi(new Ui::LandDockWidget()),
 	m_objectsUi(new Ui::ObjectsDockWidget()),
+	m_mapInformation(new MapInformation(this)),
 	m_coordinatesLabel(new QLabel(this))
 {
 	SettingManager::createInstance(this);
@@ -155,6 +156,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
 
+	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->mainToolbar->reload();
 
 	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());

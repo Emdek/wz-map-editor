@@ -10,6 +10,13 @@ class QPixmap;
 namespace WZMapEditor
 {
 
+enum TilesetType
+{
+	TilesetTypeArizona = 1,
+	TilesetTypeUrban = 2,
+	TilesetTypeRockies = 3
+};
+
 enum TileType
 {
 	TileTypeGround = 1,

@@ -1,4 +1,5 @@
 #include "Map3DViewWidget.h"
+#include "MapInformation.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
@@ -9,21 +10,17 @@
 namespace WZMapEditor
 {
 
-Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+	m_moving(false),
+	m_rotating(false),
+	m_rotationX(0),
+	m_rotationY(0),
+	m_rotationZ(0),
+	m_offsetX(0),
+	m_offsetY(0),
+	m_zoom(-20)
 {
-	m_moving = false;
-	rot_x = 0;
-	rot_y = 0;
-	rot_z = 0;
-	zoom_value = -20.0;
-
 	setMouseTracking(true);
-
-	map_width = 7;
-	map_height = 5;
-
-	map_move_x = 0;
-	map_move_y = 0;
 
 	QAction *moveLeft = new QAction(this);
 	QAction *moveRight = new QAction(this);
@@ -32,8 +29,8 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 
 	moveLeft->setShortcut(Qt::Key_Left);
 	moveRight->setShortcut(Qt::Key_Right);
-	moveUp-> setShortcut(Qt::Key_Up);
-	moveDown-> setShortcut(Qt::Key_Down);
+	moveUp->setShortcut(Qt::Key_Up);
+	moveDown->setShortcut(Qt::Key_Down);
 
 	addAction(moveLeft);
 	addAction(moveRight);
@@ -46,21 +43,6 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 	connect(moveDown, SIGNAL(triggered()), this, SLOT(doMapMoveDown()));
 
 	setFocus();
-}
-
-Map3DViewWidget::~Map3DViewWidget()
-{
-}
-
-
-QSize Map3DViewWidget::minimumSizeHint() const
-{
-	return QSize(50, 50);
-}
-
-QSize Map3DViewWidget::sizeHint() const
-{
-	return QSize(320, 240);
 }
 
 void Map3DViewWidget::initializeGL()
@@ -110,20 +92,25 @@ void Map3DViewWidget::paintGL()
 	//      glEnable (GL_LIGHTING);
 	glEnable (GL_TEXTURE_2D);
 
-	glTranslatef(0.0f, 0.0f, zoom_value);
-	glRotatef(rot_x / 4.0f, 1.0, 0.0, 0.0);
-	glRotatef(rot_y / 4.0f, 0.0, 1.0, 0.0);
-	glRotatef(rot_z / 4.0f, 0.0, 0.0, 1.0);
-	glTranslatef(this->map_move_x * 0.2f, map_move_y * 0.2f, 0.0f);
+	glTranslatef(0.0f, 0.0f, m_zoom);
+	glRotatef(m_rotationX / 4.0f, 1.0, 0.0, 0.0);
+	glRotatef(m_rotationY / 4.0f, 0.0, 1.0, 0.0);
+	glRotatef(m_rotationZ / 4.0f, 0.0, 0.0, 1.0);
+	glTranslatef(this->m_offsetX * 0.2f, m_offsetY * 0.2f, 0.0f);
+
+	if (!m_mapInformation)
+	{
+		return;
+	}
 
 	// this moves objects drawing position
 	// simple hack to set center in really center of map - not on left-bottom edge
-	int center_factor_x = (map_width  * 1.0f) / 2;
-	int center_factor_y = (map_height * 1.0f) / 2;
+	int center_factor_x = (m_mapInformation->size().width()  * 1.0f) / 2;
+	int center_factor_y = (m_mapInformation->size().height() * 1.0f) / 2;
 
-	for (int i = 1; i <= map_width; ++i)
+	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
-		for (int j = 1; j <= map_height; ++j)
+		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
 			glBegin(GL_TRIANGLES);
 			glColor3f(1.0f , 0.0f, 0.0f);
@@ -153,7 +140,7 @@ void Map3DViewWidget::paintGL()
 
 void Map3DViewWidget::wheelEvent (QWheelEvent *event)
 {
-	zoom_value += event->delta() / 32;
+	m_zoom += event->delta() / 32;
 
 	repaint();
 }
@@ -190,8 +177,8 @@ void Map3DViewWidget::mouseMoveEvent (QMouseEvent *event)
 
 	if (m_moving == true)
 	{
-		rot_z += -(last_move_x - event->pos().x());
-		rot_x += -(last_move_y - event->pos().y());
+		m_rotationZ += -(last_move_x - event->pos().x());
+		m_rotationX += -(last_move_y - event->pos().y());
 
 		repaint();
 	}
@@ -202,40 +189,64 @@ void Map3DViewWidget::mouseMoveEvent (QMouseEvent *event)
 	emit cooridantesChanged(event->pos().x(), event->pos().y(), 0);
 }
 
-void Map3DViewWidget::resizeMap (unsigned int width, unsigned int height)
+void Map3DViewWidget::resizeMap(int width, int height)
 {
-	map_width  = width;
-	map_height = height;
+	if (m_mapInformation)
+	{
+		m_mapInformation->setSize(QSize(width, height));
+	}
 
 	repaint();
 }
 
 void Map3DViewWidget::doMapMoveLeft()
 {
-	map_move_x += 1;
+	m_offsetX += 1;
 
 	repaint();
 }
 
 void Map3DViewWidget::doMapMoveRight()
 {
-	map_move_x -= 1;
+	m_offsetX -= 1;
 
 	repaint();
 }
 
 void Map3DViewWidget::doMapMoveUp()
 {
-	map_move_y -= 1;
+	m_offsetY -= 1;
 
 	repaint();
 }
 
 void Map3DViewWidget::doMapMoveDown()
 {
-	map_move_y += 1;
+	m_offsetY += 1;
 
 	repaint();
+}
+
+void Map3DViewWidget::setMapInformation(MapInformation *data)
+{
+	m_mapInformation = data;
+
+	repaint();
+}
+
+MapInformation* Map3DViewWidget::mapInformation()
+{
+	return m_mapInformation;
+}
+
+QSize Map3DViewWidget::minimumSizeHint() const
+{
+	return QSize(50, 50);
+}
+
+QSize Map3DViewWidget::sizeHint() const
+{
+	return QSize(320, 240);
 }
 
 }

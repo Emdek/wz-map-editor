@@ -20,6 +20,7 @@ namespace WZMapEditor
 
 class ToolBarWidget;
 class Tileset;
+class MapInformation;
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +50,7 @@ private:
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::LandDockWidget *m_landUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
+	MapInformation *m_mapInformation;
 	QList<QDockWidget*> m_docks;
 	QList<Tileset*> m_tilesets;
 	QLabel *m_coordinatesLabel;

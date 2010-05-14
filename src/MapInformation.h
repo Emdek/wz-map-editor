@@ -3,6 +3,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
+#include <QtCore/QSize>
 
 
 namespace WZMapEditor
@@ -16,14 +17,6 @@ enum MapObjectType
 	MapObjectTypeObject
 };
 
-
-enum TilesetType
-{
-	TilesetTypeArizona = 0,
-	TilesetTypeUrban = 1,
-	TilesetTypeRockies = 2
-};
-
 struct MapTile
 {
 
@@ -35,6 +28,8 @@ struct Gateway
 	QPoint end;
 };
 
+class Tileset;
+
 class MapInformation : public QObject
 {
 	Q_OBJECT
@@ -42,9 +37,13 @@ class MapInformation : public QObject
 public:
 	MapInformation(QObject *parent = NULL);
 
+	void setSize(const QSize &size);
+	QSize size();
+
 private:
 	QString m_name;
-	TilesetType m_tileset;
+	QSize m_size;
+	Tileset *m_tileset;
 	QList<QList<MapTile> > m_tiles;
 	QList<QList<Gateway> > m_gateways;
 };
