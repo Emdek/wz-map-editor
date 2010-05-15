@@ -23,10 +23,10 @@ public:
 
 public slots:
 	void setZoom(qreal zoom);
-	void doMapMoveLeft();
-	void doMapMoveRight();
-	void doMapMoveUp();
-	void doMapMoveDown();
+	void moveLeft();
+	void moveRight();
+	void moveUp();
+	void moveDown();
 	void resizeMap(int width, int height);
 
 protected:

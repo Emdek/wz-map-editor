@@ -38,10 +38,10 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 	addAction(moveUp);
 	addAction(moveDown);
 
-	connect(moveLeft, SIGNAL(triggered()), this, SLOT(doMapMoveLeft()));
-	connect(moveRight, SIGNAL(triggered()), this, SLOT(doMapMoveRight()));
-	connect(moveUp, SIGNAL(triggered()), this, SLOT(doMapMoveUp()));
-	connect(moveDown, SIGNAL(triggered()), this, SLOT(doMapMoveDown()));
+	connect(moveLeft, SIGNAL(triggered()), this, SLOT(moveLeft()));
+	connect(moveRight, SIGNAL(triggered()), this, SLOT(moveRight()));
+	connect(moveUp, SIGNAL(triggered()), this, SLOT(moveUp()));
+	connect(moveDown, SIGNAL(triggered()), this, SLOT(moveDown()));
 
 	setFocus();
 }
@@ -163,7 +163,25 @@ void Map3DViewWidget::paintGL()
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 {
-	setZoom(m_zoom + (event->delta() / 32));
+	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
+	{
+		setZoom(m_zoom + (event->delta() / 32));
+	}
+	else
+	{
+		int move = (event->delta() / 32);
+
+		if (event->modifiers() & Qt::SHIFT)
+		{
+			m_offsetX += move;
+		}
+		else
+		{
+			m_offsetY += move;
+		}
+
+		repaint();
+	}
 
 	event->accept();
 }
@@ -246,30 +264,30 @@ void Map3DViewWidget::resizeMap(int width, int height)
 	repaint();
 }
 
-void Map3DViewWidget::doMapMoveLeft()
+void Map3DViewWidget::moveLeft()
 {
-	m_offsetX += 1;
+	--m_offsetX;
 
 	repaint();
 }
 
-void Map3DViewWidget::doMapMoveRight()
+void Map3DViewWidget::moveRight()
 {
-	m_offsetX -= 1;
+	++m_offsetX;
 
 	repaint();
 }
 
-void Map3DViewWidget::doMapMoveUp()
+void Map3DViewWidget::moveUp()
 {
-	m_offsetY -= 1;
+	++m_offsetY;
 
 	repaint();
 }
 
-void Map3DViewWidget::doMapMoveDown()
+void Map3DViewWidget::moveDown()
 {
-	m_offsetY += 1;
+	--m_offsetY;
 
 	repaint();
 }
