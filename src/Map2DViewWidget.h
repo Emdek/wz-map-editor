@@ -19,6 +19,7 @@ public:
 
 	void setMapInformation(MapInformation *data);
 	MapInformation* mapInformation();
+	int zoom();
 
 public slots:
 	void setZoom(qreal zoom);
@@ -35,12 +36,12 @@ private:
 	QRubberBand *m_rubberBand;
 	QPoint m_mousePressStart;
 	QRect m_selection;
-	qreal m_zoom;
+	int m_zoom;
 	int m_tileSize;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
-	void zoomChanged(qreal zoom);
+	void zoomChanged(int zoom);
 };
 
 }

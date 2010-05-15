@@ -25,6 +25,7 @@ namespace WZMapEditor
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mapInformation(new MapInformation(this)),
+	m_zoomSlider(new QSlider(Qt::Horizontal, this)),
 	m_coordinatesLabel(new QLabel(this)),
 	m_mainWindowUi(new Ui::MainWindow()),
 	m_map2DEditorWidgetUi(new Ui::Map2DEditorWidget()),
@@ -82,7 +83,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	m_tilesetUi->tilesetComboBox->addItems(Tileset::names());
 
+	m_zoomSlider->setRange(10, 500);
+	m_zoomSlider->setMaximumWidth(200);
+
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
+	m_mainWindowUi->statusBar->addPermanentWidget(m_zoomSlider);
 
 	QActionGroup *mouseMode = new QActionGroup(this);
 	mouseMode->addAction(m_mainWindowUi->actionMouseModeView);
@@ -162,6 +167,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
+	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
+	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
+	connect(m_zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(updateZoom(int)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
 	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
 	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
@@ -174,6 +182,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	action3DView(true);
 	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());
+
+	updateZoom(100);
 
 	restoreGeometry(QSettings().value("geometry").toByteArray());
 	restoreState(QSettings().value("windowState").toByteArray());
@@ -322,6 +332,26 @@ void MainWindow::showTileset(int index)
 void MainWindow::updateCoordinates(int x, int y, int z)
 {
 	m_coordinatesLabel->setText(QString("x: %1 y: %2 z: %3").arg(x).arg(y).arg(z));
+}
+
+void MainWindow::updateZoom(int zoom)
+{
+	if (m_zoomSlider->value() != zoom)
+	{
+		m_zoomSlider->setValue(zoom);
+	}
+
+	if (m_map2DEditorWidgetUi->map2DViewWidget->zoom() != zoom)
+	{
+		m_map2DEditorWidgetUi->map2DViewWidget->setZoom(zoom);
+	}
+
+	if (m_mainWindowUi->map3DViewWidget->zoom() != zoom)
+	{
+		m_mainWindowUi->map3DViewWidget->setZoom(zoom);
+	}
+
+	m_zoomSlider->setToolTip(QString("Zoom: %1%").arg(zoom));
 }
 
 }

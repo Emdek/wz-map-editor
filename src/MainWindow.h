@@ -4,6 +4,7 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QDockWidget>
 #include <QtGui/QLabel>
+#include <QtGui/QSlider>
 
 
 namespace Ui
@@ -42,6 +43,7 @@ public slots:
 	void actionToggleDock();
 	void showTileset(int tileset = -1);
 	void updateCoordinates(int x, int y, int z);
+	void updateZoom(int zoom);
 
 protected:
 	void closeEvent(QCloseEvent *event);
@@ -49,6 +51,7 @@ protected:
 private:
 	MapInformation *m_mapInformation;
 	QList<QDockWidget*> m_docks;
+	QSlider *m_zoomSlider;
 	QLabel *m_coordinatesLabel;
 	Ui::MainWindow *m_mainWindowUi;
 	Ui::Map2DEditorWidget *m_map2DEditorWidgetUi;

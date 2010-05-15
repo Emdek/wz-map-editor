@@ -20,6 +20,7 @@ public:
 	MapInformation* mapInformation();
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
+	int zoom();
 
 public slots:
 	void setZoom(qreal zoom);
@@ -48,11 +49,11 @@ private:
 	int m_rotationZ;
 	int m_offsetX;
 	int m_offsetY;
-	qreal m_zoom;
+	int m_zoom;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
-	void zoomChanged(qreal zoom);
+	void zoomChanged(int zoom);
 };
 
 }

@@ -19,7 +19,7 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 	m_rotationZ(0),
 	m_offsetX(0),
 	m_offsetY(0),
-	m_zoom(-20)
+	m_zoom(50)
 {
 	setMouseTracking(true);
 
@@ -93,7 +93,7 @@ void Map3DViewWidget::paintGL()
 //	glEnable (GL_LIGHTING);
 	glEnable (GL_TEXTURE_2D);
 
-	glTranslatef(0.0f, 0.0f, m_zoom);
+	glTranslatef(0.0f, 0.0f, ((1.0 / m_zoom) * -2000));
 	glRotatef(m_rotationX / 4.0f, 1.0, 0.0, 0.0);
 	glRotatef(m_rotationY / 4.0f, 0.0, 1.0, 0.0);
 	glRotatef(m_rotationZ / 4.0f, 0.0, 0.0, 1.0);
@@ -244,14 +244,23 @@ void Map3DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 
 void Map3DViewWidget::setZoom(qreal zoom)
 {
-	if (zoom > -1)
+	if (zoom > 500)
 	{
-		zoom = -1;
+		zoom = 500;
+	}
+	else if (zoom < 10)
+	{
+		zoom = 10;
 	}
 
-	m_zoom = zoom;
+	if (m_zoom != zoom)
+	{
+		m_zoom = zoom;
 
-	repaint();
+		repaint();
+
+		emit zoomChanged(zoom);
+	}
 }
 
 void Map3DViewWidget::resizeMap(int width, int height)
@@ -312,6 +321,11 @@ QSize Map3DViewWidget::minimumSizeHint() const
 QSize Map3DViewWidget::sizeHint() const
 {
 	return QSize(320, 240);
+}
+
+int Map3DViewWidget::zoom()
+{
+	return m_zoom;
 }
 
 }
