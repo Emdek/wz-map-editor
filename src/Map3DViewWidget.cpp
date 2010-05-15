@@ -171,9 +171,9 @@ void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 	{
 		int move = (event->delta() / 32);
 
-		if (event->modifiers() & Qt::SHIFT)
+		if (event->modifiers() & Qt::ALT)
 		{
-			m_offsetX += move;
+			m_offsetX -= move;
 		}
 		else
 		{

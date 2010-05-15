@@ -9,6 +9,7 @@
 namespace Ui
 {
 	class MainWindow;
+	class Map2DEditorWidget;
 	class TilesetDockWidget;
 	class TerrainDockWidget;
 	class LandDockWidget;
@@ -46,14 +47,15 @@ protected:
 	void closeEvent(QCloseEvent *event);
 
 private:
+	MapInformation *m_mapInformation;
+	QList<QDockWidget*> m_docks;
+	QLabel *m_coordinatesLabel;
 	Ui::MainWindow *m_mainWindowUi;
+	Ui::Map2DEditorWidget *m_map2DEditorWidgetUi;
 	Ui::TilesetDockWidget *m_tilesetUi;
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::LandDockWidget *m_landUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
-	MapInformation *m_mapInformation;
-	QList<QDockWidget*> m_docks;
-	QLabel *m_coordinatesLabel;
 };
 
 }

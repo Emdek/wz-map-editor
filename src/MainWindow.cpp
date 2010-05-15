@@ -9,6 +9,7 @@
 #include "MapParser.h"
 
 #include "ui_MainWindow.h"
+#include "ui_Map2DEditorWidget.h"
 #include "ui_TilesetDockWidget.h"
 #include "ui_TerrainDockWidget.h"
 #include "ui_LandDockWidget.h"
@@ -23,13 +24,14 @@ namespace WZMapEditor
 {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+	m_mapInformation(new MapInformation(this)),
+	m_coordinatesLabel(new QLabel(this)),
 	m_mainWindowUi(new Ui::MainWindow()),
+	m_map2DEditorWidgetUi(new Ui::Map2DEditorWidget()),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
 	m_terrainUi(new Ui::TerrainDockWidget()),
 	m_landUi(new Ui::LandDockWidget()),
-	m_objectsUi(new Ui::ObjectsDockWidget()),
-	m_mapInformation(new MapInformation(this)),
-	m_coordinatesLabel(new QLabel(this))
+	m_objectsUi(new Ui::ObjectsDockWidget())
 {
 	SettingManager::createInstance(this);
 	ActionManager::createInstance(this);
@@ -51,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	landDockWidget->setWidget(new QWidget(landDockWidget));
 	objectsDockWidget->setWidget(new QWidget(objectsDockWidget));
 
+	m_map2DEditorWidgetUi->setupUi(m_mainWindowUi->map2DEditorWidget);
 	m_tilesetUi->setupUi(tilesetDockWidget->widget());
 	m_terrainUi->setupUi(terrainDockWidget->widget());
 	m_landUi->setupUi(landDockWidget->widget());
@@ -157,6 +160,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
 	connect(m_mainWindowUi->actionAboutApplication, SIGNAL(triggered()), this, SLOT(actionAboutApplication()));
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
+	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
 	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
@@ -164,6 +168,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
 
+	m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->mainToolbar->reload();
 
@@ -177,6 +182,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 MainWindow::~MainWindow()
 {
 	delete m_mainWindowUi;
+	delete m_map2DEditorWidgetUi;
 	delete m_tilesetUi;
 	delete m_terrainUi;
 	delete m_landUi;
@@ -205,7 +211,7 @@ void MainWindow::actionFullscreen(bool checked)
 
 void MainWindow::action3DView(bool checked)
 {
-	m_mainWindowUi->map2DViewWidget->setVisible(!checked);
+	m_mainWindowUi->map2DEditorWidget->setVisible(!checked);
 	m_mainWindowUi->map3DViewWidget->setVisible(checked);
 }
 

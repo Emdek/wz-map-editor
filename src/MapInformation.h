@@ -31,6 +31,8 @@ struct MapTile
 {
 	bool gateway;
 	int rotation;
+	int texture;
+	int height;
 	FlipType flip;
 	QPoint position;
 };

@@ -14,7 +14,7 @@
    <string>Warzone 2100 Map Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/resources.qrc">
+   <iconset>
     <normaloff>:/icons/warzone2100mapeditor.png</normaloff>:/icons/warzone2100mapeditor.png</iconset>
   </property>
   <property name="dockNestingEnabled">
@@ -35,7 +35,7 @@
      <widget class="WZMapEditor::Map3DViewWidget" name="map3DViewWidget" native="true"/>
     </item>
     <item row="1" column="0">
-     <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget" native="true"/>
+     <widget class="QWidget" name="map2DEditorWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -401,15 +401,7 @@
    <extends>QWidget</extends>
    <header>src/Map3DViewWidget.h</header>
   </customwidget>
-  <customwidget>
-   <class>WZMapEditor::Map2DViewWidget</class>
-   <extends>QWidget</extends>
-   <header>src/Map2DViewWidget.h</header>
-   <container>1</container>
-  </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
