@@ -18,6 +18,7 @@
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+#include <QtGui/QToolButton>
 
 
 namespace WZMapEditor
@@ -86,8 +87,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_zoomSlider->setRange(10, 500);
 	m_zoomSlider->setMaximumWidth(200);
 
+	QToolButton *zoomInButton = new QToolButton(this);
+	zoomInButton->setDefaultAction(m_mainWindowUi->actionZoomIn);
+
+	QToolButton *zoomOutButton = new QToolButton(this);
+	zoomOutButton->setDefaultAction(m_mainWindowUi->actionZoomOut);
+
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
+	m_mainWindowUi->statusBar->addPermanentWidget(zoomOutButton);
 	m_mainWindowUi->statusBar->addPermanentWidget(m_zoomSlider);
+	m_mainWindowUi->statusBar->addPermanentWidget(zoomInButton);
 
 	QActionGroup *mouseMode = new QActionGroup(this);
 	mouseMode->addAction(m_mainWindowUi->actionMouseModeView);
@@ -106,6 +115,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionRedo->setIcon(QIcon::fromTheme("edit-redo", QIcon(":/icons/edit-redo.png")));
 	m_mainWindowUi->actionFullscreen->setIcon(QIcon::fromTheme("view-fullscreen", QIcon(":/icons/view-fullscreen.png")));
 	m_mainWindowUi->action3DView->setIcon(QIcon(":/icons/view-3d.png"));
+	m_mainWindowUi->actionZoomIn->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/icons/zoom-in.png")));
+	m_mainWindowUi->actionZoomOut->setIcon(QIcon::fromTheme("zoom-out", QIcon(":/icons/zoom-out.png")));
+	m_mainWindowUi->actionZoomOriginal->setIcon(QIcon::fromTheme("zoom-original", QIcon(":/icons/zoom-original.png")));
 	m_mainWindowUi->actionMouseModeView->setIcon(QIcon(":/icons/input-mouse.png"));
 	m_mainWindowUi->actionMouseModeSelect->setIcon(QIcon(":/icons/edit-select.png"));
 	m_mainWindowUi->actionMouseModeMove->setIcon(QIcon(":/icons/transform-move.png"));;
@@ -136,6 +148,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionRedo);
 	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
 	ActionManager::registerAction(m_mainWindowUi->action3DView);
+	ActionManager::registerAction(m_mainWindowUi->actionZoomIn);
+	ActionManager::registerAction(m_mainWindowUi->actionZoomOut);
+	ActionManager::registerAction(m_mainWindowUi->actionZoomOriginal);
 	ActionManager::registerAction(m_mainWindowUi->actionTileset);
 	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
 	ActionManager::registerAction(m_mainWindowUi->actionLand);
@@ -155,6 +170,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
 	connect(m_mainWindowUi->action3DView, SIGNAL(triggered(bool)), this, SLOT(action3DView(bool)));
+	connect(m_mainWindowUi->actionZoomIn, SIGNAL(triggered()), this, SLOT(actionZoomIn()));
+	connect(m_mainWindowUi->actionZoomOut, SIGNAL(triggered()), this, SLOT(actionZoomOut()));
+	connect(m_mainWindowUi->actionZoomOriginal, SIGNAL(triggered()), this, SLOT(actionZoomOriginal()));
 	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionLand, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
@@ -223,6 +241,21 @@ void MainWindow::action3DView(bool checked)
 {
 	m_mainWindowUi->map2DEditorWidget->setVisible(!checked);
 	m_mainWindowUi->map3DViewWidget->setVisible(checked);
+}
+
+void MainWindow::actionZoomIn()
+{
+	updateZoom(m_zoomSlider->value() + 5);
+}
+
+void MainWindow::actionZoomOut()
+{
+	updateZoom(m_zoomSlider->value() - 5);
+}
+
+void MainWindow::actionZoomOriginal()
+{
+	updateZoom(100);
 }
 
 void MainWindow::actionShortcutsConfiguration()

@@ -25,6 +25,8 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	m_defaultSettings["actions/Exit"] = QVariant(QKeySequence(QKeySequence::Quit).toString());
 	m_defaultSettings["actions/Undo"] = QVariant(QKeySequence(QKeySequence::Undo).toString());
 	m_defaultSettings["actions/Redo"] = QVariant(QKeySequence(QKeySequence::Redo).toString());
+	m_defaultSettings["actions/ZoomIn"] = QVariant(QKeySequence(QKeySequence::ZoomIn).toString());
+	m_defaultSettings["actions/ZoomOut"] = QVariant(QKeySequence(QKeySequence::ZoomOut).toString());
 	m_defaultSettings["actions/Help"] = QVariant(QKeySequence(QKeySequence::HelpContents).toString());
 	m_defaultSettings["actions/Tileset"] = QVariant(QKeySequence("Ctrl+1").toString());
 	m_defaultSettings["actions/Terrain"] = QVariant(QKeySequence("Ctrl+2").toString());

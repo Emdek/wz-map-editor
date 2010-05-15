@@ -14,7 +14,7 @@
    <string>Warzone 2100 Map Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../resources/resources.qrc">
     <normaloff>:/icons/warzone2100mapeditor.png</normaloff>:/icons/warzone2100mapeditor.png</iconset>
   </property>
   <property name="dockNestingEnabled">
@@ -99,6 +99,28 @@
     <addaction name="separator"/>
     <addaction name="actionResizeMap"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionShortcutsConfiguration"/>
+    <addaction name="actionToolbarsConfiguration"/>
+    <addaction name="actionApplicationConfiguration"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuMouseMode">
+     <property name="title">
+      <string>Mouse Mode</string>
+     </property>
+     <addaction name="actionMouseModeView"/>
+     <addaction name="actionMouseModeSelect"/>
+     <addaction name="actionMouseModeMove"/>
+    </widget>
+    <addaction name="menuMouseMode"/>
+   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
@@ -121,30 +143,12 @@
     <addaction name="actionFullscreen"/>
     <addaction name="action3DView"/>
     <addaction name="separator"/>
+    <addaction name="actionZoomIn"/>
+    <addaction name="actionZoomOut"/>
+    <addaction name="actionZoomOriginal"/>
+    <addaction name="separator"/>
     <addaction name="menuDocks"/>
     <addaction name="menuToolbars"/>
-   </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="actionShortcutsConfiguration"/>
-    <addaction name="actionToolbarsConfiguration"/>
-    <addaction name="actionApplicationConfiguration"/>
-   </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <widget class="QMenu" name="menuMouseMode">
-     <property name="title">
-      <string>Mouse Mode</string>
-     </property>
-     <addaction name="actionMouseModeView"/>
-     <addaction name="actionMouseModeSelect"/>
-     <addaction name="actionMouseModeMove"/>
-    </widget>
-    <addaction name="menuMouseMode"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -389,6 +393,21 @@
     <string>Move</string>
    </property>
   </action>
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionZoomOriginal">
+   <property name="text">
+    <string>Zoom Original</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -402,6 +421,8 @@
    <header>src/Map3DViewWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

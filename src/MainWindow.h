@@ -35,6 +35,9 @@ public:
 public slots:
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);
+	void actionZoomIn();
+	void actionZoomOut();
+	void actionZoomOriginal();
 	void actionShortcutsConfiguration();
 	void actionToolbarsConfiguration();
 	void actionApplicationConfiguration();
