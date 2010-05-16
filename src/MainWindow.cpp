@@ -4,6 +4,7 @@
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
 #include "PreferencesManager.h"
+#include "MapSettingsManager.h"
 #include "Tileset.h"
 #include "MapInformation.h"
 #include "MapParser.h"
@@ -82,8 +83,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	Tileset::load(this);
 
-	m_tilesetUi->tilesetComboBox->addItems(Tileset::names());
-
 	m_zoomSlider->setRange(10, 500);
 	m_zoomSlider->setMaximumWidth(200);
 
@@ -110,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionClearRecentFiles->setIcon(QIcon::fromTheme("edit-clear", QIcon(":/icons/edit-clear.png")));
 	m_mainWindowUi->actionSave->setIcon(QIcon::fromTheme("document-save", QIcon(":/icons/document-save.png")));
 	m_mainWindowUi->actionSaveAs->setIcon(QIcon::fromTheme("document-save-as", QIcon(":/icons/document-save-as.png")));
+	m_mainWindowUi->actionProperties->setIcon(QIcon::fromTheme("document-properties", QIcon(":/icons/document-properties.png")));
 	m_mainWindowUi->actionExit->setIcon(QIcon::fromTheme("application-exit", QIcon(":/icons/application-exit.png")));
 	m_mainWindowUi->actionUndo->setIcon(QIcon::fromTheme("edit-undo", QIcon(":/icons/edit-undo.png")));
 	m_mainWindowUi->actionRedo->setIcon(QIcon::fromTheme("edit-redo", QIcon(":/icons/edit-redo.png")));
@@ -143,6 +143,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionOpenRecent);
 	ActionManager::registerAction(m_mainWindowUi->actionSave);
 	ActionManager::registerAction(m_mainWindowUi->actionSaveAs);
+	ActionManager::registerAction(m_mainWindowUi->actionProperties);
 	ActionManager::registerAction(m_mainWindowUi->actionExit);
 	ActionManager::registerAction(m_mainWindowUi->actionUndo);
 	ActionManager::registerAction(m_mainWindowUi->actionRedo);
@@ -165,8 +166,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
 	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
-	showTileset();
+	updateTilesetView();
 
+	connect(m_mainWindowUi->actionNew, SIGNAL(triggered()), this, SLOT(actionNew()));
+	connect(m_mainWindowUi->actionProperties, SIGNAL(triggered()), this, SLOT(actionProperties()));
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
 	connect(m_mainWindowUi->action3DView, SIGNAL(triggered(bool)), this, SLOT(action3DView(bool)));
@@ -189,10 +192,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
 	connect(m_zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(updateZoom(int)));
 	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
-	connect(m_tilesetUi->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset(int)));
-	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
-	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(showTileset()));
-	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(showTileset()));
+	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(updateTilesetView()));
 
 	m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
@@ -219,10 +221,47 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	if (!canClose())
+	{
+		event->ignore();
+
+		return;
+	}
+
 	QSettings().setValue("geometry", saveGeometry());
 	QSettings().setValue("windowState", saveState());
 
 	QMainWindow::closeEvent(event);
+}
+
+void MainWindow::actionNew()
+{
+	if (canClose())
+	{
+		if (m_mapInformation)
+		{
+			m_mapInformation->deleteLater();
+		}
+
+		m_mapInformation = new MapInformation(this);
+
+		m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
+		m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
+
+		actionProperties();
+	}
+}
+
+void MainWindow::actionProperties()
+{
+	new MapSettingsManager(m_mapInformation, this);
+
+	m_tilesetUi->tileCategoryComboBox->clear();
+
+	updateTilesetView();
+
+	m_map2DEditorWidgetUi->map2DViewWidget->updateSize();
+	m_mainWindowUi->map3DViewWidget->repaint();
 }
 
 void MainWindow::actionFullscreen(bool checked)
@@ -331,20 +370,20 @@ void MainWindow::actionToggleDock()
 	}
 }
 
-void MainWindow::showTileset(int index)
+void MainWindow::updateTilesetView()
 {
-	if (index < 0)
-	{
-		index = m_tilesetUi->tilesetComboBox->currentIndex();
-	}
-
 	m_tilesetUi->listWidget->clear();
 
-	Tileset *tileset = Tileset::tileset(static_cast<TilesetType>(index + 1));
+	if (m_mapInformation)
+	{
+		return;
+	}
+
+	Tileset *tileset = Tileset::tileset(m_mapInformation->tilesetType());
 
 	if (tileset)
 	{
-		if (index != m_tilesetUi->tilesetComboBox->currentIndex() || !m_tilesetUi->tileCategoryComboBox->count())
+		if (!m_tilesetUi->tileCategoryComboBox->count())
 		{
 			m_tilesetUi->tileCategoryComboBox->clear();
 			m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
@@ -385,6 +424,26 @@ void MainWindow::updateZoom(int zoom)
 	}
 
 	m_zoomSlider->setToolTip(QString("Zoom: %1%").arg(zoom));
+}
+
+bool MainWindow::canClose()
+{
+	if (isWindowModified())
+	{
+		QMessageBox::StandardButton action = QMessageBox::warning(QApplication::topLevelWidgets().at(0), QApplication::applicationName(), tr("There are unsaved changes in current map.\nDo you want to save your changes?"), (QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel));
+
+		if (action == QMessageBox::Cancel)
+		{
+			return false;
+		}
+
+		if (action == QMessageBox::Save)
+		{
+//			actionSave();
+		}
+	}
+
+	return true;
 }
 
 }

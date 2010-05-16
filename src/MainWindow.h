@@ -32,7 +32,11 @@ public:
 	MainWindow(QWidget *parent = NULL);
 	~MainWindow();
 
+	bool canClose();
+
 public slots:
+	void actionNew();
+	void actionProperties();
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);
 	void actionZoomIn();
@@ -44,7 +48,7 @@ public slots:
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);
 	void actionToggleDock();
-	void showTileset(int tileset = -1);
+	void updateTilesetView();
 	void updateCoordinates(int x, int y, int z);
 	void updateZoom(int zoom);
 

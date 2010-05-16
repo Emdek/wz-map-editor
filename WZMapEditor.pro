@@ -23,7 +23,8 @@ SOURCES += src/main.cpp \
     src/Tileset.cpp \
     src/PreferencesManager.cpp \
     src/FileSystemCompleterModel.cpp \
-    src/MapWriter.cpp
+    src/MapWriter.cpp \
+    src/MapSettingsManager.cpp
 HEADERS += src/MainWindow.h \
     src/Map2DViewWidget.h \
     src/Map3DViewWidget.h \
@@ -39,7 +40,8 @@ HEADERS += src/MainWindow.h \
     src/Tileset.h \
     src/PreferencesManager.h \
     src/FileSystemCompleterModel.h \
-    src/MapWriter.h
+    src/MapWriter.h \
+    src/MapSettingsManager.h
 FORMS += src/ui/MainWindow.ui \
     src/ui/ToolBarEditorDialog.ui \
     src/ui/ShortcutEditorDialog.ui \

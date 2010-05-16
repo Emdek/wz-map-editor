@@ -17,6 +17,7 @@ class Map2DViewWidget : public QWidget
 public:
 	Map2DViewWidget(QWidget *parent = NULL);
 
+	void updateSize();
 	void setMapInformation(MapInformation *data);
 	MapInformation* mapInformation();
 	int zoom();

@@ -14,11 +14,11 @@ namespace WZMapEditor
 Map2DViewWidget::Map2DViewWidget(QWidget *parent) : QWidget(parent),
 	m_mapInformation(NULL),
 	m_rubberBand(NULL),
-	m_zoom(50),
+	m_zoom(100),
 	m_tileSize(25)
 {
 	setMouseTracking(true);
-	setZoom(100);
+	updateSize();
 }
 
 void Map2DViewWidget::paintEvent(QPaintEvent *event)
@@ -173,10 +173,27 @@ void Map2DViewWidget::mouseMoveEvent(QMouseEvent *event)
 	}
 }
 
-void Map2DViewWidget::setZoom(qreal zoom)
+void Map2DViewWidget::updateSize()
 {
 	QSize size;
 
+	m_tileSize = (m_zoom / 2);
+
+	if (m_mapInformation)
+	{
+		size = (m_mapInformation->size() * m_tileSize);
+	}
+	else
+	{
+		size = (QSize(10, 10) * m_tileSize);
+	}
+
+	setMinimumSize(size);
+	setMaximumSize(size);
+}
+
+void Map2DViewWidget::setZoom(qreal zoom)
+{
 	if (zoom > 500)
 	{
 		zoom = 500;
@@ -189,19 +206,8 @@ void Map2DViewWidget::setZoom(qreal zoom)
 	if (m_zoom != zoom)
 	{
 		m_zoom = zoom;
-		m_tileSize = (m_zoom / 2);
 
-		if (m_mapInformation)
-		{
-			size = (m_mapInformation->size() * m_tileSize);
-		}
-		else
-		{
-			size = (QSize(10, 10) * m_tileSize);
-		}
-
-		setMinimumSize(size);
-		setMaximumSize(size);
+		updateSize();
 
 		emit zoomChanged(zoom);
 	}
