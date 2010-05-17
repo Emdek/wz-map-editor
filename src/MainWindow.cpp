@@ -374,7 +374,7 @@ void MainWindow::updateTilesetView()
 {
 	m_tilesetUi->listWidget->clear();
 
-	if (m_mapInformation)
+	if (!m_mapInformation)
 	{
 		return;
 	}

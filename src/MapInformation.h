@@ -50,8 +50,10 @@ class MapInformation : public QObject
 public:
 	MapInformation(QObject *parent = NULL);
 
+	void setName(const QString &name);
 	void setSize(const QSize &size);
 	void setTilesetType(TilesetType tilesetType);
+	QString name();
 	QSize size();
 	TilesetType tilesetType();
 
