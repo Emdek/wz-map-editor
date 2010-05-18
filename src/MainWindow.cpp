@@ -14,7 +14,7 @@
 #include "ui_TilesetDockWidget.h"
 #include "ui_ObjectsDockWidget.h"
 #include "ui_TerrainDockWidget.h"
-#include "ui_LandDockWidget.h"
+#include "ui_InformationDockWidget.h"
 
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
 	m_objectsUi(new Ui::ObjectsDockWidget()),
 	m_terrainUi(new Ui::TerrainDockWidget()),
-	m_landUi(new Ui::LandDockWidget())
+	m_informationUi(new Ui::InformationDockWidget())
 {
 	SettingManager::createInstance(this);
 	ActionManager::createInstance(this);
@@ -44,40 +44,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
 	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
 	QDockWidget *terrainDockWidget = new QDockWidget(tr("Terrain"), this);
-	QDockWidget *landDockWidget = new QDockWidget(tr("Land"), this);
+	QDockWidget *informationDockWidget = new QDockWidget(tr("Information"), this);
 
 	tilesetDockWidget->setObjectName("tilesetDockWidget");
 	objectsDockWidget->setObjectName("objectsDockWidget");
 	terrainDockWidget->setObjectName("terrainDockWidget");
-	landDockWidget->setObjectName("landDockWidget");
+	informationDockWidget->setObjectName("informationDockWidget");
 
 	tilesetDockWidget->setWidget(new QWidget(tilesetDockWidget));
 	objectsDockWidget->setWidget(new QWidget(objectsDockWidget));
 	terrainDockWidget->setWidget(new QWidget(terrainDockWidget));
-	landDockWidget->setWidget(new QWidget(landDockWidget));
+	informationDockWidget->setWidget(new QWidget(informationDockWidget));
 
 	m_map2DEditorWidgetUi->setupUi(m_mainWindowUi->map2DEditorWidget);
 	m_tilesetUi->setupUi(tilesetDockWidget->widget());
 	m_objectsUi->setupUi(objectsDockWidget->widget());
 	m_terrainUi->setupUi(terrainDockWidget->widget());
-	m_landUi->setupUi(landDockWidget->widget());
+	m_informationUi->setupUi(informationDockWidget->widget());
 
 	addDockWidget(Qt::LeftDockWidgetArea, tilesetDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, objectsDockWidget);
 	addDockWidget(Qt::LeftDockWidgetArea, terrainDockWidget);
-	addDockWidget(Qt::LeftDockWidgetArea, landDockWidget);
+	addDockWidget(Qt::LeftDockWidgetArea, informationDockWidget);
 
 	m_docks.append(tilesetDockWidget);
 	m_docks.append(objectsDockWidget);
 	m_docks.append(terrainDockWidget);
-	m_docks.append(landDockWidget);
+	m_docks.append(informationDockWidget);
 
 	setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::West);
 	setTabPosition(Qt::RightDockWidgetArea, QTabWidget::East);
 
 	tabifyDockWidget(tilesetDockWidget, objectsDockWidget);
-	tabifyDockWidget(objectsDockWidget, landDockWidget);
-	tabifyDockWidget(landDockWidget, terrainDockWidget);
+	tabifyDockWidget(objectsDockWidget, informationDockWidget);
+	tabifyDockWidget(informationDockWidget, terrainDockWidget);
 
 	tilesetDockWidget->raise();
 
@@ -154,7 +154,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionZoomOriginal);
 	ActionManager::registerAction(m_mainWindowUi->actionTileset);
 	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
-	ActionManager::registerAction(m_mainWindowUi->actionLand);
+	ActionManager::registerAction(m_mainWindowUi->actionInformation);
 	ActionManager::registerAction(m_mainWindowUi->actionObjects);
 	ActionManager::registerAction(m_mainWindowUi->actionMouseModeView);
 	ActionManager::registerAction(m_mainWindowUi->actionMouseModeSelect);
@@ -178,7 +178,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionZoomOriginal, SIGNAL(triggered()), this, SLOT(actionZoomOriginal()));
 	connect(m_mainWindowUi->actionTileset, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
-	connect(m_mainWindowUi->actionLand, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
+	connect(m_mainWindowUi->actionInformation, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
@@ -215,7 +215,7 @@ MainWindow::~MainWindow()
 	delete m_map2DEditorWidgetUi;
 	delete m_tilesetUi;
 	delete m_terrainUi;
-	delete m_landUi;
+	delete m_informationUi;
 	delete m_objectsUi;
 }
 

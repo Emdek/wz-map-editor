@@ -98,8 +98,8 @@
      </property>
      <addaction name="actionTileset"/>
      <addaction name="actionObjects"/>
-     <addaction name="actionLand"/>
      <addaction name="actionTerrain"/>
+     <addaction name="actionInformation"/>
     </widget>
     <widget class="QMenu" name="menuToolbars">
      <property name="title">
@@ -263,12 +263,12 @@
     <string>Objects</string>
    </property>
   </action>
-  <action name="actionLand">
+  <action name="actionInformation">
    <property name="checkable">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Land</string>
+    <string>Information</string>
    </property>
   </action>
   <action name="actionTriangle">

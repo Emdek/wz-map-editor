@@ -31,7 +31,7 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	m_defaultSettings["actions/Tileset"] = QVariant(QKeySequence("Ctrl+1").toString());
 	m_defaultSettings["actions/Objects"] = QVariant(QKeySequence("Ctrl+2").toString());
 	m_defaultSettings["actions/Terrain"] = QVariant(QKeySequence("Ctrl+3").toString());
-	m_defaultSettings["actions/Land"] = QVariant(QKeySequence("Ctrl+4").toString());
+	m_defaultSettings["actions/Information"] = QVariant(QKeySequence("Ctrl+4").toString());
 	m_defaultSettings["actions/ApplicationConfiguration"] = QVariant(QKeySequence(QKeySequence::Preferences).toString());
 	m_defaultSettings["actions/Fullscreen"] = QVariant(QKeySequence("F11").toString());
 

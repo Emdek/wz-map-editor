@@ -14,7 +14,7 @@ namespace Ui
 	class TilesetDockWidget;
 	class ObjectsDockWidget;
 	class TerrainDockWidget;
-	class LandDockWidget;
+	class InformationDockWidget;
 }
 
 namespace WZMapEditor
@@ -65,7 +65,7 @@ private:
 	Ui::TilesetDockWidget *m_tilesetUi;
 	Ui::ObjectsDockWidget *m_objectsUi;
 	Ui::TerrainDockWidget *m_terrainUi;
-	Ui::LandDockWidget *m_landUi;
+	Ui::InformationDockWidget *m_informationUi;
 };
 
 }
