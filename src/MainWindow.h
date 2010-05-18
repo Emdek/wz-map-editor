@@ -12,9 +12,9 @@ namespace Ui
 	class MainWindow;
 	class Map2DEditorWidget;
 	class TilesetDockWidget;
+	class ObjectsDockWidget;
 	class TerrainDockWidget;
 	class LandDockWidget;
-	class ObjectsDockWidget;
 }
 
 namespace WZMapEditor
@@ -63,9 +63,9 @@ private:
 	Ui::MainWindow *m_mainWindowUi;
 	Ui::Map2DEditorWidget *m_map2DEditorWidgetUi;
 	Ui::TilesetDockWidget *m_tilesetUi;
+	Ui::ObjectsDockWidget *m_objectsUi;
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::LandDockWidget *m_landUi;
-	Ui::ObjectsDockWidget *m_objectsUi;
 };
 
 }

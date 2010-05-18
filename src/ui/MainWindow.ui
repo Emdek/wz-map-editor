@@ -97,9 +97,9 @@
       <string>Docks</string>
      </property>
      <addaction name="actionTileset"/>
-     <addaction name="actionTerrain"/>
-     <addaction name="actionLand"/>
      <addaction name="actionObjects"/>
+     <addaction name="actionLand"/>
+     <addaction name="actionTerrain"/>
     </widget>
     <widget class="QMenu" name="menuToolbars">
      <property name="title">
@@ -255,12 +255,12 @@
     <string>Tileset</string>
    </property>
   </action>
-  <action name="actionTerrain">
+  <action name="actionObjects">
    <property name="checkable">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Terrain</string>
+    <string>Objects</string>
    </property>
   </action>
   <action name="actionLand">
@@ -279,12 +279,12 @@
     <string>Triangle</string>
    </property>
   </action>
-  <action name="actionObjects">
+  <action name="actionTerrain">
    <property name="checkable">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Objects</string>
+    <string>Terrain</string>
    </property>
   </action>
   <action name="actionMainToolbar">
