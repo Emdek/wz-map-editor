@@ -32,11 +32,14 @@ public:
 	MainWindow(QWidget *parent = NULL);
 	~MainWindow();
 
+	bool openFile(const QString &fileName);
 	bool canClose();
 
 public slots:
 	void actionNew();
 	void actionOpen();
+	void actionOpenRecent(QAction *action);
+	void actionClearRecentFiles();
 	void actionProperties();
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);
@@ -49,6 +52,7 @@ public slots:
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);
 	void actionToggleDock();
+	void updateRecentFilesMenu();
 	void updateTilesetView();
 	void updateCoordinates(int x, int y, int z);
 	void updateZoom(int zoom);

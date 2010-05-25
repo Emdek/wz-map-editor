@@ -16,7 +16,6 @@
 #include "ui_TerrainDockWidget.h"
 #include "ui_InformationDockWidget.h"
 
-#include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolButton>
@@ -171,6 +170,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	connect(m_mainWindowUi->actionNew, SIGNAL(triggered()), this, SLOT(actionNew()));
 	connect(m_mainWindowUi->actionOpen, SIGNAL(triggered()), this, SLOT(actionOpen()));
+	connect(m_mainWindowUi->menuOpenRecent, SIGNAL(triggered(QAction*)), this, SLOT(actionOpenRecent(QAction*)));
+	connect(m_mainWindowUi->actionClearRecentFiles, SIGNAL(triggered()), this, SLOT(actionClearRecentFiles()));
 	connect(m_mainWindowUi->actionProperties, SIGNAL(triggered()), this, SLOT(actionProperties()));
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
@@ -188,6 +189,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
 	connect(m_mainWindowUi->actionAboutApplication, SIGNAL(triggered()), this, SLOT(actionAboutApplication()));
 	connect(m_mainWindowUi->actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
+	connect(m_mainWindowUi->menuFile, SIGNAL(aboutToShow()), this, SLOT(updateRecentFilesMenu()));
 	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(cooridantesChanged(int, int, int)), this, SLOT(updateCoordinates(int, int, int)));
 	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
@@ -256,14 +258,20 @@ void MainWindow::actionNew()
 
 void MainWindow::actionOpen()
 {
-	QFileInfo mapFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QDesktopServices::storageLocation(QDesktopServices::HomeLocation)).toString()).toString(), tr("All Compatible (*.gam)")));
+	openFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QDesktopServices::storageLocation(QDesktopServices::HomeLocation)).toString()).toString(), tr("All Compatible (*.gam)")));
+}
 
-	if (mapFile.exists())
+void MainWindow::actionOpenRecent(QAction *action)
+{
+	if (!action->data().toString().isEmpty())
 	{
-		m_mapInformation->deserialize(mapFile);
-
-		SettingManager::setValue("lastUsedDir", mapFile.absoluteDir().path());
+		openFile(action->data().toString());
 	}
+}
+
+void MainWindow::actionClearRecentFiles()
+{
+	SettingManager::remove("recentFiles");
 }
 
 void MainWindow::actionProperties()
@@ -384,6 +392,29 @@ void MainWindow::actionToggleDock()
 	}
 }
 
+void MainWindow::updateRecentFilesMenu()
+{
+	QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
+
+	for (int i = 0; i < 10; ++i)
+	{
+		if (i < recentFiles.count())
+		{
+			QFileInfo fileInfo(recentFiles.at(i));
+
+			m_mainWindowUi->menuOpenRecent->actions().at(i)->setText(QString("%1. %2 (%3)").arg(i + 1).arg(fileInfo.fileName()).arg(recentFiles.at(i)));
+			m_mainWindowUi->menuOpenRecent->actions().at(i)->setData(recentFiles.at(i));
+			m_mainWindowUi->menuOpenRecent->actions().at(i)->setVisible(true);
+		}
+		else
+		{
+			m_mainWindowUi->menuOpenRecent->actions().at(i)->setVisible(false);
+		}
+	}
+
+	m_mainWindowUi->menuOpenRecent->setEnabled(recentFiles.count());
+}
+
 void MainWindow::updateTilesetView()
 {
 	m_tilesetUi->listWidget->clear();
@@ -438,6 +469,30 @@ void MainWindow::updateZoom(int zoom)
 	}
 
 	m_zoomSlider->setToolTip(QString("Zoom: %1%").arg(zoom));
+}
+
+bool MainWindow::openFile(const QString &fileName)
+{
+	QFileInfo fileInfo(fileName);
+
+	if (fileInfo.exists())
+	{
+		m_mapInformation->deserialize(fileInfo);
+
+		QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
+		recentFiles.removeAll(fileInfo.absoluteFilePath());
+		recentFiles.prepend(fileInfo.absoluteFilePath());
+		recentFiles = recentFiles.mid(0, 10);
+
+		SettingManager::setValue("recentFiles", recentFiles);
+		SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool MainWindow::canClose()

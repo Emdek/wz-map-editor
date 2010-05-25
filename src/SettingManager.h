@@ -16,6 +16,7 @@ class SettingManager : public QObject
 public:
 	static void createInstance(QObject *parent = NULL);
 	static void restore(const QString &key);
+	static void remove(const QString &key);
 	static void setValue(const QString &key, const QVariant &value);
 	static QVariant defaultValue(const QString &key);
 	static QVariant value(const QString &key, const QVariant &value = QVariant());

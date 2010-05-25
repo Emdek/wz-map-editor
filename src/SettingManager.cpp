@@ -46,6 +46,11 @@ void SettingManager::restore(const QString &key)
 	QSettings().setValue(key, m_instance->defaultValue(key));
 }
 
+void SettingManager::remove(const QString &key)
+{
+	QSettings().remove(key);
+}
+
 void SettingManager::setValue(const QString &key, const QVariant &value)
 {
 	QSettings().setValue(key, value);
