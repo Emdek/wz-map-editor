@@ -20,7 +20,8 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolButton>
-
+#include <QTime>
+#include <QtDebug>
 
 namespace WZMapEditor
 {
@@ -446,4 +447,23 @@ bool MainWindow::canClose()
 	return true;
 }
 
+}
+
+void WZMapEditor::MainWindow::on_actionOpen_triggered()
+{
+	QTime test;
+	int i;
+	QFileInfo map(QFileDialog::getOpenFileName(this, tr("Choose a file"), QDir::currentPath(), tr("All Compatible (*.gam)")));
+	if(m_mapInformation==NULL)
+	{
+		m_mapInformation = new MapInformation;
+	}
+
+	if(map.exists())
+	{
+		test.start();
+		m_mapInformation->deserialize(map);
+		i = test.elapsed();
+		qDebug() << "Deserialize time: " << i;
+	}
 }
