@@ -216,6 +216,10 @@ void Map2DViewWidget::setZoom(qreal zoom)
 void Map2DViewWidget::setMapInformation(MapInformation *data)
 {
 	m_mapInformation = data;
+
+	repaint();
+
+	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
 }
 
 MapInformation* Map2DViewWidget::mapInformation()

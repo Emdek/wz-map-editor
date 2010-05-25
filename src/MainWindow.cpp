@@ -477,17 +477,32 @@ bool MainWindow::openFile(const QString &fileName)
 
 	if (fileInfo.exists())
 	{
-		m_mapInformation->deserialize(fileInfo);
+		MapParser *mapParser = new MapParser(fileName, this);
 
-		QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
-		recentFiles.removeAll(fileInfo.absoluteFilePath());
-		recentFiles.prepend(fileInfo.absoluteFilePath());
-		recentFiles = recentFiles.mid(0, 10);
+		if (mapParser->map()->isModified())
+		{
+			return false;
+		}
+		else
+		{
+			m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(mapParser->map());
+			m_mainWindowUi->map3DViewWidget->setMapInformation(mapParser->map());
 
-		SettingManager::setValue("recentFiles", recentFiles);
-		SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
+			m_mapInformation->deleteLater();
+			m_mapInformation = mapParser->map();
 
-		return true;
+			mapParser->deleteLater();
+
+			QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
+			recentFiles.removeAll(fileInfo.absoluteFilePath());
+			recentFiles.prepend(fileInfo.absoluteFilePath());
+			recentFiles = recentFiles.mid(0, 10);
+
+			SettingManager::setValue("recentFiles", recentFiles);
+			SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
+
+			return true;
+		}
 	}
 	else
 	{

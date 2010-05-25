@@ -21,6 +21,8 @@ namespace WZMapEditor
 const int MAX_PLAYERS = 8;
 const int TILE_WIDTH = 128;
 const int TILE_HEIGHT = 128;
+const int MAP_MAXAREA = (256 * 256);
+const quint8 MAX_TILE_TEXTURES = 255;
 
 enum FlipType
 {
@@ -47,7 +49,6 @@ struct MapTile
 	int height;
 	FlipType flip;
 	QPoint position;
-	static const quint8 MAX_TILE_TEXTURES = 255;
 };
 
 struct Gateway
@@ -79,38 +80,42 @@ public:
 	int deserialize(const QFileInfo& fileNfo);
 
 	void clear();
+	void setFilePath(const QString &filePath);
 	void setName(const QString &name);
 	void setSize(const QSize &size);
 	void setScrollLimits(const QRect &limits);
 	void setTime(quint32 time);
 	void setType(quint32 type);
 	void setTileset(TilesetType tilesetType);
+	void setDroids(QList<Entity> droids);
+	void setStructures(QList<Entity> structures);
+	void setFeatures(QList<Entity> features);
+	void setTiles(QVector<QVector<MapTile> > tiles);
+	void setGateways(QList<Gateway> gateways);
+	void setTerrainTypes(QList<quint8> terrainTypes);
+	void setPlayerPresent(QVector<bool> playerPresent);
+	void setModified(bool modified);
+	QString filePath();
 	QString name();
 	QSize size();
 	QRect scrollLimits();
 	quint32 time();
 	quint32 type();
 	TilesetType tileset();
+	QVector<QVector<MapTile> > tiles();
+	bool isModified();
 
 private:
-	int deserializeMap(QDataStream &in);
-	int deserializeGame(QDataStream &in);
-	int deserializeTerrain(QDataStream &in);
-	int deserializeStructures(QDataStream &in);
-	int deserializeDroids(QDataStream &in);
-	int deserializeFeats(QDataStream &in);
-
 	/// Map data
 	QSize m_size;
 	QVector<QVector<MapTile> > m_tiles;
 	QList<Gateway> m_gateways;
 
 	/// Terrain data
-	quint32 terrainVersion, numTerrainTypes;
 	TilesetType m_tilesetType;
 
 	/* LUT that returns the terrain type of a given tile texture */
-	quint8 terrainTypes[MapTile::MAX_TILE_TEXTURES];
+	QList<quint8> m_terrainTypes;
 
 	/// Game data
 	QRect m_scrollLimits;
@@ -121,14 +126,18 @@ private:
 
 	/** Entity data:
 	  * Structures, droids and features
-	  *
 	  */
-	QList<Entity> m_droids, m_structures, m_features;
+	QList<Entity> m_droids;
+	QList<Entity> m_structures;
+	QList<Entity> m_features;
 
 	QString m_filePath;
 
-	int m_players;
-	bool m_playerPresent[MAX_PLAYERS];
+	QVector<bool> m_playerPresent;
+	bool m_modified;
+
+signals:
+	void changed();
 };
 
 }

@@ -71,7 +71,6 @@ private:
 	Ui::ObjectsDockWidget *m_objectsUi;
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::InformationDockWidget *m_informationUi;
-
 };
 
 }

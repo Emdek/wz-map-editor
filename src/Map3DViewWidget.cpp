@@ -306,6 +306,8 @@ void Map3DViewWidget::setMapInformation(MapInformation *data)
 	m_mapInformation = data;
 
 	repaint();
+
+	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
 }
 
 MapInformation* Map3DViewWidget::mapInformation()
