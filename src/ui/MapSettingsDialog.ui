@@ -235,18 +235,28 @@
           <property name="text">
            <string>x:</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="buddy">
            <cstring>minimumXSpinBox</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="minimumXSpinBox"/>
+         <widget class="QSpinBox" name="minimumXSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="minimumYLabel">
           <property name="text">
            <string>y:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>minimumYSpinBox</cstring>
@@ -254,7 +264,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="minimumYSpinBox"/>
+         <widget class="QSpinBox" name="minimumYSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -272,18 +286,28 @@
           <property name="text">
            <string>x:</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="buddy">
            <cstring>maximumXSpinBox</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="maximumXSpinBox"/>
+         <widget class="QSpinBox" name="maximumXSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="maximumYLabel">
           <property name="text">
            <string>y:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>maximumYSpinBox</cstring>
@@ -291,7 +315,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="maximumYSpinBox"/>
+         <widget class="QSpinBox" name="maximumYSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

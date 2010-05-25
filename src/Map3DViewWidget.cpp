@@ -109,7 +109,7 @@ void Map3DViewWidget::paintGL()
 	int centerFactorX = (m_mapInformation->size().width()  * 1.0f) / 2;
 	int centerFactorY = (m_mapInformation->size().height() * 1.0f) / 2;
 
-	bindTexture(Tileset::pixmap(m_mapInformation->tilesetType(), 9, 128), GL_TEXTURE_2D);
+	bindTexture(Tileset::pixmap(m_mapInformation->tileset(), 9, 128), GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

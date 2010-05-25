@@ -316,7 +316,7 @@ int MapInformation::deserializeGame(QDataStream& in)
 	m_scrollLimits.setTop(top);
 	m_scrollLimits.setBottom(bottom);
 
-	in.readRawData(levelName,20);
+	in.readRawData(levelName, 20);
 	levelName[20] = '\0';
 
 	m_levelName = QString(levelName);
@@ -373,7 +373,7 @@ int MapInformation::deserializeStructures(QDataStream& in)
 	quint32 structVersion;
 	quint64 pos; // debug var
 	char charArray[60];
-	Entity ent;
+	Entity entity;
 
 	if (!checkHeaderType(in, "stru", 4))
 	{
@@ -413,15 +413,15 @@ int MapInformation::deserializeStructures(QDataStream& in)
 			}
 		}
 
-		ent.name = QString(charArray);
-		in >> ent.id;
+		entity.name = QString(charArray);
+		in >> entity.id;
 		in >> u32;
-		ent.position.setX(u32);
+		entity.position.setX(u32);
 		in >> u32;
-		ent.position.setY(u32);
+		entity.position.setY(u32);
 		in >> u32;
-		ent.position.setZ(u32);
-		in >> ent.direction >> ent.player;
+		entity.position.setZ(u32);
+		in >> entity.direction >> entity.player;
 
 		if (in.status() != QDataStream::Ok)
 		{
@@ -498,9 +498,9 @@ int MapInformation::deserializeStructures(QDataStream& in)
 			in.skipRawData(1*4);
 		}
 
-		ent.type = MapObjectTypeStructure;
+		entity.type = MapObjectTypeStructure;
 
-		if (ent.player > MAX_PLAYERS)
+		if (entity.player > MAX_PLAYERS)
 		{
 			qWarning() << QString("MapInformation::deserializeStructures - Invalid player field of structure %1/%2").arg(m_structures.size()).arg(m_structures.size() + i - 1);
 
@@ -509,7 +509,7 @@ int MapInformation::deserializeStructures(QDataStream& in)
 			return -1;
 		}
 
-		if (ent.position.x() >= m_tiles.size()*128/*TILE_WIDTH*/ || ent.position.y() >=  m_tiles.at(0).size()*128/*TILE_HEIGHT*/)
+		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
 			qWarning() << QString("MapInformation::deserializeStructures - Invalid position fields of structure %1/%2").arg(m_structures.size()).arg(m_structures.size()+i-1);
 
@@ -527,7 +527,7 @@ int MapInformation::deserializeStructures(QDataStream& in)
 			return -1;
 		}
 
-		m_structures.push_back(ent);
+		m_structures.push_back(entity);
 	}
 
 	return 0;
@@ -538,7 +538,7 @@ int MapInformation::deserializeDroids(QDataStream& in)
 	quint32 u32,i;
 	quint32 droidVersion;
 	char charArray[60];
-	Entity ent;
+	Entity entity;
 
 	if (!checkHeaderType(in, "dint" ,4))
 	{
@@ -576,15 +576,15 @@ int MapInformation::deserializeDroids(QDataStream& in)
 			}
 		}
 
-		ent.name = QString(charArray);
-		in >> ent.id;
+		entity.name = QString(charArray);
+		in >> entity.id;
 		in >> u32;
-		ent.position.setX(u32);
+		entity.position.setX(u32);
 		in >> u32;
-		ent.position.setY(u32);
+		entity.position.setY(u32);
 		in >> u32;
-		ent.position.setZ(u32);
-		in >> ent.direction >> ent.player;
+		entity.position.setZ(u32);
+		in >> entity.direction >> entity.player;
 
 		if (in.status() != QDataStream::Ok)
 		{
@@ -595,12 +595,12 @@ int MapInformation::deserializeDroids(QDataStream& in)
 			return -1;
 		}
 
-		in.skipRawData(3*4);
+		in.skipRawData(3 * 4);
 
-		ent.type = MapObjectTypeDroid;
+		entity.type = MapObjectTypeDroid;
 
 		// sanity check
-		if (ent.position.x() >= m_tiles.size()*128/*TILE_WIDTH*/ || ent.position.y() >=  m_tiles.at(0).size()*128/*TILE_HEIGHT*/)
+		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
 			qWarning() << QString("MapInformation::deserializeDroids - Invalid position fields of droid %1/%2").arg(m_droids.size()).arg(m_droids.size()+i-1);
 
@@ -609,14 +609,14 @@ int MapInformation::deserializeDroids(QDataStream& in)
 			return -1;
 		}
 
-		m_droids.push_back(ent);
+		m_droids.push_back(entity);
 	}
 
-	foreach (ent, m_droids)
+	foreach (entity, m_droids)
 	{
-		if (m_playerPresent[ent.player] == false && (ent.name.compare("ConstructorDroid") == 0 || ent.name.compare("ConstructionDroid") == 0))
+		if (m_playerPresent[entity.player] == false && (entity.name.compare("ConstructorDroid") == 0 || entity.name.compare("ConstructionDroid") == 0))
 		{
-			m_playerPresent[ent.player] = true;
+			m_playerPresent[entity.player] = true;
 			m_players++;
 		}
 	}
@@ -628,7 +628,7 @@ int MapInformation::deserializeFeats(QDataStream& in)
 {
 	quint32 featVersion, i;
 	quint32 u32;
-	Entity ent;
+	Entity entity;
 	char charArray[60];
 
 	if (!checkHeaderType(in, "feat", 4))
@@ -667,15 +667,15 @@ int MapInformation::deserializeFeats(QDataStream& in)
 			}
 		}
 
-		ent.name = QString(charArray);
-		in >> ent.id;
+		entity.name = QString(charArray);
+		in >> entity.id;
 		in >> u32;
-		ent.position.setX(u32);
+		entity.position.setX(u32);
 		in >> u32;
-		ent.position.setY(u32);
+		entity.position.setY(u32);
 		in >> u32;
-		ent.position.setZ(u32);
-		in >> ent.direction >> ent.player;
+		entity.position.setZ(u32);
+		in >> entity.direction >> entity.player;
 
 		if (in.status() != QDataStream::Ok)
 		{
@@ -686,14 +686,14 @@ int MapInformation::deserializeFeats(QDataStream& in)
 			return -1;
 		}
 
-		in.skipRawData(3*4);
+		in.skipRawData(3 * 4);
 
 		if (featVersion >= 14) // Skip visibility
 		{
 			in.skipRawData(8*1);
 		}
 
-		if (ent.position.x() >= m_tiles.size()*128/*TILE_WIDTH*/ || ent.position.y() >=  m_tiles.at(0).size()*128/*TILE_HEIGHT*/)
+		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >=  (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
 			qWarning() << QString("MapInformation::deserializeFeats - Invalid position fields of feat %1/%2").arg(m_features.size()).arg(m_features.size()+i-1);
 
@@ -711,7 +711,7 @@ int MapInformation::deserializeFeats(QDataStream& in)
 			return -1;
 		}
 
-		m_features.push_back(ent);
+		m_features.push_back(entity);
 	}
 
 	return 0;
@@ -742,7 +742,22 @@ void MapInformation::setSize(const QSize &size)
 	m_size = size;
 }
 
-void MapInformation::setTilesetType(TilesetType tilesetType)
+void MapInformation::setScrollLimits(const QRect &limits)
+{
+	m_scrollLimits = limits;
+}
+
+void MapInformation::setTime(quint32 time)
+{
+	m_gameTime = time;
+}
+
+void MapInformation::setType(quint32 type)
+{
+	m_gameType = type;
+}
+
+void MapInformation::setTileset(TilesetType tilesetType)
 {
 	m_tilesetType = tilesetType;
 }
@@ -756,8 +771,22 @@ QSize MapInformation::size()
 {
 	return m_size;
 }
+QRect MapInformation::scrollLimits()
+{
+	return m_scrollLimits;
+}
 
-TilesetType MapInformation::tilesetType()
+quint32 MapInformation::time()
+{
+	return m_gameTime;
+}
+
+quint32 MapInformation::type()
+{
+	return m_gameType;
+}
+
+TilesetType MapInformation::tileset()
 {
 	return m_tilesetType;
 }

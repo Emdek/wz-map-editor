@@ -393,7 +393,7 @@ void MainWindow::updateTilesetView()
 		return;
 	}
 
-	Tileset *tileset = Tileset::tileset(m_mapInformation->tilesetType());
+	Tileset *tileset = Tileset::tileset(m_mapInformation->tileset());
 
 	if (tileset)
 	{

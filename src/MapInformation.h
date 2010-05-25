@@ -19,6 +19,8 @@ namespace WZMapEditor
 {
 
 const int MAX_PLAYERS = 8;
+const int TILE_WIDTH = 128;
+const int TILE_HEIGHT = 128;
 
 enum FlipType
 {
@@ -79,18 +81,24 @@ public:
 	void clear();
 	void setName(const QString &name);
 	void setSize(const QSize &size);
-	void setTilesetType(TilesetType tilesetType);
+	void setScrollLimits(const QRect &limits);
+	void setTime(quint32 time);
+	void setType(quint32 type);
+	void setTileset(TilesetType tilesetType);
 	QString name();
 	QSize size();
-	TilesetType tilesetType();
+	QRect scrollLimits();
+	quint32 time();
+	quint32 type();
+	TilesetType tileset();
 
 private:
-	int deserializeMap(QDataStream& in);
-	int deserializeGame(QDataStream& in);
-	int deserializeTerrain(QDataStream& in);
-	int deserializeStructures(QDataStream& in);
-	int deserializeDroids(QDataStream& in);
-	int deserializeFeats(QDataStream& in);
+	int deserializeMap(QDataStream &in);
+	int deserializeGame(QDataStream &in);
+	int deserializeTerrain(QDataStream &in);
+	int deserializeStructures(QDataStream &in);
+	int deserializeDroids(QDataStream &in);
+	int deserializeFeats(QDataStream &in);
 
 	/// Map data
 	QSize m_size;
@@ -115,7 +123,9 @@ private:
 	  * Structures, droids and features
 	  *
 	  */
-	QList<Entity> m_droids, m_structures,m_features;
+	QList<Entity> m_droids, m_structures, m_features;
+
+	QString m_filePath;
 
 	int m_players;
 	bool m_playerPresent[MAX_PLAYERS];
