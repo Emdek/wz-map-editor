@@ -18,7 +18,7 @@ public:
 	static void restore(const QString &key);
 	static void setValue(const QString &key, const QVariant &value);
 	static QVariant defaultValue(const QString &key);
-	static QVariant value(const QString &key);
+	static QVariant value(const QString &key, const QVariant &value = QVariant());
 	static QStringList keys();
 
 private:

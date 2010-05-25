@@ -20,8 +20,8 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolButton>
-#include <QTime>
-#include <QtDebug>
+#include <QtGui/QDesktopServices>
+
 
 namespace WZMapEditor
 {
@@ -170,6 +170,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	updateTilesetView();
 
 	connect(m_mainWindowUi->actionNew, SIGNAL(triggered()), this, SLOT(actionNew()));
+	connect(m_mainWindowUi->actionOpen, SIGNAL(triggered()), this, SLOT(actionOpen()));
 	connect(m_mainWindowUi->actionProperties, SIGNAL(triggered()), this, SLOT(actionProperties()));
 	connect(m_mainWindowUi->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(m_mainWindowUi->actionFullscreen, SIGNAL(triggered(bool)), this, SLOT(actionFullscreen(bool)));
@@ -202,12 +203,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->mainToolbar->reload();
 
 	action3DView(true);
-	actionLockToolBars(QSettings().value("actionLockToolBars", false).toBool());
+	actionLockToolBars(SettingManager::value("actionLockToolBars", false).toBool());
 
 	updateZoom(100);
 
-	restoreGeometry(QSettings().value("geometry").toByteArray());
-	restoreState(QSettings().value("windowState").toByteArray());
+	restoreGeometry(SettingManager::value("geometry").toByteArray());
+	restoreState(SettingManager::value("windowState").toByteArray());
 }
 
 MainWindow::~MainWindow()
@@ -229,8 +230,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
-	QSettings().setValue("geometry", saveGeometry());
-	QSettings().setValue("windowState", saveState());
+	SettingManager::setValue("geometry", saveGeometry());
+	SettingManager::setValue("windowState", saveState());
 
 	QMainWindow::closeEvent(event);
 }
@@ -250,6 +251,18 @@ void MainWindow::actionNew()
 		m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 
 		actionProperties();
+	}
+}
+
+void MainWindow::actionOpen()
+{
+	QFileInfo mapFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QDesktopServices::storageLocation(QDesktopServices::HomeLocation)).toString()).toString(), tr("All Compatible (*.gam)")));
+
+	if (mapFile.exists())
+	{
+		m_mapInformation->deserialize(mapFile);
+
+		SettingManager::setValue("lastUsedDir", mapFile.absoluteDir().path());
 	}
 }
 
@@ -329,7 +342,7 @@ void MainWindow::actionAboutApplication()
 
 void MainWindow::actionLockToolBars(bool lock)
 {
-	QSettings().setValue("toolBarsLocked", lock);
+	SettingManager::setValue("toolBarsLocked", lock);
 
 	m_mainWindowUi->mainToolbar->setMovable(!lock);
 }
@@ -447,23 +460,4 @@ bool MainWindow::canClose()
 	return true;
 }
 
-}
-
-void WZMapEditor::MainWindow::on_actionOpen_triggered()
-{
-	QTime test;
-	int i;
-	QFileInfo map(QFileDialog::getOpenFileName(this, tr("Choose a file"), QDir::currentPath(), tr("All Compatible (*.gam)")));
-	if(m_mapInformation==NULL)
-	{
-		m_mapInformation = new MapInformation;
-	}
-
-	if(map.exists())
-	{
-		test.start();
-		m_mapInformation->deserialize(map);
-		i = test.elapsed();
-		qDebug() << "Deserialize time: " << i;
-	}
 }

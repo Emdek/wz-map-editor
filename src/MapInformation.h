@@ -6,16 +6,19 @@
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 #include <QtCore/QSize>
-#include <QVector>
-#include <QRect>
-#include <QVector3D>
-#include <QFile>
-#include <QDir>
-#include <QDataStream>
-#include <QFileInfo>
+#include <QtCore/QVector>
+#include <QtCore/QRect>
+#include <QtGui/QVector3D>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QDataStream>
+#include <QtCore/QFileInfo>
+
 
 namespace WZMapEditor
 {
+
+const int MAX_PLAYERS = 8;
 
 enum FlipType
 {
@@ -23,17 +26,6 @@ enum FlipType
 	FlipTypeVertical,
 	FlipTypeHorizontal,
 	FlipTypeDiagonal
-};
-
-struct Entity
-{
-	quint32	id;
-	quint32	player;
-	int 		type;	// "IMD" LND object type
-	QString		name;	//char 		name[128]
-	QString		script;	// char	script[32];
-	QVector3D	position;
-	quint32	direction;
 };
 
 enum MapObjectType
@@ -53,7 +45,7 @@ struct MapTile
 	int height;
 	FlipType flip;
 	QPoint position;
-static const quint8 MAX_TILE_TEXTURES = 255;
+	static const quint8 MAX_TILE_TEXTURES = 255;
 };
 
 struct Gateway
@@ -62,6 +54,17 @@ struct Gateway
 	Gateway(int x0, int y0, int x1, int y1);
 	QPoint start;
 	QPoint end;
+};
+
+struct Entity
+{
+	quint32	id;
+	quint32	player;
+	int type;	// "IMD" LND object type
+	QString name;	//char name[128]
+	QString	 script;	// char	script[32];
+	QVector3D position;
+	quint32	direction;
 };
 
 class MapInformation : public QObject
@@ -73,15 +76,15 @@ public:
 
 	int deserialize(const QFileInfo& fileNfo);
 
+	void clear();
 	void setName(const QString &name);
 	void setSize(const QSize &size);
 	void setTilesetType(TilesetType tilesetType);
 	QString name();
 	QSize size();
 	TilesetType tilesetType();
-private:
 
-	void mapClear();
+private:
 	int deserializeMap(QDataStream& in);
 	int deserializeGame(QDataStream& in);
 	int deserializeTerrain(QDataStream& in);
@@ -106,7 +109,7 @@ private:
 	quint32 m_gameTime;
 	quint32 m_gameType;
 	QString m_levelName;
-	quint32 m_playerPower[8/*MAX_PLAYERS?*/];
+	quint32 m_playerPower[MAX_PLAYERS];
 
 	/** Entity data:
 	  * Structures, droids and features
@@ -115,7 +118,7 @@ private:
 	QList<Entity> m_droids, m_structures,m_features;
 
 	int m_players;
-	bool m_playerPresent[8/*MAX_PLAYERS?*/];
+	bool m_playerPresent[MAX_PLAYERS];
 };
 
 }

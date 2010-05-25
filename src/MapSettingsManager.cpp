@@ -44,6 +44,11 @@ void MapSettingsManager::changeTileset(int index)
 
 void MapSettingsManager::save()
 {
+	if (m_managerUi->tilesetComboBox->currentIndex()  != (static_cast<int>(m_mapInformation->tilesetType()) - 1))
+	{
+		m_mapInformation->clear();
+	}
+
 	m_mapInformation->setName(m_managerUi->nameLineEdit->text());
 	m_mapInformation->setSize(QSize(m_managerUi->widthSpinBox->value(), m_managerUi->heightSpinBox->value()));
 	m_mapInformation->setTilesetType(static_cast<TilesetType>(m_managerUi->tilesetComboBox->currentIndex() + 1));

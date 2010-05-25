@@ -36,6 +36,7 @@ public:
 
 public slots:
 	void actionNew();
+	void actionOpen();
 	void actionProperties();
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);
@@ -67,8 +68,6 @@ private:
 	Ui::TerrainDockWidget *m_terrainUi;
 	Ui::InformationDockWidget *m_informationUi;
 
-private slots:
-	void on_actionOpen_triggered();
 };
 
 }

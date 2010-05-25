@@ -34,8 +34,6 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	m_defaultSettings["actions/Information"] = QVariant(QKeySequence("Ctrl+4").toString());
 	m_defaultSettings["actions/ApplicationConfiguration"] = QVariant(QKeySequence(QKeySequence::Preferences).toString());
 	m_defaultSettings["actions/Fullscreen"] = QVariant(QKeySequence("F11").toString());
-
-///FIXME insert settings here...
 }
 
 void SettingManager::createInstance(QObject *parent)
@@ -63,9 +61,11 @@ QVariant SettingManager::defaultValue(const QString &key)
 	return m_instance->keyValue(key);
 }
 
-QVariant SettingManager::value(const QString &key)
+QVariant SettingManager::value(const QString &key, const QVariant &value)
 {
-	return QSettings().value(key, defaultValue(key));
+	const QVariant defaultKeyValue = defaultValue(key);
+
+	return QSettings().value(key, (defaultKeyValue.isNull()?value:defaultKeyValue));
 }
 
 QStringList SettingManager::valueKeys()
