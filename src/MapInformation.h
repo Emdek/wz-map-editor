@@ -95,6 +95,7 @@ public:
 	void setTerrainTypes(QList<quint8> terrainTypes);
 	void setPlayerPresent(QVector<bool> playerPresent);
 	void setModified(bool modified);
+	MapTile tile(int x, int y);
 	QString filePath();
 	QString name();
 	QSize size();

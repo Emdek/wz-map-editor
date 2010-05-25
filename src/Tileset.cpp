@@ -109,7 +109,16 @@ void Tileset::load(QObject *parent)
 
 QPixmap Tileset::pixmap(TileInformation tile, int size)
 {
-	return QPixmap(QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png").arg(SettingManager::value("dataPath").toString() + QDir::separator()).arg(QDir::separator()).arg(static_cast<int>(tile.tileset)).arg(size).arg(QDir::separator()).arg((tile.id < 10)?QString('0'):QString()).arg(tile.id));
+	QString fileName = QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png").arg(SettingManager::value("dataPath").toString() + QDir::separator()).arg(QDir::separator()).arg(static_cast<int>(tile.tileset)).arg(size).arg(QDir::separator()).arg((tile.id < 10)?QString('0'):QString()).arg(tile.id);
+
+	if (QFile::exists(fileName))
+	{
+		return QPixmap(fileName);
+	}
+	else
+	{
+		return QPixmap(size, size);
+	}
 }
 
 QPixmap Tileset::pixmap(TilesetType tileset, int tile, int size)

@@ -109,15 +109,24 @@ void Map3DViewWidget::paintGL()
 	int centerFactorX = (m_mapInformation->size().width()  * 1.0f) / 2;
 	int centerFactorY = (m_mapInformation->size().height() * 1.0f) / 2;
 
-	bindTexture(Tileset::pixmap(m_mapInformation->tileset(), 9, 128), GL_TEXTURE_2D);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
 			QPointF coordinates(((1.0f * i) - centerFactorX), ((1.0f * j) - centerFactorY));
+			int texture = m_mapInformation->tile((i - 1), (j - 1)).texture;
+
+			if (m_textures.contains(texture))
+			{
+				glBindTexture(GL_TEXTURE_2D, texture);
+			}
+			else
+			{
+				m_textures[texture] = bindTexture(Tileset::pixmap(m_mapInformation->tileset(), texture, 128), GL_TEXTURE_2D);
+			}
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			glBegin(GL_QUADS);
 

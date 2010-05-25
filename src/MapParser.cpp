@@ -187,11 +187,11 @@ int MapParser::deserializeMap(QDataStream &stream)
 	m_tiles.reserve(size.width());
 	mapRow.reserve(m_mapInformation->size().height());
 
-	for (j = 0; j < m_mapInformation->size().height(); j++)
+	for (j = 0; j < m_mapInformation->size().height(); ++j)
 	{
 		mapRow.clear();
 
-		for (i = 0; i < m_mapInformation->size().width(); i++)
+		for (i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			stream >> texture >> height;
 			tile.texture = texture;

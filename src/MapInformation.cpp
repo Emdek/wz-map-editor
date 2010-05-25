@@ -107,6 +107,18 @@ void MapInformation::setModified(bool modified)
 	m_modified = modified;
 }
 
+MapTile MapInformation::tile(int x, int y)
+{
+	if (x >= m_tiles.count() || y >= m_tiles.at(x).count())
+	{
+		return MapTile();
+	}
+	else
+	{
+		return m_tiles.at(x).at(y);
+	}
+}
+
 QString MapInformation::filePath()
 {
 	return m_filePath;

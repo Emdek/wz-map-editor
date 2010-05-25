@@ -2,6 +2,7 @@
 #define MAP3DVIEWWIDGET_H
 
 #include <QtOpenGL/QGLWidget>
+#include <QtCore/QHash>
 
 
 namespace WZMapEditor
@@ -42,6 +43,7 @@ protected:
 
 private:
 	MapInformation* m_mapInformation;
+	QHash<int, GLuint> m_textures;
 	bool m_moving;
 	bool m_rotating;
 	int m_rotationX;
