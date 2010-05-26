@@ -114,7 +114,7 @@ void Map3DViewWidget::paintGL()
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
 			QPointF coordinates(((1.0f * i) - centerFactorX), ((1.0f * j) - centerFactorY));
-			int texture = m_mapInformation->tile((i - 1), (j - 1)).texture;
+			int texture = m_mapInformation->tile((i - 1), (j - 1)).texture & 0x01ff /*TILE_NUMMASK*/;
 
 			if (m_textures.contains(texture))
 			{

@@ -150,7 +150,6 @@ int MapParser::deserializeMap(QDataStream &stream)
 	quint32 u32;
 	quint16 texture;
 	quint8 height, x1, x2, y1, y2;
-	QVector<MapTile> mapRow;
 	QList<Gateway> gateways;
 	MapTile tile;
 	int i, j;
@@ -184,13 +183,15 @@ int MapParser::deserializeMap(QDataStream &stream)
 
 	m_mapInformation->setSize(size);
 
+	// Read in row major array of map tiles
 	m_tiles.reserve(size.width());
-	mapRow.reserve(m_mapInformation->size().height());
+	for(i = size.width(); i > 0; i--)
+	{
+		m_tiles.push_back(QVector<MapTile>());
+	}
 
 	for (j = 0; j < m_mapInformation->size().height(); ++j)
 	{
-		mapRow.clear();
-
 		for (i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			stream >> texture >> height;
@@ -198,10 +199,8 @@ int MapParser::deserializeMap(QDataStream &stream)
 			tile.height = height;
 			tile.position.rx() = i;
 			tile.position.ry() = j;
-			mapRow.push_back(tile);
+			m_tiles[i].push_back(tile);
 		}
-
-		m_tiles.push_back(mapRow);
 	}
 
 	if (stream.status() != QDataStream::Ok)
@@ -273,12 +272,12 @@ int MapParser::deserializeGame(QDataStream &stream)
 		if (stream.byteOrder() == QDataStream::LittleEndian)
 		{
 			stream.setByteOrder(QDataStream::BigEndian);
-			qToBigEndian(u32, (uchar*)&terrainVersion); // FIXME? nasty cast
+			terrainVersion = qToBigEndian(u32);
 		}
 		else
 		{
 			stream.setByteOrder(QDataStream::LittleEndian);
-			qToLittleEndian(u32, (uchar*)&terrainVersion); // FIXME? nasty cast
+			terrainVersion = qToLittleEndian(u32);
 		}
 	}
 	else
@@ -372,6 +371,12 @@ int MapParser::deserializeStructures(QDataStream &stream)
 	}
 
 	stream >> structVersion >> i;
+	if (stream.status() != QDataStream::Ok)
+	{
+		qWarning() << QString("MapParser::deserializeStructures - Error reading version and number.");
+
+		return -1;
+	}
 
 	for (; i > 0; --i)
 	{
@@ -490,7 +495,7 @@ int MapParser::deserializeStructures(QDataStream &stream)
 
 		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
-			qWarning() << QString("MapParser::deserializeStructures - Invalid position fields of structure %1/%2").arg(structures.size()).arg(structures.size()+i-1);
+			qWarning() << QString("MapParser::deserializeStructures - Invalid position fields (%1,%2) of structure %3/%4").arg(entity.position.x()).arg(entity.position.y()).arg(structures.size()).arg(structures.size()+i-1);
 
 			return -1;
 		}
@@ -574,7 +579,7 @@ int MapParser::deserializeDroids(QDataStream &stream)
 		// sanity check
 		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
-			qWarning() << QString("MapParser::deserializeDroids - Invalid position fields of droid %1/%2").arg(droids.size()).arg(droids.size() + i - 1);
+			qWarning() << QString("MapParser::deserializeDroids - Invalid position fields (%1,%2) of droid %3/%4").arg(entity.position.x()).arg(entity.position.y()).arg(droids.size()).arg(droids.size() + i - 1);
 
 			return -1;
 		}
@@ -660,7 +665,7 @@ int MapParser::deserializeFeatures(QDataStream &stream)
 
 		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))
 		{
-			qWarning() << QString("MapParser::deserializeFeats - Invalid position fields of feat %1/%2").arg(features.size()).arg(features.size() + i - 1);
+			qWarning() << QString("MapParser::deserializeFeats - Invalid position fields (%1,%2) of feat %3/%4").arg(entity.position.x()).arg(entity.position.y()).arg(features.size()).arg(features.size() + i - 1);
 
 			return -1;
 		}
