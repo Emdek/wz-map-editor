@@ -249,6 +249,9 @@ void Map3DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 
 	menu.addAction(openAct);
 	menu.exec(mapToGlobal(event->pos()));
+
+	menu.removeAction(openAct);
+	delete openAct;
 }
 
 void Map3DViewWidget::setZoom(qreal zoom)
