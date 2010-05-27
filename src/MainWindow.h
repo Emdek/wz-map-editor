@@ -65,6 +65,7 @@ private:
 	QList<QDockWidget*> m_docks;
 	QSlider *m_zoomSlider;
 	QLabel *m_coordinatesLabel;
+	QLabel *m_fileNameLabel;
 	Ui::MainWindow *m_mainWindowUi;
 	Ui::Map2DEditorWidget *m_map2DEditorWidgetUi;
 	Ui::TilesetDockWidget *m_tilesetUi;

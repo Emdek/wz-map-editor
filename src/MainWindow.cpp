@@ -21,6 +21,8 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QDesktopServices>
 
+#define ApplicationName "Warzone 2100 Map Editor"
+
 
 namespace WZMapEditor
 {
@@ -29,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mapInformation(new MapInformation(this)),
 	m_zoomSlider(new QSlider(Qt::Horizontal, this)),
 	m_coordinatesLabel(new QLabel(this)),
+	m_fileNameLabel(new QLabel(tr("Unnamed"), this)),
 	m_mainWindowUi(new Ui::MainWindow()),
 	m_map2DEditorWidgetUi(new Ui::Map2DEditorWidget()),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
@@ -40,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::createInstance(this);
 
 	m_mainWindowUi->setupUi(this);
+
+	setWindowTitle(tr("%1 - Unnamed").arg(ApplicationName));
 
 	QDockWidget *tilesetDockWidget = new QDockWidget(tr("Tileset"), this);
 	QDockWidget *objectsDockWidget = new QDockWidget(tr("Objects"), this);
@@ -83,6 +88,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	Tileset::load(this);
 
+	m_coordinatesLabel->setMinimumWidth(150);
+
 	m_zoomSlider->setRange(10, 500);
 	m_zoomSlider->setMaximumWidth(200);
 
@@ -92,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	QToolButton *zoomOutButton = new QToolButton(this);
 	zoomOutButton->setDefaultAction(m_mainWindowUi->actionZoomOut);
 
+	m_mainWindowUi->statusBar->addPermanentWidget(m_fileNameLabel);
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
 	m_mainWindowUi->statusBar->addPermanentWidget(zoomOutButton);
 	m_mainWindowUi->statusBar->addPermanentWidget(m_zoomSlider);
@@ -246,6 +254,12 @@ void MainWindow::actionNew()
 		}
 
 		m_mapInformation = new MapInformation(this);
+		m_mapInformation->setModified(true);
+
+		m_fileNameLabel->setText("Unnamed");
+		m_fileNameLabel->setToolTip(QString());
+
+		setWindowTitle(tr("%1 - Unnamed").arg(ApplicationName));
 
 		m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
 		m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
@@ -345,7 +359,7 @@ void MainWindow::actionApplicationConfiguration()
 
 void MainWindow::actionAboutApplication()
 {
-	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>Warzone 2100 Map Editor %1</b><br />Map viewer and editor for Warzone 2100.").arg(QApplication::instance()->applicationVersion())));
+	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>%1 %2</b><br />Map viewer and editor for Warzone 2100.").arg(ApplicationName).arg(QApplication::applicationVersion())));
 }
 
 void MainWindow::actionLockToolBars(bool lock)
@@ -448,7 +462,7 @@ void MainWindow::updateTilesetView()
 
 void MainWindow::updateCoordinates(int x, int y, int z)
 {
-	m_coordinatesLabel->setText(QString("x: %1 y: %2 z: %3").arg(x).arg(y).arg(z));
+	m_coordinatesLabel->setText(QString("X: %1 Y: %2 Z: %3").arg(x).arg(y).arg(z));
 }
 
 void MainWindow::updateZoom(int zoom)
@@ -495,6 +509,11 @@ bool MainWindow::openFile(const QString &fileName)
 
 			mapParser->deleteLater();
 
+			setWindowTitle(tr("%1 - %2").arg(ApplicationName).arg(fileInfo.fileName()));
+
+			m_fileNameLabel->setText(fileInfo.fileName());
+			m_fileNameLabel->setToolTip(fileInfo.absoluteFilePath());
+
 			QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
 			recentFiles.removeAll(fileInfo.absoluteFilePath());
 			recentFiles.prepend(fileInfo.absoluteFilePath());
@@ -516,7 +535,7 @@ bool MainWindow::canClose()
 {
 	if (isWindowModified())
 	{
-		QMessageBox::StandardButton action = QMessageBox::warning(QApplication::topLevelWidgets().at(0), QApplication::applicationName(), tr("There are unsaved changes in current map.\nDo you want to save your changes?"), (QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel));
+		QMessageBox::StandardButton action = QMessageBox::warning(QApplication::topLevelWidgets().at(0), ApplicationName, tr("There are unsaved changes in current map.\nDo you want to save your changes?"), (QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel));
 
 		if (action == QMessageBox::Cancel)
 		{
