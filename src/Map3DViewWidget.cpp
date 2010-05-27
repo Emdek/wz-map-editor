@@ -1,6 +1,7 @@
 #include "Map3DViewWidget.h"
 #include "MapInformation.h"
 #include "Tileset.h"
+#include "SettingManager.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
@@ -122,7 +123,7 @@ void Map3DViewWidget::paintGL()
 			}
 			else
 			{
-				m_textures[texture] = bindTexture(Tileset::pixmap(m_mapInformation->tileset(), texture, 128), GL_TEXTURE_2D);
+				m_textures[texture] = bindTexture(Tileset::pixmap(m_mapInformation->tileset(), texture, SettingManager::value("tileSize").toInt()), GL_TEXTURE_2D);
 			}
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

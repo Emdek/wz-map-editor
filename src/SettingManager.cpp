@@ -15,6 +15,10 @@ SettingManager::SettingManager(QObject *parent) : QObject(parent)
 	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
 
 	m_defaultSettings["dataPath"] = QVariant(QString());
+	m_defaultSettings["tileSize"] = QVariant(64);
+	m_defaultSettings["zoomLevel"] = QVariant(100);
+	m_defaultSettings["3DView"] = QVariant(true);
+	m_defaultSettings["lockToolBars"] = QVariant(false);
 
 	m_defaultSettings["toolbars/mainToolbar"] = QVariant(mainToolbar);
 

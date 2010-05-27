@@ -1,6 +1,7 @@
 #include "Map2DViewWidget.h"
 #include "MapInformation.h"
 #include "Tileset.h"
+#include "SettingManager.h"
 
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPainter>
@@ -39,7 +40,7 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 			{
 				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
 
-				painter.drawPixmap(tile, Tileset::pixmap(m_mapInformation->tileset(), 9, 128));
+				painter.drawPixmap(tile, Tileset::pixmap(m_mapInformation->tileset(), 9, SettingManager::value("tileSize").toInt()));
 
 				if ((m_rubberBand && m_rubberBand->isVisible() && tile.intersects(m_rubberBand->geometry())) || (selection.isValid() && tile.intersects(selection)))
 				{

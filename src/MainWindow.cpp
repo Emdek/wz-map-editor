@@ -204,11 +204,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->mainToolbar->reload();
 
-	action3DView(true);
-	actionLockToolBars(SettingManager::value("actionLockToolBars", false).toBool());
-
-	updateZoom(100);
-
+	action3DView(SettingManager::value("3DView").toBool());
+	actionLockToolBars(SettingManager::value("lockToolBars").toBool());
+	updateZoom(SettingManager::value("zoomLevel").toInt());
 	restoreGeometry(SettingManager::value("geometry").toByteArray());
 	restoreState(SettingManager::value("windowState").toByteArray());
 }
@@ -302,6 +300,8 @@ void MainWindow::action3DView(bool checked)
 {
 	m_mainWindowUi->map2DEditorWidget->setVisible(!checked);
 	m_mainWindowUi->map3DViewWidget->setVisible(checked);
+
+	SettingManager::setValue("3DView", checked);
 }
 
 void MainWindow::actionZoomIn()
@@ -350,9 +350,9 @@ void MainWindow::actionAboutApplication()
 
 void MainWindow::actionLockToolBars(bool lock)
 {
-	SettingManager::setValue("toolBarsLocked", lock);
-
 	m_mainWindowUi->mainToolbar->setMovable(!lock);
+
+	SettingManager::setValue("lockToolBars", lock);
 }
 
 void MainWindow::actionToggleDock()
@@ -469,6 +469,8 @@ void MainWindow::updateZoom(int zoom)
 	}
 
 	m_zoomSlider->setToolTip(QString("Zoom: %1%").arg(zoom));
+
+	SettingManager::setValue("zoomLevel", zoom);
 }
 
 bool MainWindow::openFile(const QString &fileName)
