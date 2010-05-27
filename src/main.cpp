@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 
+#include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
+
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +12,20 @@ int main(int argc, char *argv[])
 	application.setOrganizationName("Warzone2100");
 	application.setOrganizationDomain("wz2100.net");
 
+	QStringList arguments(QApplication::arguments());
+
 	WZMapEditor::MainWindow mainWindow;
+
+	for (int i = 0; i < arguments.count(); ++i)
+	{
+		if (QFileInfo(arguments.at(i)).absoluteFilePath() != QApplication::applicationFilePath() && QFile::exists(arguments.at(i)))
+		{
+			mainWindow.openFile(arguments.at(i));
+
+			break;
+		}
+	}
+
 	mainWindow.show();
 
 	return application.exec();
