@@ -3,6 +3,7 @@
 
 #include <QtGui/QRubberBand>
 #include <QtGui/QWidget>
+#include <QtCore/QHash>
 
 
 namespace WZMapEditor
@@ -34,6 +35,7 @@ protected:
 
 private:
 	MapInformation* m_mapInformation;
+	QHash<int, QPixmap> m_textures;
 	QRubberBand *m_rubberBand;
 	QPoint m_mousePressStart;
 	QRect m_selection;

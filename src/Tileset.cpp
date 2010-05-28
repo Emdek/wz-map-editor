@@ -101,7 +101,7 @@ void Tileset::load(QObject *parent)
 
 	for (int i = 0; i < tilesetList.count(); ++i)
 	{
-		Tileset * tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), parent);
+		Tileset *tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), parent);
 
 		m_tilesets[tileset->type()] = tileset;
 	}

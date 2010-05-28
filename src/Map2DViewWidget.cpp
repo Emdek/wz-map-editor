@@ -39,8 +39,14 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 			for (int j = 0; j < m_mapInformation->size().height(); ++j)
 			{
 				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
+				int texture = m_mapInformation->tile(i, j).texture & 0x01ff /*TILE_NUMMASK*/;
 
-				painter.drawPixmap(tile, Tileset::pixmap(m_mapInformation->tileset(), 9, SettingManager::value("tileSize").toInt()));
+				if (!m_textures.contains(texture))
+				{
+					m_textures[texture] = Tileset::pixmap(m_mapInformation->tileset(), texture, SettingManager::value("tileSize").toInt());
+				}
+
+				painter.drawPixmap(tile, m_textures[texture]);
 
 				if ((m_rubberBand && m_rubberBand->isVisible() && tile.intersects(m_rubberBand->geometry())) || (selection.isValid() && tile.intersects(selection)))
 				{
