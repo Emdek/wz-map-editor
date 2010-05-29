@@ -113,6 +113,8 @@ void Map3DViewWidget::paintGL()
 
 	glMatrixMode(GL_TEXTURE);
 
+	int tileSize = SettingManager::value("tileSize").toInt();
+
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
@@ -128,7 +130,7 @@ void Map3DViewWidget::paintGL()
 			glRotatef(tile.rotation, 0.0, 0.0, 1.0);
 			glTranslatef(-0.5, -0.5, 0.0);
 
-			bindTexture(m_textures[tile.texture]);
+			bindTexture(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -285,14 +287,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 void Map3DViewWidget::setMapInformation(MapInformation *data)
 {
-	const bool updateTextures = (!m_mapInformation || m_mapInformation->tileset() != data->tileset());
-
 	m_mapInformation = data;
-
-	if (updateTextures)
-	{
-		this->updateTextures();
-	}
 
 	repaint();
 
@@ -325,20 +320,6 @@ void Map3DViewWidget::moveDown()
 	--m_offsetY;
 
 	repaint();
-}
-
-void Map3DViewWidget::updateTextures()
-{
-	const TilesetType tileset = (m_mapInformation?m_mapInformation->tileset():TilesetTypeArizona);
-	const int tileSize = SettingManager::value("tileSize").toInt();
-	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
-
-	m_textures.clear();
-
-	for (int i = 0; i < tiles.count(); ++i)
-	{
-		m_textures[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, tileSize);
-	}
 }
 
 MapInformation* Map3DViewWidget::mapInformation()

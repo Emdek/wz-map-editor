@@ -36,6 +36,8 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 
 	if (m_mapPixmap.isNull() && m_mapInformation)
 	{
+		int tileSize = SettingManager::value("tileSize").toInt();
+
 		m_mapPixmap = QPixmap(size());
 
 		QPainter mapPainter(&m_mapPixmap);
@@ -52,7 +54,7 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 			{
 				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
 
-				mapPainter.drawPixmap(tile, m_textures[m_mapInformation->tile(i, j).texture]);
+				mapPainter.drawPixmap(tile, Tileset::pixmap(m_mapInformation->tileset(), m_mapInformation->tile(i, j).texture, tileSize));
 			}
 		}
 
@@ -232,15 +234,7 @@ void Map2DViewWidget::setZoom(qreal zoom)
 
 void Map2DViewWidget::setMapInformation(MapInformation *data)
 {
-	const bool updateTextures = (!m_mapInformation || m_mapInformation->tileset() != data->tileset());
-
 	m_mapInformation = data;
-
-	if (updateTextures)
-	{
-		this->updateTextures();
-	}
-
 	m_mapPixmap = QPixmap();
 
 	updateSize();
@@ -269,20 +263,6 @@ void Map2DViewWidget::updateSize()
 
 		setMinimumSize(size);
 		setMaximumSize(size);
-	}
-}
-
-void Map2DViewWidget::updateTextures()
-{
-	const TilesetType tileset = (m_mapInformation?m_mapInformation->tileset():TilesetTypeArizona);
-	const int tileSize = SettingManager::value("tileSize").toInt();
-	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
-
-	m_textures.clear();
-
-	for (int i = 0; i < tiles.count(); ++i)
-	{
-		m_textures[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, tileSize);
 	}
 }
 

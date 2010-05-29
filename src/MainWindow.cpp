@@ -174,6 +174,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
 	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
+	Tileset::createCache(TilesetTypeArizona, SettingManager::value("tileSize").toInt());
+
 	updateTilesetView();
 
 	connect(m_mainWindowUi->actionNew, SIGNAL(triggered()), this, SLOT(actionNew()));
@@ -295,6 +297,11 @@ void MainWindow::actionProperties()
 
 	updateTilesetView();
 
+	if (Tileset::cachedTileset() != m_mapInformation->tileset())
+	{
+		Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+	}
+
 	m_map2DEditorWidgetUi->map2DViewWidget->updateSize();
 	m_mainWindowUi->map3DViewWidget->repaint();
 }
@@ -356,6 +363,11 @@ void MainWindow::actionToolbarsConfiguration()
 void MainWindow::actionApplicationConfiguration()
 {
 	new PreferencesManager(this);
+
+	if (Tileset::cachedTextureSize() != SettingManager::value("tileSize").toInt())
+	{
+		Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+	}
 }
 
 void MainWindow::actionAboutApplication()
@@ -453,7 +465,7 @@ void MainWindow::updateTilesetView()
 
 		for (int i = 0; i < tiles.count(); ++i)
 		{
-			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i)), QString(), m_tilesetUi->listWidget);
+			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i), 128), QString(), m_tilesetUi->listWidget);
 			item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
 
 			m_tilesetUi->listWidget->addItem(item);
@@ -522,6 +534,11 @@ bool MainWindow::openFile(const QString &fileName)
 
 			SettingManager::setValue("recentFiles", recentFiles);
 			SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
+
+			if (Tileset::cachedTileset() != m_mapInformation->tileset())
+			{
+				Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+			}
 
 			updateTilesetView();
 

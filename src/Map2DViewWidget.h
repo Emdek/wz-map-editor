@@ -25,7 +25,6 @@ public:
 public slots:
 	void setZoom(qreal zoom);
 	void updateSize();
-	void updateTextures();
 
 protected:
 	void paintEvent(QPaintEvent *event);
@@ -36,7 +35,6 @@ protected:
 
 private:
 	MapInformation *m_mapInformation;
-	QHash<int, QPixmap> m_textures;
 	QRubberBand *m_rubberBand;
 	QPoint m_mousePressStart;
 	QPixmap m_mapPixmap;

@@ -11,6 +11,9 @@ namespace WZMapEditor
 {
 
 QHash<TilesetType, Tileset*> m_tilesets;
+QHash<int, QPixmap> m_textureCache;
+TilesetType m_cachedTileset = TilesetTypeArizona;
+int m_textureSize = 0;
 
 Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 {
@@ -108,8 +111,33 @@ void Tileset::load(QObject *parent)
 	}
 }
 
+void Tileset::createCache(TilesetType tileset, int size)
+{
+	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
+
+	m_textureCache.clear();
+
+	for (int i = 0; i < tiles.count(); ++i)
+	{
+		m_textureCache[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, size);
+	}
+
+	m_cachedTileset = tileset;
+	m_textureSize = size;
+}
+
 QPixmap Tileset::pixmap(TileInformation tile, int size)
 {
+	if (size == -1)
+	{
+		size = SettingManager::value("tileSize").toInt();
+	}
+
+	if (tile.tileset == m_cachedTileset && size == m_textureSize)
+	{
+		return m_textureCache[tile.id];
+	}
+
 	QString fileName = QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png")
 					   .arg(SettingManager::value("dataPath").toString() + QDir::separator())
 					   .arg(QDir::separator())
@@ -244,7 +272,7 @@ TileInformation Tileset::tile(int tile)
 	return empty;
 }
 
-QList<QString> Tileset::categories()
+QStringList Tileset::categories()
 {
 	return m_categories;
 }
@@ -267,6 +295,16 @@ QList<TileInformation> Tileset::tiles(bool includeTransitions, int category, Til
 	}
 
 	return tiles;
+}
+
+TilesetType Tileset::cachedTileset()
+{
+	return m_cachedTileset;
+}
+
+int Tileset::cachedTextureSize()
+{
+	return m_textureSize;
 }
 
 }
