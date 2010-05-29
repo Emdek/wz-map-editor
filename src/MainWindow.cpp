@@ -211,8 +211,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
 	m_mainWindowUi->mainToolbar->reload();
+	m_mainWindowUi->action3DView->setChecked(SettingManager::value("3DView").toBool());
 
-	action3DView(SettingManager::value("3DView").toBool());
+	action3DView(m_mainWindowUi->action3DView->isChecked());
 	actionLockToolBars(SettingManager::value("lockToolBars").toBool());
 	updateZoom(SettingManager::value("zoomLevel").toInt());
 	restoreGeometry(SettingManager::value("geometry").toByteArray());

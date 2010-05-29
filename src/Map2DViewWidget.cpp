@@ -270,11 +270,11 @@ void Map2DViewWidget::updateSize()
 
 void Map2DViewWidget::updateTextures()
 {
-	m_textures.clear();
-
 	const TilesetType tileset = (m_mapInformation?m_mapInformation->tileset():TilesetTypeArizona);
 	const int tileSize = SettingManager::value("tileSize").toInt();
 	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
+
+	m_textures.clear();
 
 	for (int i = 0; i < tiles.count(); ++i)
 	{

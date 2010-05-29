@@ -35,7 +35,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 
 private:
-	MapInformation* m_mapInformation;
+	MapInformation *m_mapInformation;
 	QHash<int, QPixmap> m_textures;
 	QRubberBand *m_rubberBand;
 	QPoint m_mousePressStart;

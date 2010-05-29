@@ -29,7 +29,7 @@ public slots:
 	void moveRight();
 	void moveUp();
 	void moveDown();
-	void resizeMap(int width, int height);
+	void updateTextures();
 
 protected:
 	void initializeGL();
@@ -42,8 +42,8 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
-	MapInformation* m_mapInformation;
-	QHash<int, GLuint> m_textures;
+	MapInformation *m_mapInformation;
+	QHash<int, QPixmap> m_textures;
 	bool m_moving;
 	bool m_rotating;
 	int m_rotationX;

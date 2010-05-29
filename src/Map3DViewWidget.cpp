@@ -9,10 +9,14 @@
 #include <cstdio>
 
 
+#include <QDebug>
+
+
 namespace WZMapEditor
 {
 
 Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+	m_mapInformation(NULL),
 	m_moving(false),
 	m_rotating(false),
 	m_rotationX(0),
@@ -115,17 +119,8 @@ void Map3DViewWidget::paintGL()
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
 			QPointF coordinates(((1.0f * i) - centerFactorX), ((1.0f * j) - centerFactorY));
-			int texture = m_mapInformation->tile((i - 1), (j - 1)).texture;
 
-			if (m_textures.contains(texture))
-			{
-				glBindTexture(GL_TEXTURE_2D, texture);
-			}
-			else
-			{
-				m_textures[texture] = bindTexture(Tileset::pixmap(m_mapInformation->tileset(), texture, SettingManager::value("tileSize").toInt()), GL_TEXTURE_2D);
-			}
-
+			bindTexture(m_textures[m_mapInformation->tile((i - 1), (j - 1)).texture]);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -276,14 +271,18 @@ void Map3DViewWidget::setZoom(qreal zoom)
 	}
 }
 
-void Map3DViewWidget::resizeMap(int width, int height)
+void Map3DViewWidget::setMapInformation(MapInformation *data)
 {
-	if (m_mapInformation)
+	if (!m_mapInformation || m_mapInformation->tileset() != data->tileset())
 	{
-		m_mapInformation->setSize(QSize(width, height));
+		updateTextures();
 	}
 
+	m_mapInformation = data;
+
 	repaint();
+
+	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
 }
 
 void Map3DViewWidget::moveLeft()
@@ -314,13 +313,18 @@ void Map3DViewWidget::moveDown()
 	repaint();
 }
 
-void Map3DViewWidget::setMapInformation(MapInformation *data)
+void Map3DViewWidget::updateTextures()
 {
-	m_mapInformation = data;
+	const TilesetType tileset = (m_mapInformation?m_mapInformation->tileset():TilesetTypeArizona);
+	const int tileSize = SettingManager::value("tileSize").toInt();
+	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
 
-	repaint();
+	m_textures.clear();
 
-	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
+	for (int i = 0; i < tiles.count(); ++i)
+	{
+		m_textures[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, tileSize);
+	}
 }
 
 MapInformation* Map3DViewWidget::mapInformation()
