@@ -52,9 +52,16 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 		{
 			for (int j = 0; j < m_mapInformation->size().height(); ++j)
 			{
-				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
+				MapTile tile(m_mapInformation->tile(i, j));
+				QPixmap pixmap(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
 
-				mapPainter.drawPixmap(tile, Tileset::pixmap(m_mapInformation->tileset(), m_mapInformation->tile(i, j).texture, tileSize));
+				mapPainter.save();
+				mapPainter.scale(((tile.flip & FlipTypeHorizontal)?-1:1), ((tile.flip & FlipTypeVertical)?-1:1));
+				mapPainter.translate(0.5, 0.5);
+				mapPainter.rotate(tile.rotation);
+				mapPainter.translate(-0.5, -0.5);
+				mapPainter.drawPixmap(QRect((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize), pixmap);
+				mapPainter.restore();
 			}
 		}
 

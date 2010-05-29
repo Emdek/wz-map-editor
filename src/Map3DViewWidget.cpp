@@ -124,7 +124,7 @@ void Map3DViewWidget::paintGL()
 
 			glPushMatrix();
 
-			glScalef(((tile.flip == FlipTypeDiagonal || tile.flip == FlipTypeHorizontal)?-1.0:1.0), ((tile.flip == FlipTypeDiagonal || tile.flip == FlipTypeVertical)?-1.0:1.0), 0.0);
+			glScalef(((tile.flip & FlipTypeHorizontal)?-1.0:1.0), ((tile.flip & FlipTypeVertical)?-1.0:1.0), 0.0);
 
 			glTranslatef(0.5, 0.5, 0.0);
 			glRotatef(tile.rotation, 0.0, 0.0, 1.0);

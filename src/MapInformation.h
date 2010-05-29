@@ -24,14 +24,6 @@ const int TILE_HEIGHT = 128;
 const int MAX_MAPAREA = (256 * 256);
 const quint8 MAX_TILE_TEXTURES = 255;
 
-enum FlipType
-{
-	FlipTypeNone = 0,
-	FlipTypeVertical,
-	FlipTypeHorizontal,
-	FlipTypeDiagonal
-};
-
 enum MapObjectType
 {
 	MapObjectTypeFeature,
@@ -40,6 +32,16 @@ enum MapObjectType
 	MapObjectTypeObject
 };
 
+enum FlipType
+{
+	FlipTypeNone = 0,
+	FlipTypeVertical = 1,
+	FlipTypeHorizontal = 2,
+	FlipTypeDiagonal = FlipTypeVertical | FlipTypeHorizontal
+};
+
+Q_DECLARE_FLAGS(FlipTypes, FlipType)
+
 struct MapTile
 {
 	MapTile();
@@ -47,7 +49,7 @@ struct MapTile
 	int rotation;
 	int texture;
 	int height;
-	FlipType flip;
+	FlipTypes flip;
 	QPoint position;
 };
 
