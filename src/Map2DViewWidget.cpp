@@ -29,26 +29,44 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 
-	QRect selection(m_selection);
-	selection = QRect((selection.topLeft() * m_tileSize), (selection.size() * m_tileSize));
-
-	if (m_mapInformation)
+	if (m_mapPixmap.isNull() && m_mapInformation)
 	{
+		m_mapPixmap = QPixmap(size());
+
+		QPainter mapPainter(&m_mapPixmap);
+		mapPainter.setRenderHint(QPainter::Antialiasing, true);
+
 		for (int i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			for (int j = 0; j < m_mapInformation->size().height(); ++j)
 			{
 				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
-				int texture = m_mapInformation->tile(i, j).texture & 0x01ff /*TILE_NUMMASK*/;
+				int texture = m_mapInformation->tile(i, j).texture;
 
 				if (!m_textures.contains(texture))
 				{
 					m_textures[texture] = Tileset::pixmap(m_mapInformation->tileset(), texture, SettingManager::value("tileSize").toInt());
 				}
 
-				painter.drawPixmap(tile, m_textures[texture]);
+				mapPainter.drawPixmap(tile, m_textures[texture]);
+			}
+		}
+	}
 
-				if ((m_rubberBand && m_rubberBand->isVisible() && tile.intersects(m_rubberBand->geometry())) || (selection.isValid() && tile.intersects(selection)))
+	painter.drawPixmap(0, 0, m_mapPixmap);
+
+	QRect selection(m_selection);
+	selection = QRect((selection.topLeft() * m_tileSize), (selection.size() * m_tileSize));
+
+	if (m_mapInformation && m_rubberBand && m_rubberBand->isVisible())
+	{
+		for (int i = 0; i < m_mapInformation->size().width(); ++i)
+		{
+			for (int j = 0; j < m_mapInformation->size().height(); ++j)
+			{
+				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
+
+				if (tile.intersects(m_rubberBand->geometry()) || (selection.isValid() && tile.intersects(selection)))
 				{
 					QStyleOptionViewItemV4 option;
 					option.initFrom(this);
@@ -195,8 +213,13 @@ void Map2DViewWidget::updateSize()
 		size = (QSize(10, 10) * m_tileSize);
 	}
 
-	setMinimumSize(size);
-	setMaximumSize(size);
+	if (size != this->size())
+	{
+		m_mapPixmap = QPixmap();
+
+		setMinimumSize(size);
+		setMaximumSize(size);
+	}
 }
 
 void Map2DViewWidget::setZoom(qreal zoom)
@@ -223,8 +246,9 @@ void Map2DViewWidget::setZoom(qreal zoom)
 void Map2DViewWidget::setMapInformation(MapInformation *data)
 {
 	m_mapInformation = data;
+	m_mapPixmap = QPixmap();
 
-	repaint();
+	updateSize();
 
 	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
 }

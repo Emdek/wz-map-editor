@@ -150,7 +150,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 	quint32 u32;
 	quint16 texture;
 	quint8 height, x1, x2, y1, y2;
-	QList<Gateway> gateways;
+	QList<MapGateway> gateways;
 	MapTile tile;
 	int i, j;
 
@@ -174,7 +174,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 
 	stream >> size.rwidth() >>  size.rheight();
 
-	if (!size.isValid() || stream.status() != QDataStream::Ok || (size.width() * size.height()) > MAP_MAXAREA)
+	if (!size.isValid() || stream.status() != QDataStream::Ok || (size.width() * size.height()) > MAX_MAPAREA)
 	{
 		qCritical() << QString("MapParser::deserializeMap - Invalid map size %1 x %1.").arg(size.width()).arg(size.height());
 
@@ -185,7 +185,8 @@ int MapParser::deserializeMap(QDataStream &stream)
 
 	// Read in row major array of map tiles
 	m_tiles.reserve(size.width());
-	for(i = size.width(); i > 0; i--)
+
+	for (i = size.width(); i > 0; i--)
 	{
 		m_tiles.push_back(QVector<MapTile>());
 	}
@@ -195,7 +196,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 		for (i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			stream >> texture >> height;
-			tile.texture = texture;
+			tile.texture = texture & 0x01ff;
 			tile.height = height;
 			tile.position.rx() = i;
 			tile.position.ry() = j;
@@ -232,7 +233,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 	{
 		stream >> x1 >> y1 >> x2 >> y2;
 
-		gateways.append(Gateway(x1, y1, x2, y2));
+		gateways.append(MapGateway(x1, y1, x2, y2));
 	}
 
 	m_mapInformation->setGateways(gateways);
@@ -355,12 +356,12 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 
 int MapParser::deserializeStructures(QDataStream &stream)
 {
-	QList<Entity> structures;
+	QList<MapEntity> structures;
 	quint32 u32,i;
 	quint32 structVersion;
 	quint64 pos; // debug var
 	char charArray[60];
-	Entity entity;
+	MapEntity entity;
 
 	if (!checkHeaderType(stream, "stru", 4))
 	{
@@ -517,11 +518,11 @@ int MapParser::deserializeStructures(QDataStream &stream)
 
 int MapParser::deserializeDroids(QDataStream &stream)
 {
-	QList<Entity> droids;
+	QList<MapEntity> droids;
 	quint32 u32, i;
 	quint32 droidVersion;
 	char charArray[60];
-	Entity entity;
+	MapEntity entity;
 	QVector<bool> playerPresent;
 	playerPresent.resize(MAX_PLAYERS);
 
@@ -603,10 +604,10 @@ int MapParser::deserializeDroids(QDataStream &stream)
 
 int MapParser::deserializeFeatures(QDataStream &stream)
 {
-	QList<Entity> features;
+	QList<MapEntity> features;
 	quint32 featVersion, i;
 	quint32 u32;
-	Entity entity;
+	MapEntity entity;
 	char charArray[60];
 
 	if (!checkHeaderType(stream, "feat", 4))

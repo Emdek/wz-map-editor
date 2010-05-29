@@ -21,7 +21,7 @@ namespace WZMapEditor
 const int MAX_PLAYERS = 8;
 const int TILE_WIDTH = 128;
 const int TILE_HEIGHT = 128;
-const int MAP_MAXAREA = (256 * 256);
+const int MAX_MAPAREA = (256 * 256);
 const quint8 MAX_TILE_TEXTURES = 255;
 
 enum FlipType
@@ -51,15 +51,15 @@ struct MapTile
 	QPoint position;
 };
 
-struct Gateway
+struct MapGateway
 {
-	Gateway(){}
-	Gateway(int x0, int y0, int x1, int y1);
+	MapGateway(){}
+	MapGateway(int x0, int y0, int x1, int y1);
 	QPoint start;
 	QPoint end;
 };
 
-struct Entity
+struct MapEntity
 {
 	quint32	id;
 	quint32	player;
@@ -87,11 +87,11 @@ public:
 	void setTime(quint32 time);
 	void setType(quint32 type);
 	void setTileset(TilesetType tilesetType);
-	void setDroids(QList<Entity> droids);
-	void setStructures(QList<Entity> structures);
-	void setFeatures(QList<Entity> features);
+	void setDroids(QList<MapEntity> droids);
+	void setStructures(QList<MapEntity> structures);
+	void setFeatures(QList<MapEntity> features);
 	void setTiles(QVector<QVector<MapTile> > tiles);
-	void setGateways(QList<Gateway> gateways);
+	void setGateways(QList<MapGateway> gateways);
 	void setTerrainTypes(QList<quint8> terrainTypes);
 	void setPlayerPresent(QVector<bool> playerPresent);
 	void setModified(bool modified);
@@ -110,7 +110,7 @@ private:
 	/// Map data
 	QSize m_size;
 	QVector<QVector<MapTile> > m_tiles;
-	QList<Gateway> m_gateways;
+	QList<MapGateway> m_gateways;
 
 	/// Terrain data
 	TilesetType m_tilesetType;
@@ -128,9 +128,9 @@ private:
 	/** Entity data:
 	  * Structures, droids and features
 	  */
-	QList<Entity> m_droids;
-	QList<Entity> m_structures;
-	QList<Entity> m_features;
+	QList<MapEntity> m_droids;
+	QList<MapEntity> m_structures;
+	QList<MapEntity> m_features;
 
 	QString m_filePath;
 

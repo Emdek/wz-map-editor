@@ -8,7 +8,7 @@ MapTile::MapTile() : gateway(false), rotation(0), texture(0), height(0), flip(Fl
 {
 }
 
-Gateway::Gateway(int x0, int y0, int x1, int y1)
+MapGateway::MapGateway(int x0, int y0, int x1, int y1)
 {
 	start = QPoint(x0, y0);
 	end = QPoint(x1, y1);
@@ -67,17 +67,17 @@ void MapInformation::setTileset(TilesetType tilesetType)
 	m_tilesetType = tilesetType;
 }
 
-void MapInformation::setDroids(QList<Entity> droids)
+void MapInformation::setDroids(QList<MapEntity> droids)
 {
 	m_droids = droids;
 }
 
-void MapInformation::setStructures(QList<Entity> structures)
+void MapInformation::setStructures(QList<MapEntity> structures)
 {
 	m_structures= structures;
 }
 
-void MapInformation::setFeatures(QList<Entity> features)
+void MapInformation::setFeatures(QList<MapEntity> features)
 {
 	m_features = features;
 }
@@ -87,7 +87,7 @@ void MapInformation::setTiles(QVector<QVector<MapTile> > tiles)
 	m_tiles = tiles;
 }
 
-void MapInformation::setGateways(QList<Gateway> gateways)
+void MapInformation::setGateways(QList<MapGateway> gateways)
 {
 	m_gateways = gateways;
 }

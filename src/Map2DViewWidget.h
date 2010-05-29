@@ -38,6 +38,7 @@ private:
 	QHash<int, QPixmap> m_textures;
 	QRubberBand *m_rubberBand;
 	QPoint m_mousePressStart;
+	QPixmap m_mapPixmap;
 	QRect m_selection;
 	int m_zoom;
 	int m_tileSize;
