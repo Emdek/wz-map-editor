@@ -64,7 +64,7 @@ void Map3DViewWidget::initializeGL()
 
 //	glHint(GL_PERSPECTIVE_CORECTION_HINT, GL_NICEST);
 
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
@@ -75,7 +75,7 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f );
+	gluPerspective(45.0, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0 );
 /*
 #ifdef QT_OPENGL_ES_1
 		glOrthof(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
@@ -92,14 +92,14 @@ void Map3DViewWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-//	glEnable (GL_LIGHTING);
-	glEnable (GL_TEXTURE_2D);
+//	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
 
-	glTranslatef(0.0f, 0.0f, ((1.0 / m_zoom) * -2000));
-	glRotatef(m_rotationX / 4.0f, 1.0, 0.0, 0.0);
-	glRotatef(m_rotationY / 4.0f, 0.0, 1.0, 0.0);
-	glRotatef(m_rotationZ / 4.0f, 0.0, 0.0, 1.0);
-	glTranslatef(this->m_offsetX * 0.2f, m_offsetY * 0.2f, 0.0f);
+	glTranslatef(0.0, 0.0, ((1.0 / m_zoom) * -2000));
+	glRotatef(m_rotationX / 4.0, 1.0, 0.0, 0.0);
+	glRotatef(m_rotationY / 4.0, 0.0, 1.0, 0.0);
+	glRotatef(m_rotationZ / 4.0, 0.0, 0.0, 1.0);
+	glTranslatef(m_offsetX * 0.2, m_offsetY * 0.2, 0.0);
 
 	if (!m_mapInformation)
 	{
@@ -108,59 +108,74 @@ void Map3DViewWidget::paintGL()
 
 	// this moves objects drawing position
 	// simple hack to set center in really center of map - not on left-bottom edge
-	int centerFactorX = (m_mapInformation->size().width()  * 1.0f) / 2;
-	int centerFactorY = (m_mapInformation->size().height() * 1.0f) / 2;
+	int centerFactorX = (m_mapInformation->size().width()  * 1.0) / 2;
+	int centerFactorY = (m_mapInformation->size().height() * 1.0) / 2;
+
+	glMatrixMode(GL_TEXTURE);
 
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
-			QPointF coordinates(((1.0f * i) - centerFactorX), ((1.0f * j) - centerFactorY));
+			QPointF coordinates(((1.0 * i) - centerFactorX), ((1.0 * j) - centerFactorY));
+			MapTile tile(m_mapInformation->tile((i - 1), (j - 1)));
 
-			bindTexture(m_textures[m_mapInformation->tile((i - 1), (j - 1)).texture]);
+			glPushMatrix();
+
+			glScalef(((tile.flip == FlipTypeDiagonal || tile.flip == FlipTypeHorizontal)?-1.0:1.0), ((tile.flip == FlipTypeDiagonal || tile.flip == FlipTypeVertical)?-1.0:1.0), 0.0);
+
+			glTranslatef(0.5, 0.5, 0.0);
+			glRotatef(tile.rotation, 0.0, 0.0, 1.0);
+			glTranslatef(-0.5, -0.5, 0.0);
+
+			bindTexture(m_textures[tile.texture]);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			glBegin(GL_QUADS);
 
-//			glColor3f(0.0f, 0.0f, 1.0f);
+//			glColor3f(0.0, 0.0, 1.0);
 
-			glNormal3f(coordinates.x(), (coordinates.y() - 1.0f), 0.0f);
+			glNormal3f(coordinates.x(), (coordinates.y() - 1.0), 0.0);
 			glTexCoord2f(1, 0);
-			glVertex3f(coordinates.x(), (coordinates.y() - 1.0f), 0.0f);
+			glVertex3f(coordinates.x(), (coordinates.y() - 1.0), 0.0);
 
-//			glColor3f(1.0f, 0.0f, 0.0f);
+//			glColor3f(1.0, 0.0, 0.0);
 
-			glNormal3f(coordinates.x(), coordinates.y(), 0.0f);
+			glNormal3f(coordinates.x(), coordinates.y(), 0.0);
 			glTexCoord2f(0, 0);
-			glVertex3f(coordinates.x(), coordinates.y(), 0.0f);
+			glVertex3f(coordinates.x(), coordinates.y(), 0.0);
 
-//			glColor3f(0.0f, 1.0f, 0.0f);
+//			glColor3f(0.0, 1.0, 0.0);
 
-			glNormal3f((coordinates.x() - 1.0f), coordinates.y(),  0.0f);
+			glNormal3f((coordinates.x() - 1.0), coordinates.y(),  0.0);
 			glTexCoord2f(0, 1);
-			glVertex3f((coordinates.x() - 1.0f), coordinates.y(),  0.0f);
+			glVertex3f((coordinates.x() - 1.0), coordinates.y(),  0.0);
 
-//			glColor3f(1.0f, 0.0f, 0.0f);
+//			glColor3f(1.0, 0.0, 0.0);
 
-			glNormal3f((coordinates.x() - 1.0f), (coordinates.y() - 1.0f),  0.0f);
+			glNormal3f((coordinates.x() - 1.0), (coordinates.y() - 1.0),  0.0);
 			glTexCoord2f(1, 1);
-			glVertex3f((coordinates.x() - 1.0f), (coordinates.y() - 1.0f),  0.0f);
+			glVertex3f((coordinates.x() - 1.0), (coordinates.y() - 1.0),  0.0);
 
 			glEnd();
 
 /*			glBegin(GL_TRIANGLES);
-			glColor3f(1.0f, 0.0f, 0.0f);
-			glVertex3f(1.0f * i - centerFactorX - 1.0f, 1.0f * j - centerFactorY, 0.0f);
+			glColor3f(1.0, 0.0, 0.0);
+			glVertex3f(1.0 * i - centerFactorX - 1.0, 1.0 * j - centerFactorY, 0.0);
 
-			glColor3f(0.0f, 1.0f, 0.0f);
-			glVertex3f(1.0f * i - centerFactorX - 1.0f, 1.0f * j - centerFactorY - 1.0f, 0.0f);
+			glColor3f(0.0, 1.0, 0.0);
+			glVertex3f(1.0 * i - centerFactorX - 1.0, 1.0 * j - centerFactorY - 1.0, 0.0);
 
-			glColor3f(0.0f, 0.0f, 1.0f);
-			glVertex3f(1.0f * i - centerFactorX, 1.0f * j - centerFactorY - 1.0f, 0.0f);
+			glColor3f(0.0, 0.0, 1.0);
+			glVertex3f(1.0 * i - centerFactorX, 1.0 * j - centerFactorY - 1.0, 0.0);
 			glEnd();*/
+
+			glPopMatrix();
 		}
 	}
+
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
