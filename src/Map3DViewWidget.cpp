@@ -270,12 +270,14 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 void Map3DViewWidget::setMapInformation(MapInformation *data)
 {
-	if (!m_mapInformation || m_mapInformation->tileset() != data->tileset())
-	{
-		updateTextures();
-	}
+	const bool updateTextures = (!m_mapInformation || m_mapInformation->tileset() != data->tileset());
 
 	m_mapInformation = data;
+
+	if (updateTextures)
+	{
+		this->updateTextures();
+	}
 
 	repaint();
 

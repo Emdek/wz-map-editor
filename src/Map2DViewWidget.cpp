@@ -23,6 +23,7 @@ Map2DViewWidget::Map2DViewWidget(QWidget *parent) : QWidget(parent),
 	m_tileSize(25)
 {
 	setMouseTracking(true);
+	setAttribute(Qt::WA_OpaquePaintEvent);
 	updateSize();
 }
 
@@ -231,12 +232,15 @@ void Map2DViewWidget::setZoom(qreal zoom)
 
 void Map2DViewWidget::setMapInformation(MapInformation *data)
 {
-	if (!m_mapInformation || m_mapInformation->tileset() != data->tileset())
-	{
-		updateTextures();
-	}
+	const bool updateTextures = (!m_mapInformation || m_mapInformation->tileset() != data->tileset());
 
 	m_mapInformation = data;
+
+	if (updateTextures)
+	{
+		this->updateTextures();
+	}
+
 	m_mapPixmap = QPixmap();
 
 	updateSize();

@@ -523,6 +523,8 @@ bool MainWindow::openFile(const QString &fileName)
 			SettingManager::setValue("recentFiles", recentFiles);
 			SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
 
+			updateTilesetView();
+
 			return true;
 		}
 	}

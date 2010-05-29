@@ -315,19 +315,33 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 {
 	unsigned int i;
 	quint32 numTerrainTypes, terrainVersion;
+	quint16 terrainSignature[3];
 	quint8 terrainType;
 	QList<quint8> terrainTypes;
 
 	stream.setByteOrder(QDataStream::LittleEndian);
 
-	if (!checkHeaderType(stream,"ttyp",4))
+	if (!checkHeaderType(stream, "ttyp", 4))
 	{
 		qCritical() << "MapParser::deserializeTerrain - Invalid header.";
 
 		return -1;
 	}
 
-	stream >> terrainVersion >> numTerrainTypes;
+	stream >> terrainVersion >> numTerrainTypes >> terrainSignature[0] >> terrainSignature[1] >> terrainSignature[2];
+
+	if (terrainSignature[0] == 2 && terrainSignature[1] == 2 && terrainSignature[2] == 2)
+	{
+		m_mapInformation->setTileset(TilesetTypeUrban);
+	}
+	else if (terrainSignature[0] == 0 && terrainSignature[1] == 0 && terrainSignature[2] == 2)
+	{
+		m_mapInformation->setTileset(TilesetTypeRockies);
+	}
+	else
+	{
+		m_mapInformation->setTileset(TilesetTypeArizona);
+	}
 
 	if (stream.status() != QDataStream::Ok)
 	{
