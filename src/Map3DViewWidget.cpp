@@ -9,9 +9,6 @@
 #include <cstdio>
 
 
-#include <QDebug>
-
-
 namespace WZMapEditor
 {
 

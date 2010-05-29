@@ -195,7 +195,9 @@ int MapParser::deserializeMap(QDataStream &stream)
 		for (i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			stream >> texture >> height;
-			tile.texture = texture & 0x01ff;
+			tile.texture = (texture & 0x01ff);
+			tile.flip = ((texture & 0x8000 && texture & 0x4000)?FlipTypeDiagonal:((texture & 0x8000)?FlipTypeHorizontal:((texture & 0x4000)?FlipTypeVertical:FlipTypeNone)));
+			tile.rotation = (((texture & 0x3000) >> 12) * 90);
 			tile.height = height;
 			tile.position.rx() = i;
 			tile.position.ry() = j;

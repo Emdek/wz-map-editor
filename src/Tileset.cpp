@@ -3,6 +3,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QXmlStreamReader>
+#include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 
 
@@ -120,7 +121,18 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 
 	if (tile.valid && QFile::exists(fileName))
 	{
-		return QPixmap(fileName);
+		if (tile.backgrounds.count())
+		{
+			QPixmap background = pixmap(Tileset::tileset(tile.tileset)->tiles(false, tile.backgrounds.first()).first(), size);
+			QPainter painter(&background);
+			painter.drawPixmap(0, 0, QPixmap(fileName));
+
+			return background;
+		}
+		else
+		{
+			return QPixmap(fileName);
+		}
 	}
 	else
 	{

@@ -8,7 +8,7 @@
 		<category name="Tiles" id="6" />
 		<category name="Water" id="7" type="water" />
 		<category name="Road" id="8" type="road" />
-		<category name="Tracks" id="9" type="tracks" backgrounds="3" />
+		<category name="Tracks" id="9" type="tracks" backgrounds="4" />
 		<category name="Crater" id="10" type="crater" />
 		<category name="Cliff" id="11" type="cliff" />
 		<category name="Other" id="12" type="other" />
