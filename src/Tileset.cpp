@@ -126,6 +126,7 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 	{
 		QPixmap debugPixmap(size, size);
 		debugPixmap.fill(Qt::red);
+
 		return debugPixmap;
 	}
 }

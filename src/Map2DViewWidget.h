@@ -18,13 +18,14 @@ class Map2DViewWidget : public QWidget
 public:
 	Map2DViewWidget(QWidget *parent = NULL);
 
-	void updateSize();
 	void setMapInformation(MapInformation *data);
 	MapInformation* mapInformation();
 	int zoom();
 
 public slots:
 	void setZoom(qreal zoom);
+	void updateSize();
+	void updateTextures();
 
 protected:
 	void paintEvent(QPaintEvent *event);

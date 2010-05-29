@@ -9,6 +9,10 @@
 #include <QtGui/QStyle>
 
 
+#include <QtCore/QTime>
+#include <QDebug>
+
+
 namespace WZMapEditor
 {
 
@@ -34,23 +38,24 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 		m_mapPixmap = QPixmap(size());
 
 		QPainter mapPainter(&m_mapPixmap);
+		mapPainter.fillRect(rect(), Qt::red);
+		mapPainter.setCompositionMode(QPainter::CompositionMode_Source);
 		mapPainter.setRenderHint(QPainter::Antialiasing, true);
+
+		QTime test;
+		test.start();
 
 		for (int i = 0; i < m_mapInformation->size().width(); ++i)
 		{
 			for (int j = 0; j < m_mapInformation->size().height(); ++j)
 			{
 				QRect tile((i * m_tileSize), (j * m_tileSize), m_tileSize, m_tileSize);
-				int texture = m_mapInformation->tile(i, j).texture;
 
-				if (!m_textures.contains(texture))
-				{
-					m_textures[texture] = Tileset::pixmap(m_mapInformation->tileset(), texture, SettingManager::value("tileSize").toInt());
-				}
-
-				mapPainter.drawPixmap(tile, m_textures[texture]);
+				mapPainter.drawPixmap(tile, m_textures[m_mapInformation->tile(i, j).texture]);
 			}
 		}
+
+		qDebug() << "repaint time" << test.elapsed();
 	}
 
 	painter.drawPixmap(0, 0, m_mapPixmap);
@@ -58,7 +63,7 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 	QRect selection(m_selection);
 	selection = QRect((selection.topLeft() * m_tileSize), (selection.size() * m_tileSize));
 
-	if (m_mapInformation && m_rubberBand && m_rubberBand->isVisible())
+	if (m_mapInformation && m_rubberBand)
 	{
 		for (int i = 0; i < m_mapInformation->size().width(); ++i)
 		{
@@ -72,6 +77,11 @@ void Map2DViewWidget::paintEvent(QPaintEvent *event)
 					option.initFrom(this);
 					option.rect = tile;
 					option.state |= QStyle::State_Selected;
+
+					if (!hasFocus())
+					{
+						option.state &= ~QStyle::State_Active;
+					}
 
 					painter.setOpacity(0.5);
 
@@ -198,6 +208,42 @@ void Map2DViewWidget::mouseMoveEvent(QMouseEvent *event)
 	}
 }
 
+void Map2DViewWidget::setZoom(qreal zoom)
+{
+	if (zoom > 500)
+	{
+		zoom = 500;
+	}
+	else if (zoom < 10)
+	{
+		zoom = 10;
+	}
+
+	if (m_zoom != zoom)
+	{
+		m_zoom = zoom;
+
+		updateSize();
+
+		emit zoomChanged(zoom);
+	}
+}
+
+void Map2DViewWidget::setMapInformation(MapInformation *data)
+{
+	if (!m_mapInformation || m_mapInformation->tileset() != data->tileset())
+	{
+		updateTextures();
+	}
+
+	m_mapInformation = data;
+	m_mapPixmap = QPixmap();
+
+	updateSize();
+
+	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
+}
+
 void Map2DViewWidget::updateSize()
 {
 	QSize size;
@@ -222,35 +268,18 @@ void Map2DViewWidget::updateSize()
 	}
 }
 
-void Map2DViewWidget::setZoom(qreal zoom)
+void Map2DViewWidget::updateTextures()
 {
-	if (zoom > 500)
+	m_textures.clear();
+
+	const TilesetType tileset = (m_mapInformation?m_mapInformation->tileset():TilesetTypeArizona);
+	const int tileSize = SettingManager::value("tileSize").toInt();
+	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
+
+	for (int i = 0; i < tiles.count(); ++i)
 	{
-		zoom = 500;
+		m_textures[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, tileSize);
 	}
-	else if (zoom < 10)
-	{
-		zoom = 10;
-	}
-
-	if (m_zoom != zoom)
-	{
-		m_zoom = zoom;
-
-		updateSize();
-
-		emit zoomChanged(zoom);
-	}
-}
-
-void Map2DViewWidget::setMapInformation(MapInformation *data)
-{
-	m_mapInformation = data;
-	m_mapPixmap = QPixmap();
-
-	updateSize();
-
-	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
 }
 
 MapInformation* Map2DViewWidget::mapInformation()

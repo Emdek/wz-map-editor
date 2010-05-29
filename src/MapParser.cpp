@@ -1,10 +1,9 @@
 #include "MapParser.h"
 
-#include <QtCore/QTime>
-
 #include <QtEndian>
 
 
+#include <QtCore/QTime>
 #include <QtDebug>
 
 

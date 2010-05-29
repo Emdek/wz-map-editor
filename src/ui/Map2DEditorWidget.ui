@@ -42,7 +42,11 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget" native="true"/>
+        <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget" native="true">
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
