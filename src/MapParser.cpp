@@ -311,11 +311,16 @@ int MapParser::deserializeGame(QDataStream &stream)
 	return 0;
 }
 
+/*
+ * NOTE: Currently this data is only used for determining
+ *		which of the 3 tilesets is being used.
+ *		Therefore it is unnecessary to load and store
+ *		the array of terrain types.
+ */
 int MapParser::deserializeTerrain(QDataStream &stream)
 {
 	unsigned int i;
 	quint32 numTerrainTypes, terrainVersion;
-	quint16 terrainSignature[3];
 	quint8 terrainType;
 	QList<quint8> terrainTypes;
 
@@ -328,20 +333,7 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 		return -1;
 	}
 
-	stream >> terrainVersion >> numTerrainTypes >> terrainSignature[0] >> terrainSignature[1] >> terrainSignature[2];
-
-	if (terrainSignature[0] == 2 && terrainSignature[1] == 2 && terrainSignature[2] == 2)
-	{
-		m_mapInformation->setTileset(TilesetTypeUrban);
-	}
-	else if (terrainSignature[0] == 0 && terrainSignature[1] == 0 && terrainSignature[2] == 2)
-	{
-		m_mapInformation->setTileset(TilesetTypeRockies);
-	}
-	else
-	{
-		m_mapInformation->setTileset(TilesetTypeArizona);
-	}
+	stream >> terrainVersion >> numTerrainTypes;
 
 	if (stream.status() != QDataStream::Ok)
 	{
@@ -362,6 +354,19 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 		qCritical() << QString("MapParser::deserializeTerrain - Error reading terrain types.");
 
 		return -1;
+	}
+
+	if (terrainTypes[0] == 2 && terrainTypes[1] == 2 && terrainTypes[2] == 2)
+	{
+		m_mapInformation->setTileset(TilesetTypeUrban);
+	}
+	else if (terrainTypes[0] == 0 && terrainTypes[1] == 0 && terrainTypes[2] == 2)
+	{
+		m_mapInformation->setTileset(TilesetTypeRockies);
+	}
+	else
+	{
+		m_mapInformation->setTileset(TilesetTypeArizona);
 	}
 
 	m_mapInformation->setTerrainTypes(terrainTypes);
