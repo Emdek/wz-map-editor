@@ -124,55 +124,62 @@ void Map3DViewWidget::paintGL()
 
 			glPushMatrix();
 
-			glScalef(((tile.flip & FlipTypeHorizontal)?-1.0:1.0), ((tile.flip & FlipTypeVertical)?-1.0:1.0), 0.0);
-
-			glTranslatef(0.5, 0.5, 0.0);
-			glRotatef(tile.rotation, 0.0, 0.0, 1.0);
-			glTranslatef(-0.5, -0.5, 0.0);
+			glScalef(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? -1.0 : 1.0), 0.0);
+			glRotatef((GLfloat)(tile.rotation + 90) * 1.0, 0.0, 0.0, 1.0);
 
 			bindTexture(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			glBegin(GL_QUADS);
+			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
 
-//			glColor3f(0.0, 0.0, 1.0);
 
-			glNormal3f(coordinates.x(), (coordinates.y() - 1.0), 0.0);
-			glTexCoord2f(1, 0);
-			glVertex3f(coordinates.x(), (coordinates.y() - 1.0), 0.0);
+			MapTile t_left_top(m_mapInformation->tile((i - 1), (j - 1)));
+			tile_left_top = (t_left_top.height * 3.0f) / 255.0f;
 
-//			glColor3f(1.0, 0.0, 0.0);
+			MapTile t_right_top(m_mapInformation->tile((i), (j - 1)));
+			tile_right_top = (t_right_top.height * 3.0f) / 255.0f;
 
-			glNormal3f(coordinates.x(), coordinates.y(), 0.0);
+			if (j - 2 < 0)
+				tile_left_bottom = tile_left_top;
+			else
+			{
+				MapTile t_left_bottom(m_mapInformation->tile((i - 1), (j - 2)));
+				tile_left_bottom = (t_left_bottom.height * 3.0f) / 255.0f;
+			}
+
+			if (j - 2 < 0)
+				tile_right_bottom = tile_right_top;
+			else
+			{
+				MapTile t_right_bottom(m_mapInformation->tile((i), (j - 2)));
+				tile_right_bottom = (t_right_bottom.height * 3.0f) / 255.0f;
+			}
+
+			float posY = 1.0 * j - centerFactorY;
+			float posX = 1.0 * i - centerFactorX;
+
+			glBegin(GL_TRIANGLES);
 			glTexCoord2f(0, 0);
-			glVertex3f(coordinates.x(), coordinates.y(), 0.0);
+			glVertex3f(posX, posY - 1.0, tile_right_bottom);
 
-//			glColor3f(0.0, 1.0, 0.0);
+			glTexCoord2f(1, 0);
+			glVertex3f(posX, posY, tile_right_top);
 
-			glNormal3f((coordinates.x() - 1.0), coordinates.y(),  0.0);
-			glTexCoord2f(0, 1);
-			glVertex3f((coordinates.x() - 1.0), coordinates.y(),  0.0);
-
-//			glColor3f(1.0, 0.0, 0.0);
-
-			glNormal3f((coordinates.x() - 1.0), (coordinates.y() - 1.0),  0.0);
 			glTexCoord2f(1, 1);
-			glVertex3f((coordinates.x() - 1.0), (coordinates.y() - 1.0),  0.0);
-
+			glVertex3f(posX - 1.0, posY, tile_left_top);
 			glEnd();
 
-/*			glBegin(GL_TRIANGLES);
-			glColor3f(1.0, 0.0, 0.0);
-			glVertex3f(1.0 * i - centerFactorX - 1.0, 1.0 * j - centerFactorY, 0.0);
+			glBegin(GL_TRIANGLES);
+			glTexCoord2f(1, 1);
+			glVertex3f(posX - 1.0, posY, tile_left_top);
 
-			glColor3f(0.0, 1.0, 0.0);
-			glVertex3f(1.0 * i - centerFactorX - 1.0, 1.0 * j - centerFactorY - 1.0, 0.0);
+			glTexCoord2f(0, 1);
+			glVertex3f(posX - 1.0, posY - 1.0, tile_left_bottom);
 
-			glColor3f(0.0, 0.0, 1.0);
-			glVertex3f(1.0 * i - centerFactorX, 1.0 * j - centerFactorY - 1.0, 0.0);
-			glEnd();*/
-
+			glTexCoord2f(0, 0);
+			glVertex3f(posX, posY - 1.0, tile_right_bottom);
+			glEnd();
 			glPopMatrix();
 		}
 	}
@@ -182,10 +189,10 @@ void Map3DViewWidget::paintGL()
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 {
-	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
-	{
+//	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
+//	{
 		setZoom(m_zoom + (event->delta() / 32));
-	}
+/*	}
 	else
 	{
 		int move = (event->delta() / 32);
@@ -201,7 +208,7 @@ void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 
 		repaint();
 	}
-
+*/
 	event->accept();
 }
 
@@ -296,28 +303,28 @@ void Map3DViewWidget::setMapInformation(MapInformation *data)
 
 void Map3DViewWidget::moveLeft()
 {
-	--m_offsetX;
+	m_offsetX += 5;
 
 	repaint();
 }
 
 void Map3DViewWidget::moveRight()
 {
-	++m_offsetX;
+	m_offsetX -= 5;
 
 	repaint();
 }
 
 void Map3DViewWidget::moveUp()
 {
-	++m_offsetY;
+	m_offsetY -= 5;
 
 	repaint();
 }
 
 void Map3DViewWidget::moveDown()
 {
-	--m_offsetY;
+	m_offsetY += 5;
 
 	repaint();
 }
