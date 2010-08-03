@@ -55,5 +55,7 @@ FORMS += src/ui/MainWindow.ui \
 	src/ui/Map3DEditorWidget.ui
 RESOURCES += src/resources/resources.qrc
 
- unix:UI_DIR = src/ui
- win32:UI_DIR = src/ui
+UI_DIR = src/ui
+MOC_DIR = src/moc
+OBJECTS_DIR = bin
+
