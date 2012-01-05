@@ -113,7 +113,7 @@ void Map3DViewWidget::paintGL()
 
 	glMatrixMode(GL_TEXTURE);
 
-	int tileSize = SettingManager::value("tileSize").toInt();
+	const int tileSize = SettingManager::value("tileSize").toInt();
 
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{

@@ -302,7 +302,6 @@ void MainWindow::actionProperties()
 		Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
 	}
 
-	m_map2DEditorWidgetUi->map2DViewWidget->updateSize();
 	m_mainWindowUi->map3DViewWidget->repaint();
 }
 

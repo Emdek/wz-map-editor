@@ -6,56 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>96</width>
-    <height>96</height>
+    <width>465</width>
+    <height>395</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="margin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="QScrollArea" name="scrollArea">
+    <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
      </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
+     <property name="dragMode">
+      <enum>QGraphicsView::RubberBandDrag</enum>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>96</width>
-        <height>96</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="WZMapEditor::Map2DViewWidget" name="map2DViewWidget" native="true">
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -63,9 +32,8 @@
  <customwidgets>
   <customwidget>
    <class>WZMapEditor::Map2DViewWidget</class>
-   <extends>QWidget</extends>
+   <extends>QGraphicsView</extends>
    <header>src/Map2DViewWidget.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,9 +1,7 @@
 #ifndef MAP2DVIEWWIDGET_H
 #define MAP2DVIEWWIDGET_H
 
-#include <QtGui/QRubberBand>
-#include <QtGui/QWidget>
-#include <QtCore/QHash>
+#include <QtGui/QGraphicsView>
 
 
 namespace WZMapEditor
@@ -11,7 +9,7 @@ namespace WZMapEditor
 
 class MapInformation;
 
-class Map2DViewWidget : public QWidget
+class Map2DViewWidget : public QGraphicsView
 {
 	Q_OBJECT
 
@@ -24,21 +22,12 @@ public:
 
 public slots:
 	void setZoom(qreal zoom);
-	void updateSize();
 
 protected:
-	void paintEvent(QPaintEvent *event);
 	void wheelEvent(QWheelEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
 
 private:
 	MapInformation *m_mapInformation;
-	QRubberBand *m_rubberBand;
-	QPoint m_mousePressStart;
-	QPixmap m_mapPixmap;
-	QRect m_selection;
 	int m_zoom;
 	int m_tileSize;
 
