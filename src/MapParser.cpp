@@ -185,7 +185,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 	// Read in row major array of map tiles
 	m_tiles.reserve(size.width());
 
-	for (i = size.width(); i > 0; i--)
+	for (i = size.width(); i > 0; --i)
 	{
 		m_tiles.push_back(QVector<MapTile>());
 	}

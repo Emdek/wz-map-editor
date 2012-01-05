@@ -94,14 +94,15 @@ void Map2DViewWidget::setMapInformation(MapInformation *data)
 		{
 			MapTile tile(m_mapInformation->tile(i, j));
 			QGraphicsPixmapItem *pixmap = new QGraphicsPixmapItem(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
-			pixmap->setTransformOriginPoint((tileSize / 2), (tileSize / 2));
-			pixmap->setRotation(tile.rotation);
 			pixmap->scale(((tile.flip & FlipTypeHorizontal)?-1:1), ((tile.flip & FlipTypeVertical)?-1:1));
+			pixmap->setOffset(((tile.flip & FlipTypeHorizontal)?-tileSize:0), ((tile.flip & FlipTypeVertical)?-tileSize:0));
+			pixmap->setTransformOriginPoint((tileSize / 2) + pixmap->offset().x(), (tileSize / 2) + pixmap->offset().y());
+			pixmap->setRotation(tile.rotation);
 
 			scene()->addItem(pixmap);
 
 			pixmap->setData(0, QPoint(i, j));
-			pixmap->setPos(((i + ((tile.flip & FlipTypeHorizontal)?1:0)) * tileSize), (((m_mapInformation->size().height() - j -1) + ((tile.flip & FlipTypeVertical)?1:0)) * tileSize));
+			pixmap->setPos((i * tileSize), ((m_mapInformation->size().height() - j -1) * tileSize));
 		}
 	}
 
