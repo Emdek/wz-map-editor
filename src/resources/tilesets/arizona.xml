@@ -46,14 +46,14 @@
 		<tile category="10" backgrounds="3" id="56" />
 		<tile category="10" backgrounds="4" id="58" />
 		<tile category="10" backgrounds="4" id="62" />
-		<tile category="10" id="63" />
-		<tile category="10" id="64" />
-		<tile category="10" id="65" />
-		<tile category="10" id="66" />
-		<tile category="10" id="67" />
-		<tile category="10" id="68" />
-		<tile category="10" id="69" />
-		<tile category="10" id="70" />
+		<tile category="10" backgrounds="1" id="63" />
+		<tile category="10" backgrounds="1" id="64" />
+		<tile category="10" backgrounds="1" id="65" />
+		<tile category="10" backgrounds="1" id="66" />
+		<tile category="10" backgrounds="3" id="67" />
+		<tile category="10" backgrounds="3" id="68" />
+		<tile category="10" backgrounds="3" id="69" />
+		<tile category="10" backgrounds="3" id="70" />
 		<tile category="11" id="18" />
 		<tile category="11" id="46" />
 		<tile category="11" id="71" />
