@@ -59,16 +59,17 @@ void Map2DViewWidget::setZoom(qreal zoom)
 
 void Map2DViewWidget::setMapInformation(MapInformation *data)
 {
-	if (scene())
+	if (!scene())
 	{
-		scene()->deleteLater();
+		setScene(new QGraphicsScene(this));
 	}
-
-	setScene(new QGraphicsScene(this));
 
 	m_mapInformation = data;
 
-	const int tileSize = SettingManager::value("tileSize").toInt();
+	const qreal tileSize = SettingManager::value("tileSize").toInt();
+
+	scene()->clear();
+	scene()->setSceneRect(0, 0, (m_mapInformation->size().width() * tileSize), (m_mapInformation->size().height() * tileSize));
 
 	for (int i = 0; i < m_mapInformation->size().width(); ++i)
 	{
@@ -76,12 +77,13 @@ void Map2DViewWidget::setMapInformation(MapInformation *data)
 		{
 			MapTile tile(m_mapInformation->tile(i, j));
 			QGraphicsPixmapItem *pixmap = new QGraphicsPixmapItem(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
+			pixmap->setTransformOriginPoint((tileSize / 2), (tileSize / 2));
+			pixmap->setRotation(tile.rotation);
+			pixmap->scale(((tile.flip & FlipTypeHorizontal)?-1:1), ((tile.flip & FlipTypeVertical)?-1:1));
 
 			scene()->addItem(pixmap);
 
-			pixmap->scale(((tile.flip & FlipTypeHorizontal)?-1:1), ((tile.flip & FlipTypeVertical)?-1:1));
-			pixmap->setRotation(tile.rotation);
-			pixmap->setPos((i * tileSize), (j * tileSize));
+			pixmap->setPos(((i + ((tile.flip & FlipTypeHorizontal)?1:0)) * tileSize), (((m_mapInformation->size().height() - j -1) + ((tile.flip & FlipTypeVertical)?1:0)) * tileSize));
 		}
 	}
 
