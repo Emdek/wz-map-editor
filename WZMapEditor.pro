@@ -24,7 +24,7 @@ SOURCES += src/main.cpp \
 	src/PreferencesManager.cpp \
 	src/FileSystemCompleterModel.cpp \
 	src/MapWriter.cpp \
-	src/MapSettingsManager.cpp
+    src/MapSettingsManager.cpp
 HEADERS += src/MainWindow.h \
 	src/Map2DViewWidget.h \
 	src/Map3DViewWidget.h \
@@ -41,7 +41,7 @@ HEADERS += src/MainWindow.h \
 	src/PreferencesManager.h \
 	src/FileSystemCompleterModel.h \
 	src/MapWriter.h \
-	src/MapSettingsManager.h
+    src/MapSettingsManager.h
 FORMS += src/ui/MainWindow.ui \
 	src/ui/ToolBarEditorDialog.ui \
 	src/ui/ShortcutEditorDialog.ui \
@@ -52,10 +52,11 @@ FORMS += src/ui/MainWindow.ui \
 	src/ui/TerrainDockWidget.ui \
 	src/ui/PreferencesDialog.ui \
 	src/ui/Map2DEditorWidget.ui \
-	src/ui/Map3DEditorWidget.ui
+    src/ui/Map3DEditorWidget.ui
 RESOURCES += src/resources/resources.qrc
 
 UI_DIR = src/ui
 MOC_DIR = src/moc
 OBJECTS_DIR = bin
 
+LIBS += -L/usr/local/lib -lGLU

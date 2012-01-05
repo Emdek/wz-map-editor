@@ -8,7 +8,6 @@
 
 #include <cstdio>
 
-
 namespace WZMapEditor
 {
 
@@ -75,7 +74,7 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0 );
+	gluPerspective(45.0, (GLfloat)width / (GLfloat)height, 0.1, 1500.0);
 /*
 #ifdef QT_OPENGL_ES_1
 		glOrthof(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
