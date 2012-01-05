@@ -87,7 +87,7 @@ void Map3DViewWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 
 	glTranslatef(0.0, 0.0, ((1.0 / m_zoom) * -2000));
@@ -106,14 +106,15 @@ void Map3DViewWidget::paintGL()
 	int centerFactorX = (m_mapInformation->size().width()  * 1.0) / 2;
 	int centerFactorY = (m_mapInformation->size().height() * 1.0) / 2;
 
-	glMatrixMode(GL_TEXTURE);
-
+	int counter = 0;
 	const int tileSize = SettingManager::value("tileSize").toInt();
 
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
+			glLoadName(counter);
+			counter++;
 
 			glMatrixMode(GL_TEXTURE);
 
@@ -122,10 +123,10 @@ void Map3DViewWidget::paintGL()
 
 			glPushMatrix();
 
-			glScalef(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? -1.0 : 1.0), 0.0);
+			glScalef(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? 1.0 : -1.0), 0.0);
 			glRotatef((GLfloat)(tile.rotation + 90) * 1.0, 0.0, 0.0, 1.0);
 
-			bindTexture(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize));
+			bindTexture(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -162,16 +163,15 @@ void Map3DViewWidget::paintGL()
 
 			glColor3f(1.0f, 1.0f, 1.0f);
 			// selection code
-			for (s = 0; s < m_selection.size(); s++)
+			for (s = 0; s < m_selected.size(); s++)
 			{
-				if (m_selection[s].x == i && m_selection[s].y == j)
+				if (m_objects[m_selected[s]].x == i && m_objects[m_selected[s]].y == j)
 				{
-					glLoadName(s);
-					if (m_selection[s].selected)
-						glColor3f(1.0f, 0.0f, 0.0f);
+					glColor3f(1.0f, 0.0f, 0.0f);
 				}
 			}
 			// selection code ends here
+
 			glBegin(GL_TRIANGLES);
 			{
 				glTexCoord2f(0, 0);
@@ -198,39 +198,13 @@ void Map3DViewWidget::paintGL()
 			}
 			glEnd();
 
-			/*			glMatrixMode(GL_MODELVIEW);
-			glColor3f(1.0f, 0.0f, 0.0f);
-			for (s = 0; s < m_selection.size(); s++)
-			{
-				if (m_selection[s].selected == true && m_selection[s].x == i && m_selection[s].y == j)
-				{
-					glBegin(GL_LINES);
-					{
-						glTexCoord2f(0, 0);
-						glVertex3f(posX, posY - 1.0, tile_right_bottom + 0.3f);
-
-						glTexCoord2f(1, 0);
-						glVertex3f(posX, posY, tile_right_top + 0.3f);
-
-						glTexCoord2f(1, 1);
-						glVertex3f(posX - 1.0, posY, tile_left_top + 0.3f);
-
-						glTexCoord2f(0, 1);
-						glVertex3f(posX - 1.0, posY - 1.0, tile_left_bottom + 0.3f);
-					}
-					glEnd();
-				}
-				m_selection[s].selected == false;
-			}
-*/
 			glPopMatrix();
 		}
 	}
+	glMatrixMode(GL_MODELVIEW);
 
-	for (s = 0; s < m_selection.size(); s++)
-	{
-		m_selection[s].selected = false;
-	}
+	m_selected.clear();
+	printf("COUNTER:  %i\n", counter);
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
@@ -307,15 +281,6 @@ void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 
 void Map3DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-	/*	QMenu menu;
-
-	QAction *openAct = new QAction("not yet implemented", this);
-
-	menu.addAction(openAct);
-	menu.exec(mapToGlobal(event->pos()));
-
-	menu.removeAction(openAct);
-	delete openAct;*/
 }
 
 void Map3DViewWidget::setZoom(qreal zoom)
@@ -344,19 +309,19 @@ void Map3DViewWidget::setMapInformation(MapInformation *data)
 	m_mapInformation = data;
 
 	// selection code
-	m_selection.clear();
+	m_objects.clear();
 	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
 		{
-			selection current_object;
-			current_object.selected = false;
+			objects current_object;
 			current_object.type     = TYPE_TERRAIN;
 			current_object.x        = i;
 			current_object.y        = j;
-			m_selection.push_back(current_object);
+			m_objects.push_back(current_object);
 		}
 	}
+	printf("COUNT:  %i\n\n", m_objects.size());
 	// selection code ends here
 
 	repaint();
@@ -415,10 +380,10 @@ int Map3DViewWidget::zoom()
 
 void Map3DViewWidget::_glSelect(int x, int y)
 {
-	GLuint buff[64] = {0};
+	GLuint buff[16] = {0};
 	GLint hits, view[4];
 
-	glSelectBuffer(64, buff);
+	glSelectBuffer(16, buff);
 	glGetIntegerv(GL_VIEWPORT, view);
 	glRenderMode(GL_SELECT);
 
@@ -429,9 +394,8 @@ void Map3DViewWidget::_glSelect(int x, int y)
 	glPushMatrix();
 	glLoadIdentity();
 
-	gluPickMatrix(x, y, 1.0, 1.0, view);
+	gluPickMatrix(x, y, 0.001, 0.001, view);
 	gluPerspective(45.0, (GLfloat)view[2]/(GLfloat)view[3], 0.1, 1500.0);
-	//	gluPerspective(60, (float)view[2]/(float)view[3], 0.0001, 1000.0);
 
 	glMatrixMode(GL_MODELVIEW);
 
@@ -442,28 +406,16 @@ void Map3DViewWidget::_glSelect(int x, int y)
 
 	hits = glRenderMode(GL_RENDER);
 
-	// select only one thing
-	/*if (hits > 1)
-	{
-		int s = (GLubyte)buff[4 + 3];
-		m_selection[s].selected = true;
-		printf("[select] %i:\t%i x %i\n", s, m_selection[s].x, m_selection[s].y);
-	}*/
-
 	// select ALL things where mouse is
 	int i;
 	for (i = 0; i < hits; i++)
 	{
 		int s = (GLubyte)buff[i * 4 + 3];
-		m_selection[s].selected = true;
-		printf("[hit %i] %i:\t%i x %i\n", i, s, m_selection[s].x, m_selection[s].y);
+		m_selected.push_back(s);
+		printf("[hit %i] %i:\t%i x %i\n", i, s, m_objects[m_selected.size()-1].x, m_objects[m_selected.size()-1].y);
 	}
 	printf("\n");
-	/*
-			uncomment this to show the whole buffer
-		* /
-		gl_selall(hits, buff);
-		*/
+	//_listHits(hits,buff);
 
 	glMatrixMode(GL_MODELVIEW);
 }

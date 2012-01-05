@@ -66,13 +66,14 @@ private:
 		TYPE_STRUCTURE
 	};
 
-	struct selection {
+	struct objects {
 		object_type type;
 		int         x;
 		int         y;
 		bool        selected;
 	};
-	std::vector<selection> m_selection;
+	std::vector<objects> m_objects;
+	std::vector<int> m_selected;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
