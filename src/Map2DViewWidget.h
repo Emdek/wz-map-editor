@@ -25,6 +25,7 @@ public slots:
 
 protected:
 	void wheelEvent(QWheelEvent *event);
+	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
 	MapInformation *m_mapInformation;

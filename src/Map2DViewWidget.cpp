@@ -4,6 +4,7 @@
 #include "SettingManager.h"
 
 #include <QtGui/QGraphicsPixmapItem>
+#include <QtGui/QMenu>
 #include <QtGui/QWheelEvent>
 
 
@@ -30,6 +31,22 @@ void Map2DViewWidget::wheelEvent(QWheelEvent *event)
 	{
 		QGraphicsView::wheelEvent(event);
 	}
+}
+
+void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+	if (!m_mapInformation || !scene() || !itemAt(event->pos()))
+	{
+		return;
+	}
+
+	QPoint tile = itemAt(event->pos())->data(0).toPoint();
+	QMenu menu;
+	menu.addAction(tr("Tile: %1 %2").arg(tile.x()).arg(tile.y()));
+	menu.addAction(tr("Rotation: %1").arg(m_mapInformation->tile(tile.x(), tile.y()).rotation));
+	menu.addAction(tr("Flip: %1 %2").arg((m_mapInformation->tile(tile.x(), tile.y()).flip & FlipTypeHorizontal)?'y':'n').arg((m_mapInformation->tile(tile.x(), tile.y()).flip & FlipTypeVertical)?'y':'n'));
+
+	menu.exec(event->globalPos());
 }
 
 void Map2DViewWidget::setZoom(qreal zoom)
@@ -83,6 +100,7 @@ void Map2DViewWidget::setMapInformation(MapInformation *data)
 
 			scene()->addItem(pixmap);
 
+			pixmap->setData(0, QPoint(i, j));
 			pixmap->setPos(((i + ((tile.flip & FlipTypeHorizontal)?1:0)) * tileSize), (((m_mapInformation->size().height() - j -1) + ((tile.flip & FlipTypeVertical)?1:0)) * tileSize));
 		}
 	}
