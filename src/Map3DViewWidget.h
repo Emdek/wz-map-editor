@@ -1,9 +1,11 @@
 #ifndef MAP3DVIEWWIDGET_H
 #define MAP3DVIEWWIDGET_H
 
-#include <QtOpenGL/QGLWidget>
 #include <QtCore/QHash>
+#include <QtOpenGL/QGLWidget>
+#include <GL/glu.h>
 
+#include <vector>
 
 namespace WZMapEditor
 {
@@ -18,6 +20,11 @@ public:
 	Map3DViewWidget(QWidget *parent = NULL);
 
 	void setMapInformation(MapInformation *data);
+
+	void _glSelect(int x, int y);
+	void _listHits(GLint hits, GLuint *names);
+
+	MapInformation* old_mapInformation();
 	MapInformation* mapInformation();
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
@@ -47,9 +54,25 @@ private:
 	int m_rotationX;
 	int m_rotationY;
 	int m_rotationZ;
+	int m_currentx;
+	int m_currenty;
+	int m_currentz;
 	int m_offsetX;
 	int m_offsetY;
 	int m_zoom;
+
+	enum object_type {
+		TYPE_TERRAIN,
+		TYPE_STRUCTURE
+	};
+
+	struct selection {
+		object_type type;
+		int         x;
+		int         y;
+		bool        selected;
+	};
+	std::vector<selection> m_selection;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
