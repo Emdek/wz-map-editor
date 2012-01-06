@@ -24,26 +24,6 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 {
 	setMouseTracking(true);
 
-	QAction *moveLeft = new QAction(this);
-	QAction *moveRight = new QAction(this);
-	QAction *moveUp = new QAction(this);
-	QAction *moveDown = new QAction(this);
-
-	moveLeft->setShortcut(Qt::Key_Left);
-	moveRight->setShortcut(Qt::Key_Right);
-	moveUp->setShortcut(Qt::Key_Up);
-	moveDown->setShortcut(Qt::Key_Down);
-
-	addAction(moveLeft);
-	addAction(moveRight);
-	addAction(moveUp);
-	addAction(moveDown);
-
-	connect(moveLeft, SIGNAL(triggered()), this, SLOT(moveLeft()));
-	connect(moveRight, SIGNAL(triggered()), this, SLOT(moveRight()));
-	connect(moveUp, SIGNAL(triggered()), this, SLOT(moveUp()));
-	connect(moveDown, SIGNAL(triggered()), this, SLOT(moveDown()));
-
 	setFocus();
 }
 
@@ -54,14 +34,14 @@ void Map3DViewWidget::initializeGL()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_CULL_FACE);
-	//	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
 	glShadeModel(GL_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//	glHint(GL_PERSPECTIVE_CORECTION_HINT, GL_NICEST);
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
@@ -76,7 +56,6 @@ void Map3DViewWidget::resizeGL(int width, int height)
 	glLoadIdentity();
 	gluPerspective(45.0, (GLfloat)width / (GLfloat)height, 0.1, 1500.0);
 	glMatrixMode(GL_MODELVIEW);
-	//paintGL();
 }
 
 void Map3DViewWidget::paintGL()
@@ -94,7 +73,7 @@ void Map3DViewWidget::paintGL()
 	glRotatef(m_rotationX / 4.0, 1.0, 0.0, 0.0);
 	glRotatef(m_rotationY / 4.0, 0.0, 1.0, 0.0);
 	glRotatef(m_rotationZ / 4.0, 0.0, 0.0, 1.0);
-	glTranslatef(m_offsetX * 0.2, m_offsetY * 0.2, 0.0);
+	glTranslatef(m_offsetX, m_offsetY, 0.0);
 
 	if (!m_mapInformation)
 	{
@@ -167,7 +146,7 @@ void Map3DViewWidget::paintGL()
 			{
 				if (m_objects[m_selected[s]].x == i && m_objects[m_selected[s]].y == j)
 				{
-					glColor3f(1.0f, 0.0f, 0.0f);
+					glColor3f(1.0f, 0.6f, 0.5f);
 				}
 			}
 			// selection code ends here
@@ -182,11 +161,7 @@ void Map3DViewWidget::paintGL()
 
 				glTexCoord2f(1, 1);
 				glVertex3f(posX - 1.0, posY, tile_left_top);
-			}
-			glEnd();
 
-			glBegin(GL_TRIANGLES);
-			{
 				glTexCoord2f(1, 1);
 				glVertex3f(posX - 1.0, posY, tile_left_top);
 
@@ -204,33 +179,15 @@ void Map3DViewWidget::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 
 	m_selected.clear();
-	printf("COUNTER:  %i\n", counter);
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 {
-	//	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
-	//	{
 	setZoom(m_zoom + (event->delta() / 32));
-	repaint();
+
 	_glSelect(m_currentx, height() - m_currenty);
-	/*	}
-	else
-	{
-		int move = (event->delta() / 32);
+	repaint();
 
-		if (event->modifiers() & Qt::ALT)
-		{
-			m_offsetX -= move;
-		}
-		else
-		{
-			m_offsetY += move;
-		}
-
-		repaint();
-	}
-*/
 	event->accept();
 }
 
@@ -239,13 +196,16 @@ void Map3DViewWidget::mousePressEvent(QMouseEvent *event)
 	if (event->button() == Qt::LeftButton)
 	{
 		m_moving = true;
-
-		event->accept();
+	}
+	else if (event->button() == Qt::RightButton)
+	{
+		m_rotating = true;
 	}
 	else
 	{
 		event->ignore();
 	}
+	event->accept();
 }
 
 void Map3DViewWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -253,28 +213,35 @@ void Map3DViewWidget::mouseReleaseEvent(QMouseEvent *event)
 	if (event->button() == Qt::LeftButton)
 	{
 		m_moving = false;
-
-		event->accept();
+	}
+	else if (event->button() == Qt::RightButton)
+	{
+		m_rotating = false;
 	}
 	else
 	{
 		event->ignore();
 	}
+	event->accept();
 }
 
 void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (m_moving == true)
+	if (m_rotating == true)
 	{
 		m_rotationZ -= (m_currentx - event->pos().x());
 		m_rotationX -= (m_currenty - event->pos().y());
 	}
-
+	if (m_moving == true)
+	{
+		m_offsetX -= (m_currentx - event->pos().x()) / (m_zoom / 1.65f);
+		m_offsetY += (m_currenty - event->pos().y()) / (m_zoom / 1.65f);
+	}
 	m_currentx = event->pos().x();
 	m_currenty = event->pos().y();
 
-	repaint();
 	_glSelect(event->pos().x(), height() - event->pos().y());
+	repaint();
 
 	emit cooridantesChanged(m_currentx, m_currenty, m_currentz);
 }
@@ -321,40 +288,12 @@ void Map3DViewWidget::setMapInformation(MapInformation *data)
 			m_objects.push_back(current_object);
 		}
 	}
-	printf("COUNT:  %i\n\n", m_objects.size());
+	//printf("COUNT:  %i\n\n", m_objects.size());
 	// selection code ends here
 
 	repaint();
 
 	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
-}
-
-void Map3DViewWidget::moveLeft()
-{
-	m_offsetX += 5;
-
-	repaint();
-}
-
-void Map3DViewWidget::moveRight()
-{
-	m_offsetX -= 5;
-
-	repaint();
-}
-
-void Map3DViewWidget::moveUp()
-{
-	m_offsetY -= 5;
-
-	repaint();
-}
-
-void Map3DViewWidget::moveDown()
-{
-	m_offsetY += 5;
-
-	repaint();
 }
 
 MapInformation* Map3DViewWidget::mapInformation()
@@ -380,10 +319,10 @@ int Map3DViewWidget::zoom()
 
 void Map3DViewWidget::_glSelect(int x, int y)
 {
-	GLuint buff[16] = {0};
+	GLuint buff[64] = {0};
 	GLint hits, view[4];
 
-	glSelectBuffer(16, buff);
+	glSelectBuffer(64, buff);
 	glGetIntegerv(GL_VIEWPORT, view);
 	glRenderMode(GL_SELECT);
 
@@ -394,8 +333,8 @@ void Map3DViewWidget::_glSelect(int x, int y)
 	glPushMatrix();
 	glLoadIdentity();
 
-	gluPickMatrix(x, y, 0.001, 0.001, view);
-	gluPerspective(45.0, (GLfloat)view[2]/(GLfloat)view[3], 0.1, 1500.0);
+	gluPickMatrix(x, y, 0.0001, 0.0001, view);
+	gluPerspective(45.0, (GLfloat)view[2] / (GLfloat)view[3], 0.1, 1500.0);
 
 	glMatrixMode(GL_MODELVIEW);
 

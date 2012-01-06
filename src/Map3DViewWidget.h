@@ -32,10 +32,6 @@ public:
 
 public slots:
 	void setZoom(qreal zoom);
-	void moveLeft();
-	void moveRight();
-	void moveUp();
-	void moveDown();
 
 protected:
 	void initializeGL();
@@ -57,8 +53,8 @@ private:
 	int m_currentx;
 	int m_currenty;
 	int m_currentz;
-	int m_offsetX;
-	int m_offsetY;
+	float m_offsetX;
+	float m_offsetY;
 	int m_zoom;
 
 	enum object_type {
