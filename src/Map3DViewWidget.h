@@ -12,6 +12,39 @@ namespace WZMapEditor
 
 class Map;
 
+struct Vertex
+{
+	float x;
+	float y;
+	float z;
+	float u;
+	float v;
+};
+
+enum EntityType {
+	TypeTerrain,
+	TypeStructure
+};
+
+struct Entity
+{
+	//Object(Vertex v[4], GLuint t, QPoint f, float r);
+	EntityType type;
+
+	// position on wz map
+	int        x;
+	int        y;
+
+	bool       hovered;
+	bool       selected;
+
+	std::vector<Vertex> vertex; // object verticles
+
+	GLuint texid;
+	QPoint flip;
+	float  rotation;
+};
+
 class Map3DViewWidget : public QGLWidget
 {
 	Q_OBJECT
@@ -56,19 +89,8 @@ private:
 	float m_offsetY;
 	int m_zoom;
 
-	enum object_type {
-		TYPE_TERRAIN,
-		TYPE_STRUCTURE
-	};
-
-	struct objects {
-		object_type type;
-		int         x;
-		int         y;
-		bool        selected;
-	};
-	std::vector<objects> m_objects;
-	std::vector<int> m_selected;
+	std::vector<Entity> m_entities;
+//	std::vector<int> m_selected;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);

@@ -11,6 +11,21 @@
 namespace WZMapEditor
 {
 
+/*Quad::Quad(Vertex v[4], GLuint t, QPoint f, float r) :
+	texture(t),
+	flip(f),
+	rotation(r)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		vert[i].x = v[i].x;
+		vert[i].y = v[i].y;
+		vert[i].z = v[i].z;
+		vert[i].u = v[i].u;
+		vert[i].v = v[i].v;
+	}
+}*/
+
 Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
 	m_map(NULL),
 	m_moving(false),
@@ -44,6 +59,9 @@ void Map3DViewWidget::initializeGL()
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+
+	// generate empty texture - default, texid = 0
+	glGenTextures(1, 0);
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
@@ -80,105 +98,49 @@ void Map3DViewWidget::paintGL()
 		return;
 	}
 
-	// this moves objects drawing position
-	// simple hack to set center in really center of map - not on left-bottom edge
-	int centerFactorX = (m_map->size().width()  * 1.0) / 2;
-	int centerFactorY = (m_map->size().height() * 1.0) / 2;
-
-	int counter = 0;
-	const int tileSize = SettingManager::value("tileSize").toInt();
-
-	for (int i = 1; i <= m_map->size().width(); ++i)
+	for (int i = 0; i < m_entities.size(); i++)
 	{
-		for (int j = 1; j <= m_map->size().height(); ++j)
+		Entity t = m_entities[i];
+
+		glLoadName(i);
+
+		glMatrixMode(GL_TEXTURE);
+
+		glPushMatrix();
+
+		glScalef(t.flip.x(), t.flip.y(), 0.0);
+		glRotatef(t.rotation, 0.0, 0.0, 1.0);
+
+		glBindTexture(GL_TEXTURE_2D, t.texid);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		if (t.hovered == true)
 		{
-			glLoadName(counter);
-			counter++;
-
-			glMatrixMode(GL_TEXTURE);
-
-			QPointF coordinates(((1.0 * i) - centerFactorX), ((1.0 * j) - centerFactorY));
-			MapTile tile(m_map->tile((i - 1), (j - 1)));
-
-			glPushMatrix();
-
-			glScalef(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? 1.0 : -1.0), 0.0);
-			glRotatef((GLfloat)(tile.rotation + 90) * 1.0, 0.0, 0.0, 1.0);
-
-			bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
-
-			MapTile t_left_top(m_map->tile((i - 1), (j - 1)));
-			tile_left_top = (t_left_top.height * 3.0f) / 255.0f;
-
-			MapTile t_right_top(m_map->tile((i), (j - 1)));
-			tile_right_top = (t_right_top.height * 3.0f) / 255.0f;
-
-			if (j - 2 < 0)
-			{
-				tile_left_bottom = tile_left_top;
-			}
-			else
-			{
-				MapTile t_left_bottom(m_map->tile((i - 1), (j - 2)));
-				tile_left_bottom = (t_left_bottom.height * 3.0f) / 255.0f;
-			}
-
-			if (j - 2 < 0)
-			{
-				tile_right_bottom = tile_right_top;
-			}
-			else
-			{
-				MapTile t_right_bottom(m_map->tile((i), (j - 2)));
-				tile_right_bottom = (t_right_bottom.height * 3.0f) / 255.0f;
-			}
-
-			float posY = 1.0 * j - centerFactorY;
-			float posX = 1.0 * i - centerFactorX;
-
-			glColor3f(1.0f, 1.0f, 1.0f);
-			// selection code
-			for (s = 0; s < m_selected.size(); s++)
-			{
-				if (m_objects[m_selected[s]].x == i && m_objects[m_selected[s]].y == j)
-				{
-					glColor3f(1.0f, 0.6f, 0.5f);
-				}
-			}
-			// selection code ends here
-
-			glBegin(GL_TRIANGLES);
-			{
-				glTexCoord2f(0, 0);
-				glVertex3f(posX, posY - 1.0, tile_right_bottom);
-
-				glTexCoord2f(1, 0);
-				glVertex3f(posX, posY, tile_right_top);
-
-				glTexCoord2f(1, 1);
-				glVertex3f(posX - 1.0, posY, tile_left_top);
-
-				glTexCoord2f(1, 1);
-				glVertex3f(posX - 1.0, posY, tile_left_top);
-
-				glTexCoord2f(0, 1);
-				glVertex3f(posX - 1.0, posY - 1.0, tile_left_bottom);
-
-				glTexCoord2f(0, 0);
-				glVertex3f(posX, posY - 1.0, tile_right_bottom);
-			}
-			glEnd();
-
-			glPopMatrix();
+			glColor3f(1.0f, 0.6f, 0.5f);
 		}
-	}
-	glMatrixMode(GL_MODELVIEW);
+		else
+		{
+			glColor3f(1.0f, 1.0f, 1.0f);
+		}
 
-	m_selected.clear();
+		glBegin(GL_TRIANGLES);
+		{
+			for (int x = 0; x < t.vertex.size(); x++)
+			{
+				glTexCoord2f(t.vertex[x].u, t.vertex[x].v);
+				glVertex3f(t.vertex[x].x, t.vertex[x].y, t.vertex[x].z);
+			}
+		}
+		glEnd();
+
+		glPopMatrix();
+
+		t.hovered = false;
+	}
+
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
@@ -275,21 +237,105 @@ void Map3DViewWidget::setMap(Map *data)
 {
 	m_map = data;
 
-	// selection code
-	m_objects.clear();
+	m_entities.clear();
+
 	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
-			objects current_object;
-			current_object.type     = TYPE_TERRAIN;
-			current_object.x        = i;
-			current_object.y        = j;
-			m_objects.push_back(current_object);
+			// set objects
+			Entity ent;
+			ent.type     = TypeTerrain;
+			ent.x        = i;
+			ent.y        = j;
+			ent.selected = false;
+			ent.hovered  = false;
+
+			// set verticles and textures for cache
+			const int tileSize = SettingManager::value("tileSize").toInt();
+
+			// this moves objects drawing position
+			// simple hack to set center in really center of map - not on left-bottom edge
+			int centerFactorX = (m_map->size().width()  * 1.0) / 2;
+			int centerFactorY = (m_map->size().height() * 1.0) / 2;
+
+			MapTile tile(m_map->tile((i - 1), (j - 1)));
+			ent.texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+			printf("[tile] %i\t%i\n", tile.texture, ent.texid);
+
+			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
+
+			MapTile t_left_top(m_map->tile((i - 1), (j - 1)));
+			tile_left_top = (t_left_top.height * 3.0f) / 255.0f;
+
+			MapTile t_right_top(m_map->tile((i), (j - 1)));
+			tile_right_top = (t_right_top.height * 3.0f) / 255.0f;
+
+			if (j - 2 < 0)
+			{
+				tile_left_bottom = tile_left_top;
+			}
+			else
+			{
+				MapTile t_left_bottom(m_map->tile((i - 1), (j - 2)));
+				tile_left_bottom = (t_left_bottom.height * 3.0f) / 255.0f;
+			}
+
+			if (j - 2 < 0)
+			{
+				tile_right_bottom = tile_right_top;
+			}
+			else
+			{
+				MapTile t_right_bottom(m_map->tile((i), (j - 2)));
+				tile_right_bottom = (t_right_bottom.height * 3.0f) / 255.0f;
+			}
+
+			float posY = 1.0 * j - centerFactorY;
+			float posX = 1.0 * i - centerFactorX;
+
+			QPoint flip(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? 1.0 : -1.0));
+			float rotation((GLfloat)(tile.rotation + 90));
+
+			Vertex vert1, vert2, vert3, vert4;
+			vert1.x = posX;
+			vert1.y = posY - 1.0;
+			vert1.z = tile_right_bottom;
+			vert1.u = 0;
+			vert1.v = 0;
+
+			vert2.x = posX;
+			vert2.y = posY;
+			vert2.z = tile_right_top;
+			vert2.u = 1;
+			vert2.v = 0;
+
+			vert3.x = posX - 1.0;
+			vert3.y = posY;
+			vert3.z = tile_left_top;
+			vert3.u = 1;
+			vert3.v = 1;
+
+			vert4.x = posX - 1.0;
+			vert4.y = posY - 1.0;
+			vert4.z = tile_left_bottom;
+			vert4.u = 0;
+			vert4.v = 1;
+
+			ent.vertex.push_back(vert1);
+			ent.vertex.push_back(vert2);
+			ent.vertex.push_back(vert3);
+
+			ent.vertex.push_back(vert3);
+			ent.vertex.push_back(vert4);
+			ent.vertex.push_back(vert1);
+
+			ent.flip = flip;
+			ent.rotation = rotation;
+
+			m_entities.push_back(ent);
 		}
 	}
-	//printf("COUNT:  %i\n\n", m_objects.size());
-	// selection code ends here
 
 	repaint();
 
@@ -350,8 +396,8 @@ void Map3DViewWidget::_glSelect(int x, int y)
 	for (i = 0; i < hits; i++)
 	{
 		int s = (GLubyte)buff[i * 4 + 3];
-		m_selected.push_back(s);
-		printf("[hit %i] %i:\t%i x %i\n", i, s, m_objects[m_selected.size()-1].x, m_objects[m_selected.size()-1].y);
+		m_entities[s].hovered = true;
+		printf("[hit %i] %i:\t%i x %i\n", i, s, m_entities[s].x, m_entities[s].y);
 	}
 	printf("\n");
 	//_listHits(hits,buff);
