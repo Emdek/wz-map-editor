@@ -1,5 +1,5 @@
 #include "MapWriter.h"
-#include "MapInformation.h"
+//#include "MapInformation.h"
 
 
 namespace WZMapEditor

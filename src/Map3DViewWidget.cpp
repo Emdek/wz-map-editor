@@ -11,21 +11,6 @@
 namespace WZMapEditor
 {
 
-/*Quad::Quad(Vertex v[4], GLuint t, QPoint f, float r) :
-	texture(t),
-	flip(f),
-	rotation(r)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		vert[i].x = v[i].x;
-		vert[i].y = v[i].y;
-		vert[i].z = v[i].z;
-		vert[i].u = v[i].u;
-		vert[i].v = v[i].v;
-	}
-}*/
-
 Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
 	m_map(NULL),
 	m_moving(false),
@@ -78,7 +63,7 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 void Map3DViewWidget::paintGL()
 {
-	qDebug("paintGL();");
+	qDebug("Map3DViewWidget::paintGL();");
 	int s;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -235,6 +220,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 void Map3DViewWidget::setMap(Map *data)
 {
+	qDebug("Map3DWidget::setMap()");
 	m_map = data;
 
 	m_entities.clear();
@@ -243,6 +229,7 @@ void Map3DViewWidget::setMap(Map *data)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
+			//printf("setMap(): %i x %i\n", i, j);
 			// set objects
 			Entity ent;
 			ent.type     = TypeTerrain;
@@ -261,7 +248,7 @@ void Map3DViewWidget::setMap(Map *data)
 
 			MapTile tile(m_map->tile((i - 1), (j - 1)));
 			ent.texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
-			printf("[tile] %i\t%i\n", tile.texture, ent.texid);
+			//printf("[tile] %i\t%i\n", tile.texture, ent.texid);
 
 			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
 
