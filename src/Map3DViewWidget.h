@@ -98,7 +98,7 @@ private:
 	{
 		TilesetType tileset;
 		int         tiletexture;
-		int         texid;
+		GLuint      texid;
 	};
 	std::vector<used_texture> m_used_textures;
 
