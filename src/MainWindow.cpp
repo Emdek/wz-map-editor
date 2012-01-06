@@ -505,25 +505,21 @@ bool MainWindow::openFile(const QString &fileName)
 
 	if (fileInfo.exists())
 	{
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 		MapParser *mapParser = new MapParser(fileName, this);
 
-		if (mapParser->map()->isModified())
+		if (mapParser->error().isEmpty())
 		{
-			return false;
-		}
-		else
-		{
-			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 			m_map2DEditorWidgetUi->map2DViewWidget->setMap(mapParser->map());
 			m_mainWindowUi->map3DViewWidget->setMap(mapParser->map());
+
+			QApplication::restoreOverrideCursor();
 
 			m_map->deleteLater();
 			m_map = mapParser->map();
 
 			mapParser->deleteLater();
-
-			QApplication::restoreOverrideCursor();
 
 			setWindowTitle(tr("%1 - %2").arg(ApplicationName).arg(fileInfo.fileName()));
 
@@ -546,6 +542,16 @@ bool MainWindow::openFile(const QString &fileName)
 			updateTilesetView();
 
 			return true;
+		}
+		else
+		{
+			QApplication::restoreOverrideCursor();
+
+			QMessageBox::critical(this, tr("Map loading error"), mapParser->error());
+
+			mapParser->deleteLater();
+
+			return false;
 		}
 	}
 	else

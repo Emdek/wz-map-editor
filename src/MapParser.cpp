@@ -82,14 +82,14 @@ MapParser::MapParser(const QString &filePath, QObject *parent) : QObject(parent)
 
 	if (!filesDir.cd(fileInfo.baseName()))
 	{
-		qCritical() << "Couldn't find map directory.";
+		m_error = tr("Could not find map directory.");
 
 		return;
 	}
 
 	if (openNSet(filesDir.filePath("game.map"), file, dataStream) != 0)
 	{
-		qCritical() << "Couldn't open map.";
+		m_error = tr("Could not open map.");
 
 		return;
 	}
@@ -136,11 +136,8 @@ MapParser::MapParser(const QString &filePath, QObject *parent) : QObject(parent)
 
 	qDebug() << "Deserialize time: " << test.elapsed();
 
-	if (!retVal)
-	{
-		m_map->setModified(false);
-		m_map->setTiles(m_tiles);
-	}
+	m_map->setModified(false);
+	m_map->setTiles(m_tiles);
 }
 
 int MapParser::deserializeMap(QDataStream &stream)
@@ -710,6 +707,11 @@ int MapParser::deserializeFeatures(QDataStream &stream)
 Map* MapParser::map()
 {
 	return m_map;
+}
+
+QString MapParser::error() const
+{
+	return m_error;
 }
 
 }

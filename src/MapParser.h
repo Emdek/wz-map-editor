@@ -17,6 +17,7 @@ public:
 	MapParser(const QString &filePath, QObject *parent = NULL);
 
 	Map* map();
+	QString error() const;
 
 protected:
 	int deserializeMap(QDataStream &stream);
@@ -29,6 +30,7 @@ protected:
 private:
 	Map *m_map;
 	QVector<QVector<MapTile> > m_tiles;
+	QString m_error;
 };
 
 }
