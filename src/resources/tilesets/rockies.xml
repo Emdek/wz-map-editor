@@ -8,7 +8,7 @@
 		<category name="Grass Snow" id="6" />
 		<category name="Snow" id="7" />
 		<category name="Water" id="8" type="water" />
-		<category name="Road" id="9" type="road" />
+		<category name="Road" id="9" type="road" backgrounds="3" />
 		<category name="Tracks" id="10" type="tracks" backgrounds="3" />
 		<category name="Crater" id="11" type="crater" />
 		<category name="Cliff" id="12" type="cliff" />
@@ -19,9 +19,9 @@
 		<tile category="2" id="5" />
 		<tile category="2" id="6" />
 		<tile category="2" id="7" />
-		<tile category="3" backgrounds="2,4" id="27" />
-		<tile category="3" backgrounds="2,4" id="28" />
 		<tile category="3" id="53" />
+		<tile category="3" backgrounds="3" id="27" />
+		<tile category="3" backgrounds="3" id="28" />
 		<tile category="4" id="22" />
 		<tile category="5" id="41" />
 		<tile category="6" id="23" />
@@ -38,50 +38,64 @@
 		<tile category="10" id="72" />
 		<tile category="11" backgrounds="3" id="56" />
 		<tile category="11" backgrounds="1" id="58" />
-		<tile category="11" id="62" />
+		<tile category="11" backgrounds="2" id="62" />
 		<tile category="12" id="30" />
 		<tile category="12" id="71" />
 		<tile category="13" backgrounds="1" id="1" />
+		<tile category="13" backgrounds="2" id="8" />
+		<tile category="13" backgrounds="2" id="43" />
 		<tile category="13" backgrounds="1" id="47" />
+		<tile category="13" backgrounds="2" id="55" />
+		<tile category="13" backgrounds="2" id="57" />
 		<tile category="13" backgrounds="1" id="74" />
 		<tile category="13" backgrounds="5" id="73" />
 		<tile category="13" backgrounds="5" id="75" />
-		<tile category="13" backgrounds="1,2,3" id="70" />
+		<tile category="13" backgrounds="7" id="70" />
 		<tile category="13" ignore="true" id="79" />
 	</tiles>
 	<transitions>
 		<transition northWest="2" northEast="1" southEast="1" southWest="2" id="2" />
 		<transition northWest="2" northEast="1" southEast="1" southWest="1" id="3" />
 		<transition northWest="2" northEast="2" southEast="1" southWest="2" id="4" />
+		<transition northWest="5" southEast="12" id="9" />
 		<transition northWest="5" northEast="5" southEast="2" southWest="5" id="12" />
 		<transition northWest="5" northEast="2" southEast="2" southWest="2" id="11" />
 		<transition northWest="5" northEast="5" southEast="2" southWest="5" id="10" />
+		<transition northWest="8" northEast="8" southEast="1" southWest="1" backgrounds="8" id="14" />
+		<transition northWest="1" northEast="8" southEast="1" southWest="1" backgrounds="8" id="15" />
+		<transition northWest="8" northEast="8" southEast="8" southWest="1" backgrounds="8" id="16" />
+		<transition northWest="12" northEast="12" southEast="2" southWest="12" id="18" />
 		<transition northWest="4" northEast="4" southEast="3" southWest="4" id="19" />
 		<transition northWest="4" northEast="3" southEast="3" southWest="3" id="20" />
 		<transition northWest="4" northEast="3" southEast="3" southWest="4" id="21" />
 		<transition northWest="6" northEast="6" southEast="1" southWest="6" id="24" />
 		<transition northWest="6" northEast="1" southEast="1" southWest="1" id="25" />
 		<transition northWest="6" northEast="6" southEast="1" southWest="1" id="26" />
+		<transition northWest="5" northEast="5" southEast="12" southWest="12" id="29" />
+		<transition northWest="2" northEast="2" southEast="8" southWest="8" backgrounds="8" id="31" />
+		<transition northWest="2" northEast="8" southEast="8" southWest="8" backgrounds="8" id="32" />
+		<transition northWest="2" northEast="2" southEast="8" southWest="2" backgrounds="8" id="33" />
 		<transition northWest="1" northEast="3" southEast="3" southWest="1" id="34" />
 		<transition northWest="1" northEast="1" southEast="3" southWest="1" id="35" />
 		<transition northWest="1" northEast="3" southEast="3" southWest="3" id="36" />
 		<transition northWest="3" northEast="2" southEast="2" southWest="3" id="38" />
 		<transition northWest="3" northEast="3" southEast="2" southWest="3" id="39" />
 		<transition northWest="3" northEast="2" southEast="2" southWest="2" id="40" />
+		<transition northWest="12" northEast="5" southEast="12" southWest="13" id="42" />
+		<transition northWest="12" northEast="12" southEast="5" southWest="5" id="44" />
+		<transition northEast="12" southWest="2" id="45" />
+		<transition northWest="12" northEast="12" southEast="2" southWest="2" id="46" />
+		<transition northWest="5" northEast="5" southEast="2" southWest="2" id="48" />
+		<transition northWest="7" northEast="7" southEast="12" southWest="7" id="54" />
+		<transition north="7" east="12" south="12" west="12" id="61" />
+		<transition northWest="12" southEast="7" id="63" />
 		<transition northWest="7" northEast="7" southEast="5" southWest="7" id="65" />
 		<transition northWest="7" northEast="5" southEast="5" southWest="5" id="66" />
 		<transition northWest="7" northEast="7" southEast="5" southWest="5" id="67" />
-		<transition northWest="8" northEast="8" southEast="1" southWest="1" backgrounds="8" id="14" />
-		<transition northWest="1" northEast="8" southEast="1" southWest="1" backgrounds="8" id="15" />
-		<transition northWest="8" northEast="8" southEast="8" southWest="1" backgrounds="8" id="16" />
-		<transition northWest="2" northEast="2" southEast="8" southWest="8" backgrounds="8" id="31" />
-		<transition northWest="2" northEast="8" southEast="8" southWest="8" backgrounds="8" id="32" />
-		<transition northWest="2" northEast="2" southEast="8" southWest="2" backgrounds="8" id="33" />
-		<transition northWest="12" northEast="12" southEast="5" southWest="5" id="44" />
-		<transition northWest="5" northEast="12" southEast="12" southWest="12" id="9" />
-		<transition northWest="12" northEast="5" southEast="5" southWest="5" hidden="true" id="9" />
-		<transition northWest="12" northEast="12" southEast="2" southWest="2" id="46" />
-		<transition northWest="2" northEast="2" southEast="12" southWest="2" id="45" />
-		<transition northWest="12" northEast="2" southEast="12" southWest="12" hidden="true" id="45" />
+		<transition northWest="5" northEast="5" southEast="2" southWest="2" id="68" />
+		<transition north="12" east="2" south="12" west="5" id="69" />
+		<transition north="7" east="12" south="12" west="12" id="76" />
+		<transition northWest="7" northEast="12" southEast="5" southWest="12" id="77" />
+		<transition north="7" east="12" south="5" west="12" id="78" />
 	</transitions>
 </tileset>
