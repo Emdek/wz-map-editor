@@ -513,6 +513,8 @@ bool MainWindow::openFile(const QString &fileName)
 		}
 		else
 		{
+			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 			m_map2DEditorWidgetUi->map2DViewWidget->setMap(mapParser->map());
 			m_mainWindowUi->map3DViewWidget->setMap(mapParser->map());
 
@@ -520,6 +522,8 @@ bool MainWindow::openFile(const QString &fileName)
 			m_map = mapParser->map();
 
 			mapParser->deleteLater();
+
+			QApplication::restoreOverrideCursor();
 
 			setWindowTitle(tr("%1 - %2").arg(ApplicationName).arg(fileInfo.fileName()));
 
