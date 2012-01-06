@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Tileset.h"
 #include "SettingManager.h"
+#include "Tileset.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
@@ -45,8 +46,6 @@ void Map3DViewWidget::initializeGL()
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 
-	// generate empty texture - default, texid = 0
-	glGenTextures(1, 0);
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
@@ -63,7 +62,7 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 void Map3DViewWidget::paintGL()
 {
-	qDebug("Map3DViewWidget::paintGL();");
+	//qDebug("Map3DViewWidget::paintGL();");
 	int s;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -223,13 +222,15 @@ void Map3DViewWidget::setMap(Map *data)
 	qDebug("Map3DWidget::setMap()");
 	m_map = data;
 
+	// generate empty texture - default, texid = 0
+	glGenTextures(1, 0);
 	m_entities.clear();
 
 	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
-			//printf("setMap(): %i x %i\n", i, j);
+			printf("setMap(): %i x %i\n", i, j);
 			// set objects
 			Entity ent;
 			ent.type     = TypeTerrain;
@@ -247,7 +248,27 @@ void Map3DViewWidget::setMap(Map *data)
 			int centerFactorY = (m_map->size().height() * 1.0) / 2;
 
 			MapTile tile(m_map->tile((i - 1), (j - 1)));
-			ent.texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+
+			bool _old_tex = false;
+			for (int x = 0; x < m_used_textures.size(); x++)
+			{
+				if (m_used_textures[x].tileset == m_map->tileset() && m_used_textures[x].tiletexture == tile.texture)
+				{
+					ent.texid = m_used_textures[x].texid;
+					_old_tex = true;
+					break;
+				}
+
+			}
+			if (_old_tex == false)
+			{
+				ent.texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+				used_texture t;
+				t.tileset     = m_map->tileset();
+				t.tiletexture = tile.texture;
+				t.texid       = ent.texid;
+				m_used_textures.push_back(t);
+			}
 			//printf("[tile] %i\t%i\n", tile.texture, ent.texid);
 
 			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;

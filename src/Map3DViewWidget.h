@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "Tileset.h"
+
 namespace WZMapEditor
 {
 
@@ -91,6 +93,14 @@ private:
 
 	std::vector<Entity> m_entities;
 //	std::vector<int> m_selected;
+
+	struct used_texture
+	{
+		TilesetType tileset;
+		int         tiletexture;
+		int         texid;
+	};
+	std::vector<used_texture> m_used_textures;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
