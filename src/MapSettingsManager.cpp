@@ -1,5 +1,5 @@
 #include "MapSettingsManager.h"
-#include "MapInformation.h"
+#include "Map.h"
 #include "Tileset.h"
 
 #include "ui_MapSettingsDialog.h"
@@ -11,7 +11,7 @@
 namespace WZMapEditor
 {
 
-MapSettingsManager::MapSettingsManager(MapInformation *mapInformation, QObject *parent) : QObject(parent),
+MapSettingsManager::MapSettingsManager(Map *mapInformation, QObject *parent) : QObject(parent),
 	m_mapInformation(mapInformation),
 	m_managerUi(new Ui::MapSettingsDialog())
 {

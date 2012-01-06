@@ -12,14 +12,14 @@ namespace Ui
 namespace WZMapEditor
 {
 
-class MapInformation;
+class Map;
 
 class MapSettingsManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	MapSettingsManager(MapInformation *mapInformation, QObject *parent = NULL);
+	MapSettingsManager(Map *mapInformation, QObject *parent = NULL);
 	~MapSettingsManager();
 
 public slots:
@@ -27,7 +27,7 @@ public slots:
 	void save();
 
 private:
-	MapInformation *m_mapInformation;
+	Map *m_mapInformation;
 	Ui::MapSettingsDialog *m_managerUi;
 };
 

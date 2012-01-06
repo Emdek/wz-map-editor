@@ -72,12 +72,12 @@ struct MapEntity
 	quint32	direction;
 };
 
-class MapInformation : public QObject
+class Map : public QObject
 {
 	Q_OBJECT
 
 public:
-	MapInformation(QObject *parent = NULL);
+	Map(QObject *parent = NULL);
 
 	int deserialize(const QFileInfo& fileNfo);
 

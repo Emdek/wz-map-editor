@@ -19,7 +19,7 @@ SOURCES += src/main.cpp \
 	src/ToolBarWidget.cpp \
 	src/SettingManager.cpp \
 	src/MapParser.cpp \
-	src/MapInformation.cpp \
+	src/Map.cpp \
 	src/Tileset.cpp \
 	src/PreferencesManager.cpp \
 	src/FileSystemCompleterModel.cpp \
@@ -36,7 +36,7 @@ HEADERS += src/MainWindow.h \
 	src/ToolBarWidget.h \
 	src/SettingManager.h \
 	src/MapParser.h \
-	src/MapInformation.h \
+	src/Map.h \
 	src/Tileset.h \
 	src/PreferencesManager.h \
 	src/FileSystemCompleterModel.h \

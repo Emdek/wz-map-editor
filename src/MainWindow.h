@@ -22,7 +22,7 @@ namespace WZMapEditor
 
 class ToolBarWidget;
 class Tileset;
-class MapInformation;
+class Map;
 
 class MainWindow : public QMainWindow
 {
@@ -61,7 +61,7 @@ protected:
 	void closeEvent(QCloseEvent *event);
 
 private:
-	MapInformation *m_mapInformation;
+	Map *m_map;
 	QList<QDockWidget*> m_docks;
 	QSlider *m_zoomSlider;
 	QLabel *m_coordinatesLabel;

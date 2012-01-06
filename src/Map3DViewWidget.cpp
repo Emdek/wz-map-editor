@@ -1,5 +1,5 @@
 #include "Map3DViewWidget.h"
-#include "MapInformation.h"
+#include "Map.h"
 #include "Tileset.h"
 #include "SettingManager.h"
 
@@ -12,7 +12,7 @@ namespace WZMapEditor
 {
 
 Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
-	m_mapInformation(NULL),
+	m_map(NULL),
 	m_moving(false),
 	m_rotating(false),
 	m_rotationX(0),
@@ -75,22 +75,22 @@ void Map3DViewWidget::paintGL()
 	glRotatef(m_rotationZ / 4.0, 0.0, 0.0, 1.0);
 	glTranslatef(m_offsetX, m_offsetY, 0.0);
 
-	if (!m_mapInformation)
+	if (!m_map)
 	{
 		return;
 	}
 
 	// this moves objects drawing position
 	// simple hack to set center in really center of map - not on left-bottom edge
-	int centerFactorX = (m_mapInformation->size().width()  * 1.0) / 2;
-	int centerFactorY = (m_mapInformation->size().height() * 1.0) / 2;
+	int centerFactorX = (m_map->size().width()  * 1.0) / 2;
+	int centerFactorY = (m_map->size().height() * 1.0) / 2;
 
 	int counter = 0;
 	const int tileSize = SettingManager::value("tileSize").toInt();
 
-	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
+	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
-		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
+		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
 			glLoadName(counter);
 			counter++;
@@ -98,23 +98,23 @@ void Map3DViewWidget::paintGL()
 			glMatrixMode(GL_TEXTURE);
 
 			QPointF coordinates(((1.0 * i) - centerFactorX), ((1.0 * j) - centerFactorY));
-			MapTile tile(m_mapInformation->tile((i - 1), (j - 1)));
+			MapTile tile(m_map->tile((i - 1), (j - 1)));
 
 			glPushMatrix();
 
 			glScalef(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? 1.0 : -1.0), 0.0);
 			glRotatef((GLfloat)(tile.rotation + 90) * 1.0, 0.0, 0.0, 1.0);
 
-			bindTexture(Tileset::pixmap(m_mapInformation->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+			bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
 
-			MapTile t_left_top(m_mapInformation->tile((i - 1), (j - 1)));
+			MapTile t_left_top(m_map->tile((i - 1), (j - 1)));
 			tile_left_top = (t_left_top.height * 3.0f) / 255.0f;
 
-			MapTile t_right_top(m_mapInformation->tile((i), (j - 1)));
+			MapTile t_right_top(m_map->tile((i), (j - 1)));
 			tile_right_top = (t_right_top.height * 3.0f) / 255.0f;
 
 			if (j - 2 < 0)
@@ -123,7 +123,7 @@ void Map3DViewWidget::paintGL()
 			}
 			else
 			{
-				MapTile t_left_bottom(m_mapInformation->tile((i - 1), (j - 2)));
+				MapTile t_left_bottom(m_map->tile((i - 1), (j - 2)));
 				tile_left_bottom = (t_left_bottom.height * 3.0f) / 255.0f;
 			}
 
@@ -133,7 +133,7 @@ void Map3DViewWidget::paintGL()
 			}
 			else
 			{
-				MapTile t_right_bottom(m_mapInformation->tile((i), (j - 2)));
+				MapTile t_right_bottom(m_map->tile((i), (j - 2)));
 				tile_right_bottom = (t_right_bottom.height * 3.0f) / 255.0f;
 			}
 
@@ -271,15 +271,15 @@ void Map3DViewWidget::setZoom(qreal zoom)
 	}
 }
 
-void Map3DViewWidget::setMapInformation(MapInformation *data)
+void Map3DViewWidget::setMap(Map *data)
 {
-	m_mapInformation = data;
+	m_map = data;
 
 	// selection code
 	m_objects.clear();
-	for (int i = 1; i <= m_mapInformation->size().width(); ++i)
+	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
-		for (int j = 1; j <= m_mapInformation->size().height(); ++j)
+		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
 			objects current_object;
 			current_object.type     = TYPE_TERRAIN;
@@ -293,12 +293,12 @@ void Map3DViewWidget::setMapInformation(MapInformation *data)
 
 	repaint();
 
-	connect(m_mapInformation, SIGNAL(changed()), this, SLOT(repaint()));
+	connect(m_map, SIGNAL(changed()), this, SLOT(repaint()));
 }
 
-MapInformation* Map3DViewWidget::mapInformation()
+Map* Map3DViewWidget::mapInformation()
 {
-	return m_mapInformation;
+	return m_map;
 }
 
 QSize Map3DViewWidget::minimumSizeHint() const

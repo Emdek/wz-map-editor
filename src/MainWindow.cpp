@@ -6,7 +6,7 @@
 #include "PreferencesManager.h"
 #include "MapSettingsManager.h"
 #include "Tileset.h"
-#include "MapInformation.h"
+#include "Map.h"
 #include "MapParser.h"
 
 #include "ui_MainWindow.h"
@@ -28,7 +28,7 @@ namespace WZMapEditor
 {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
-	m_mapInformation(new MapInformation(this)),
+	m_map(new Map(this)),
 	m_zoomSlider(new QSlider(Qt::Horizontal, this)),
 	m_coordinatesLabel(new QLabel(this)),
 	m_fileNameLabel(new QLabel(tr("Unnamed"), this)),
@@ -210,8 +210,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(updateTilesetView()));
 
-	m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
-	m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
+	m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
+	m_mainWindowUi->map3DViewWidget->setMap(m_map);
 	m_mainWindowUi->mainToolbar->reload();
 	m_mainWindowUi->action3DView->setChecked(SettingManager::value("3DView").toBool());
 
@@ -251,21 +251,21 @@ void MainWindow::actionNew()
 {
 	if (canClose())
 	{
-		if (m_mapInformation)
+		if (m_map)
 		{
-			m_mapInformation->deleteLater();
+			m_map->deleteLater();
 		}
 
-		m_mapInformation = new MapInformation(this);
-		m_mapInformation->setModified(true);
+		m_map = new Map(this);
+		m_map->setModified(true);
 
 		m_fileNameLabel->setText("Unnamed");
 		m_fileNameLabel->setToolTip(QString());
 
 		setWindowTitle(tr("%1 - Unnamed").arg(ApplicationName));
 
-		m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(m_mapInformation);
-		m_mainWindowUi->map3DViewWidget->setMapInformation(m_mapInformation);
+		m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
+		m_mainWindowUi->map3DViewWidget->setMap(m_map);
 
 		actionProperties();
 	}
@@ -291,15 +291,15 @@ void MainWindow::actionClearRecentFiles()
 
 void MainWindow::actionProperties()
 {
-	new MapSettingsManager(m_mapInformation, this);
+	new MapSettingsManager(m_map, this);
 
 	m_tilesetUi->tileCategoryComboBox->clear();
 
 	updateTilesetView();
 
-	if (Tileset::cachedTileset() != m_mapInformation->tileset())
+	if (Tileset::cachedTileset() != m_map->tileset())
 	{
-		Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+		Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
 	}
 
 	m_mainWindowUi->map3DViewWidget->repaint();
@@ -365,7 +365,7 @@ void MainWindow::actionApplicationConfiguration()
 
 	if (Tileset::cachedTextureSize() != SettingManager::value("tileSize").toInt())
 	{
-		Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+		Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
 	}
 }
 
@@ -445,12 +445,12 @@ void MainWindow::updateTilesetView()
 {
 	m_tilesetUi->listWidget->clear();
 
-	if (!m_mapInformation)
+	if (!m_map)
 	{
 		return;
 	}
 
-	Tileset *tileset = Tileset::tileset(m_mapInformation->tileset());
+	Tileset *tileset = Tileset::tileset(m_map->tileset());
 
 	if (tileset)
 	{
@@ -513,11 +513,11 @@ bool MainWindow::openFile(const QString &fileName)
 		}
 		else
 		{
-			m_map2DEditorWidgetUi->map2DViewWidget->setMapInformation(mapParser->map());
-			m_mainWindowUi->map3DViewWidget->setMapInformation(mapParser->map());
+			m_map2DEditorWidgetUi->map2DViewWidget->setMap(mapParser->map());
+			m_mainWindowUi->map3DViewWidget->setMap(mapParser->map());
 
-			m_mapInformation->deleteLater();
-			m_mapInformation = mapParser->map();
+			m_map->deleteLater();
+			m_map = mapParser->map();
 
 			mapParser->deleteLater();
 
@@ -534,9 +534,9 @@ bool MainWindow::openFile(const QString &fileName)
 			SettingManager::setValue("recentFiles", recentFiles);
 			SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
 
-			if (Tileset::cachedTileset() != m_mapInformation->tileset())
+			if (Tileset::cachedTileset() != m_map->tileset())
 			{
-				Tileset::createCache(m_mapInformation->tileset(), SettingManager::value("tileSize").toInt());
+				Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
 			}
 
 			updateTilesetView();

@@ -10,7 +10,7 @@
 namespace WZMapEditor
 {
 
-class MapInformation;
+class Map;
 
 class Map3DViewWidget : public QGLWidget
 {
@@ -19,13 +19,12 @@ class Map3DViewWidget : public QGLWidget
 public:
 	Map3DViewWidget(QWidget *parent = NULL);
 
-	void setMapInformation(MapInformation *data);
+	void setMap(Map *data);
 
 	void _glSelect(int x, int y);
 	void _listHits(GLint hits, GLuint *names);
 
-	MapInformation* old_mapInformation();
-	MapInformation* mapInformation();
+	Map* mapInformation();
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 	int zoom();
@@ -44,7 +43,7 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
-	MapInformation *m_mapInformation;
+	Map *m_map;
 	bool m_moving;
 	bool m_rotating;
 	int m_rotationX;

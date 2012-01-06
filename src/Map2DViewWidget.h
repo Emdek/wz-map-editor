@@ -7,7 +7,7 @@
 namespace WZMapEditor
 {
 
-class MapInformation;
+class Map;
 
 class Map2DViewWidget : public QGraphicsView
 {
@@ -16,8 +16,8 @@ class Map2DViewWidget : public QGraphicsView
 public:
 	Map2DViewWidget(QWidget *parent = NULL);
 
-	void setMapInformation(MapInformation *data);
-	MapInformation* mapInformation();
+	void setMap(Map *data);
+	Map* map();
 	int zoom();
 
 public slots:
@@ -28,7 +28,7 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
-	MapInformation *m_mapInformation;
+	Map *m_map;
 	int m_zoom;
 	int m_tileSize;
 

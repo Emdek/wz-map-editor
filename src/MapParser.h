@@ -1,7 +1,7 @@
 #ifndef MAPPARSER_H
 #define MAPPARSER_H
 
-#include "MapInformation.h"
+#include "Map.h"
 
 #include <QtCore/QObject>
 
@@ -16,7 +16,7 @@ class MapParser : public QObject
 public:
 	MapParser(const QString &filePath, QObject *parent = NULL);
 
-	MapInformation* map();
+	Map* map();
 
 protected:
 	int deserializeMap(QDataStream &stream);
@@ -27,7 +27,7 @@ protected:
 	int deserializeFeatures(QDataStream &stream);
 
 private:
-	MapInformation *m_mapInformation;
+	Map *m_map;
 	QVector<QVector<MapTile> > m_tiles;
 };
 

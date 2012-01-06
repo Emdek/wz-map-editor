@@ -69,7 +69,7 @@ static inline int openNSet(const QString &fileName, QFile &file, QDataStream &da
 }
 
 MapParser::MapParser(const QString &filePath, QObject *parent) : QObject(parent),
-	m_mapInformation(new MapInformation(parent))
+	m_map(new Map(parent))
 {
 	QTime test;
 	QFile file;
@@ -138,8 +138,8 @@ MapParser::MapParser(const QString &filePath, QObject *parent) : QObject(parent)
 
 	if (!retVal)
 	{
-		m_mapInformation->setModified(false);
-		m_mapInformation->setTiles(m_tiles);
+		m_map->setModified(false);
+		m_map->setTiles(m_tiles);
 	}
 }
 
@@ -180,7 +180,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 		return -1;
 	}
 
-	m_mapInformation->setSize(size);
+	m_map->setSize(size);
 
 	// Read in row major array of map tiles
 	m_tiles.reserve(size.width());
@@ -190,11 +190,11 @@ int MapParser::deserializeMap(QDataStream &stream)
 		m_tiles.push_back(QVector<MapTile>());
 	}
 
-	for (j = 0; j < m_mapInformation->size().height(); ++j)
+	for (j = 0; j < m_map->size().height(); ++j)
 	{
-		for (int i = 0; i < m_mapInformation->size().width(); ++i)
+		for (int i = 0; i < m_map->size().width(); ++i)
 		{
-			m_tiles[i].resize(m_mapInformation->size().height());
+			m_tiles[i].resize(m_map->size().height());
 			stream >> texture >> height;
 			tile.texture = (texture & 0x01ff);
 			tile.flip = ((texture & 0x8000 && texture & 0x4000)?FlipTypeDiagonal:((texture & 0x8000)?FlipTypeHorizontal:((texture & 0x4000)?FlipTypeVertical:FlipTypeNone)));
@@ -202,7 +202,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 			tile.height = height;
 			tile.position.rx() = i;
 			tile.position.ry() = j;
-			m_tiles[i][m_mapInformation->size().height() - j - 1] = tile;
+			m_tiles[i][m_map->size().height() - j - 1] = tile;
 		}
 	}
 
@@ -238,7 +238,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 		gateways.append(MapGateway(x1, y1, x2, y2));
 	}
 
-	m_mapInformation->setGateways(gateways);
+	m_map->setGateways(gateways);
 
 	if (stream.status() != QDataStream::Ok)
 	{
@@ -304,10 +304,10 @@ int MapParser::deserializeGame(QDataStream &stream)
 
 	levelName[20] = '\0';
 
-	m_mapInformation->setScrollLimits(scrollLimits);
-	m_mapInformation->setName(QString(levelName));
-	m_mapInformation->setTime(gameTime);
-	m_mapInformation->setType(gameType);
+	m_map->setScrollLimits(scrollLimits);
+	m_map->setName(QString(levelName));
+	m_map->setTime(gameTime);
+	m_map->setType(gameType);
 
 	return 0;
 }
@@ -359,18 +359,18 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 
 	if (terrainTypes[0] == 2 && terrainTypes[1] == 2 && terrainTypes[2] == 2)
 	{
-		m_mapInformation->setTileset(TilesetTypeUrban);
+		m_map->setTileset(TilesetTypeUrban);
 	}
 	else if (terrainTypes[0] == 0 && terrainTypes[1] == 0 && terrainTypes[2] == 2)
 	{
-		m_mapInformation->setTileset(TilesetTypeRockies);
+		m_map->setTileset(TilesetTypeRockies);
 	}
 	else
 	{
-		m_mapInformation->setTileset(TilesetTypeArizona);
+		m_map->setTileset(TilesetTypeArizona);
 	}
 
-	m_mapInformation->setTerrainTypes(terrainTypes);
+	m_map->setTerrainTypes(terrainTypes);
 
 	return 0;
 }
@@ -532,7 +532,7 @@ int MapParser::deserializeStructures(QDataStream &stream)
 		structures.push_back(entity);
 	}
 
-	m_mapInformation->setStructures(structures);
+	m_map->setStructures(structures);
 
 	return 0;
 }
@@ -617,8 +617,8 @@ int MapParser::deserializeDroids(QDataStream &stream)
 		}
 	}
 
-	m_mapInformation->setDroids(droids);
-	m_mapInformation->setPlayerPresent(playerPresent);
+	m_map->setDroids(droids);
+	m_map->setPlayerPresent(playerPresent);
 
 	return 0;
 }
@@ -702,14 +702,14 @@ int MapParser::deserializeFeatures(QDataStream &stream)
 		features.push_back(entity);
 	}
 
-	m_mapInformation->setFeatures(features);
+	m_map->setFeatures(features);
 
 	return 0;
 }
 
-MapInformation* MapParser::map()
+Map* MapParser::map()
 {
-	return m_mapInformation;
+	return m_map;
 }
 
 }
