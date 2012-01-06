@@ -40,11 +40,13 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	}
 
-	QPoint tile = itemAt(event->pos())->data(0).toPoint();
+	const QPoint pixmap = itemAt(event->pos())->data(0).toPoint();
+	const MapTile tile = m_map->tile(pixmap.x(), pixmap.y());
 	QMenu menu;
-	menu.addAction(tr("Tile: %1 %2").arg(tile.x()).arg(tile.y()));
-	menu.addAction(tr("Rotation: %1").arg(m_map->tile(tile.x(), tile.y()).rotation));
-	menu.addAction(tr("Flip: %1 %2").arg((m_map->tile(tile.x(), tile.y()).flip & FlipTypeHorizontal)?'y':'n').arg((m_map->tile(tile.x(), tile.y()).flip & FlipTypeVertical)?'y':'n'));
+	menu.addAction(tr("Tile: %1 %2").arg(pixmap.x()).arg(pixmap.y()));
+	menu.addAction(tr("Texture: %1").arg(tile.texture));
+	menu.addAction(tr("Rotation: %1").arg(tile.rotation));
+	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & FlipTypeHorizontal)?'y':'n').arg((tile.flip & FlipTypeVertical)?'y':'n'));
 
 	menu.exec(event->globalPos());
 }
