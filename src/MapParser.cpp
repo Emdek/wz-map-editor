@@ -1,6 +1,6 @@
 #include "MapParser.h"
 
-#include <QtEndian>
+#include <QtCore/QtEndian>
 
 
 #include <QtCore/QTime>
@@ -322,8 +322,8 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 {
 	unsigned int i;
 	quint32 numTerrainTypes, terrainVersion;
-	quint8 terrainType;
-	QList<quint8> terrainTypes;
+	quint16 terrainType;
+	QList<quint16> terrainTypes;
 
 	stream.setByteOrder(QDataStream::LittleEndian);
 

@@ -92,7 +92,7 @@ void Map::setGateways(QList<MapGateway> gateways)
 	m_gateways = gateways;
 }
 
-void Map::setTerrainTypes(QList<quint8> terrainTypes)
+void Map::setTerrainTypes(QList<quint16> terrainTypes)
 {
 	m_terrainTypes = terrainTypes;
 }

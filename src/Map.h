@@ -63,13 +63,13 @@ struct MapGateway
 
 struct MapEntity
 {
-	quint32	id;
-	quint32	player;
+	quint32 id;
+	quint32 player;
 	int type;	// "IMD" LND object type
 	QString name;	//char name[128]
-	QString	 script;	// char	script[32];
+	QString script;	// char	script[32];
 	QVector3D position;
-	quint32	direction;
+	quint32 direction;
 };
 
 class Map : public QObject
@@ -94,7 +94,7 @@ public:
 	void setFeatures(QList<MapEntity> features);
 	void setTiles(QVector<QVector<MapTile> > tiles);
 	void setGateways(QList<MapGateway> gateways);
-	void setTerrainTypes(QList<quint8> terrainTypes);
+	void setTerrainTypes(QList<quint16> terrainTypes);
 	void setPlayerPresent(QVector<bool> playerPresent);
 	void setModified(bool modified);
 	MapTile tile(int x, int y);
@@ -118,7 +118,7 @@ private:
 	TilesetType m_tilesetType;
 
 	/* LUT that returns the terrain type of a given tile texture */
-	QList<quint8> m_terrainTypes;
+	QList<quint16> m_terrainTypes;
 
 	/// Game data
 	QRect m_scrollLimits;
