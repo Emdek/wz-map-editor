@@ -18,7 +18,7 @@
 namespace WZMapEditor
 {
 
-const int MAX_PLAYERS = 8;
+const quint32 MAX_PLAYERS = 8;
 const int TILE_WIDTH = 128;
 const int TILE_HEIGHT = 128;
 const int MAX_MAPAREA = (256 * 256);

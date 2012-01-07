@@ -75,7 +75,6 @@ protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
-	void contextMenuEvent(QContextMenuEvent *event);
 
 private:
 	Map *m_map;

@@ -8,6 +8,7 @@
 #include <QtGui/QMouseEvent>
 
 #include <cstdio>
+#include <cmath>
 
 namespace WZMapEditor
 {
@@ -42,7 +43,7 @@ void Map3DViewWidget::initializeGL()
 	glShadeModel(GL_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
@@ -62,7 +63,6 @@ void Map3DViewWidget::resizeGL(int width, int height)
 void Map3DViewWidget::paintGL()
 {
 	//qDebug("Map3DViewWidget::paintGL();");
-	int s;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -80,7 +80,7 @@ void Map3DViewWidget::paintGL()
 
 	glMatrixMode(GL_TEXTURE);
 
-	for (int i = 0; i < m_entities.size(); i++)
+	for (unsigned int i = 0; i < m_entities.size(); i++)
 	{
 		Entity t = m_entities[i];
 
@@ -110,7 +110,7 @@ void Map3DViewWidget::paintGL()
 
 		glBegin(GL_TRIANGLES);
 		{
-			for (int x = 0; x < t.vertex.size(); x++)
+			for (unsigned int x = 0; x < t.vertex.size(); x++)
 			{
 				glTexCoord2f(t.vertex[x].u, t.vertex[x].v);
 				glVertex3f(t.vertex[x].x, t.vertex[x].y, t.vertex[x].z);
@@ -189,10 +189,6 @@ void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 	emit cooridantesChanged(m_currentx, m_currenty, m_currentz);
 }
 
-void Map3DViewWidget::contextMenuEvent(QContextMenuEvent *event)
-{
-}
-
 void Map3DViewWidget::setZoom(qreal zoom)
 {
 	if (zoom > 500)
@@ -221,6 +217,8 @@ void Map3DViewWidget::setMap(Map *data)
 
 	m_entities.clear();
 
+	const int tileSize = SettingManager::value("tileSize").toInt();
+
 	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
@@ -234,7 +232,6 @@ void Map3DViewWidget::setMap(Map *data)
 			ent.hovered  = false;
 
 			// set verticles and textures for cache
-			const int tileSize = SettingManager::value("tileSize").toInt();
 
 			// this moves objects drawing position
 			// simple hack to set center in really center of map - not on left-bottom edge
@@ -244,7 +241,7 @@ void Map3DViewWidget::setMap(Map *data)
 			MapTile tile(m_map->tile((i - 1), (j - 1)));
 
 			bool _old_tex = false;
-			for (int x = 0; x < m_used_textures.size(); x++)
+			for (unsigned int x = 0; x < m_used_textures.size(); x++)
 			{
 				if (m_used_textures[x].tileset == m_map->tileset() && m_used_textures[x].tiletexture == tile.texture)
 				{
@@ -359,7 +356,6 @@ QSize Map3DViewWidget::minimumSizeHint() const
 
 QSize Map3DViewWidget::sizeHint() const
 {
-	int id;
 	return QSize(320, 240);
 }
 

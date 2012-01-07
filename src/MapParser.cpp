@@ -250,7 +250,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 int MapParser::deserializeGame(QDataStream &stream)
 {
 	char levelName[21] = {0};
-	quint32 u32, gameTime, gameType, terrainVersion, top, left, bottom, right;
+	quint32 u32, gameTime, gameType, top, left, bottom, right;
 	QRect scrollLimits;
 
 	if (!checkHeaderType(stream,"gam",3))
@@ -272,17 +272,11 @@ int MapParser::deserializeGame(QDataStream &stream)
 		if (stream.byteOrder() == QDataStream::LittleEndian)
 		{
 			stream.setByteOrder(QDataStream::BigEndian);
-			terrainVersion = qToBigEndian(u32);
 		}
 		else
 		{
 			stream.setByteOrder(QDataStream::LittleEndian);
-			terrainVersion = qToLittleEndian(u32);
 		}
-	}
-	else
-	{
-		terrainVersion = u32;
 	}
 
 	stream >> gameTime >> gameType >> left >> bottom >> right >> top;
@@ -377,7 +371,6 @@ int MapParser::deserializeStructures(QDataStream &stream)
 	QList<MapEntity> structures;
 	quint32 u32,i;
 	quint32 structVersion;
-	quint64 pos; // debug var
 	char charArray[60];
 	MapEntity entity;
 
@@ -399,8 +392,6 @@ int MapParser::deserializeStructures(QDataStream &stream)
 
 	for (; i > 0; --i)
 	{
-		pos = stream.device()->pos();
-
 		if (structVersion <= 19)
 		{
 			if (stream.readRawData(charArray, 40) != 40)
