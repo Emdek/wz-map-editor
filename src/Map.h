@@ -116,7 +116,7 @@ private:
 	QList<MapGateway> m_gateways;
 
 	/// Terrain data
-	TilesetType m_tilesetType;
+	TilesetType m_tileset;
 
 	/* LUT that returns the terrain type of a given tile texture */
 	QList<quint16> m_terrainTypes;

@@ -42,7 +42,7 @@ public slots:
 	void actionOpen();
 	void actionOpenRecent(QAction *action);
 	void actionClearRecentFiles();
-	void actionProperties();
+	void actionProperties(bool newMap = false);
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);
 	void actionZoomIn();

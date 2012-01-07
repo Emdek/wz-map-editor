@@ -26,7 +26,7 @@ void Map::clear()
 
 	m_levelName = "Unnamed";
 	m_size = QSize(10, 10);
-	m_tilesetType = ArizonaTileset;
+	m_tileset = ArizonaTileset;
 	m_tiles.clear();
 	m_gateways.clear();
 	m_modified = true;
@@ -64,7 +64,7 @@ void Map::setType(quint32 type)
 
 void Map::setTileset(TilesetType tilesetType)
 {
-	m_tilesetType = tilesetType;
+	m_tileset = tilesetType;
 }
 
 void Map::setDroids(QList<MapEntity> droids)
@@ -150,7 +150,7 @@ quint32 Map::type()
 
 TilesetType Map::tileset()
 {
-	return m_tilesetType;
+	return m_tileset;
 }
 
 QVector<QVector<MapTile> > Map::tiles()

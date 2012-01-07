@@ -19,7 +19,7 @@ class MapSettingsManager : public QObject
 	Q_OBJECT
 
 public:
-	MapSettingsManager(Map *mapInformation, QObject *parent = NULL);
+	MapSettingsManager(Map *map, bool newMap, QObject *parent = NULL);
 	~MapSettingsManager();
 
 public slots:
@@ -27,7 +27,8 @@ public slots:
 	void save();
 
 private:
-	Map *m_mapInformation;
+	Map *m_map;
+	bool m_newMap;
 	Ui::MapSettingsDialog *m_managerUi;
 };
 

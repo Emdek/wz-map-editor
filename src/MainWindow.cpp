@@ -270,7 +270,7 @@ void MainWindow::actionNew()
 		m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
 		m_mainWindowUi->map3DViewWidget->setMap(m_map);
 
-		actionProperties();
+		actionProperties(true);
 	}
 }
 
@@ -292,18 +292,13 @@ void MainWindow::actionClearRecentFiles()
 	SettingManager::remove("recentFiles");
 }
 
-void MainWindow::actionProperties()
+void MainWindow::actionProperties(bool newMap)
 {
-	new MapSettingsManager(m_map, this);
+	new MapSettingsManager(m_map, newMap, this);
 
 	m_tilesetUi->tileCategoryComboBox->clear();
 
 	updateTilesetView();
-
-	if (Tileset::cachedTileset() != m_map->tileset())
-	{
-		Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
-	}
 
 	m_mainWindowUi->map3DViewWidget->repaint();
 }
@@ -446,40 +441,44 @@ void MainWindow::updateRecentFilesMenu()
 
 void MainWindow::updateTilesetView()
 {
-	m_tilesetUi->listWidget->clear();
+	Tileset *tileset = Tileset::tileset(ArizonaTileset);
 
-	if (!m_map)
+	if (m_map && m_map->tileset() != NoTileset)
+	{
+		tileset = Tileset::tileset(m_map->tileset());
+	}
+
+	if (m_currentTileset == tileset->type())
 	{
 		return;
 	}
 
-	Tileset *tileset = Tileset::tileset(m_map->tileset());
-
-	if (tileset)
+	if (Tileset::cachedTileset() != tileset->type())
 	{
-		if (m_currentTileset != tileset->type())
-		{
-			m_currentTileset = tileset->type();
+		Tileset::createCache(tileset->type(), SettingManager::value("tileSize").toInt());
+	}
 
-			disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-			disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+	m_currentTileset = tileset->type();
 
-			m_tilesetUi->tileCategoryComboBox->clear();
-			m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
+	disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+	disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 
-			connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-			connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-		}
+	m_tilesetUi->tileCategoryComboBox->clear();
+	m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
 
-		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
+	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 
-		for (int i = 0; i < tiles.count(); ++i)
-		{
-			QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i), 128), QString(), m_tilesetUi->listWidget);
-			item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
+	m_tilesetUi->listWidget->clear();
 
-			m_tilesetUi->listWidget->addItem(item);
-		}
+	QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
+
+	for (int i = 0; i < tiles.count(); ++i)
+	{
+		QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i), 128), QString(), m_tilesetUi->listWidget);
+		item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
+
+		m_tilesetUi->listWidget->addItem(item);
 	}
 }
 
