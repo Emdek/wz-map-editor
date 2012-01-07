@@ -5,13 +5,13 @@
 #include <QtCore/QXmlStreamReader>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
+#include <QtGui/QPixmapCache>
 
 
 namespace WZMapEditor
 {
 
 QHash<TilesetType, Tileset*> m_tilesets;
-QHash<int, QPixmap> m_textureCache;
 TilesetType m_cachedTileset = TilesetTypeArizona;
 int m_textureSize = 0;
 
@@ -33,9 +33,12 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 		m_type = TilesetTypeArizona;
 	}
 
-	m_categories.append(tr("All"));
-	m_categoryBackgrounds.append(QList<int>());
-	m_categoryTypes.append(TileTypeOther);
+	CategoryInformation category;
+	category.background = 0;
+	category.type = TileTypeOther;
+	category.title = tr("All");
+
+	m_categories.append(category);
 
 	QFile file(fileName);
 	file.open(QFile::ReadOnly | QFile::Text);
@@ -46,53 +49,57 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 	{
 		reader.readNext();
 
-		if (reader.isStartElement())
+		if (!reader.isStartElement())
 		{
-			if (reader.name().toString() == "tileset")
+			continue;
+		}
+
+		if (reader.name().toString() == "tileset")
+		{
+			QXmlStreamAttributes attributes = reader.attributes();
+
+			m_name = attributes.value("name").toString();
+		}
+		else if (reader.name().toString() == "category")
+		{
+			QXmlStreamAttributes attributes = reader.attributes();
+			CategoryInformation category;
+			category.background = attributes.value("background").toString().toInt();
+			category.type = stringToType(attributes.value("type").toString());
+			category.title = attributes.value("name").toString();
+
+			m_categories.append(category);
+		}
+		else if (reader.name().toString() == "tile" || reader.name().toString() == "transition")
+		{
+			QXmlStreamAttributes attributes = reader.attributes();
+			TileInformation tile;
+			tile.valid = true;
+			tile.visible = !attributes.hasAttribute("hidden");
+			tile.ignore = attributes.hasAttribute("ignore");
+			tile.id = attributes.value("id").toString().toInt();
+			tile.category = attributes.value("category").toString().toInt();
+			tile.tileset = m_type;
+			tile.background = (attributes.hasAttribute("background")?attributes.value("background").toString().toInt():m_categories.at(tile.category).background);
+
+			if (reader.name().toString() == "tile")
 			{
-				QXmlStreamAttributes attributes = reader.attributes();
-
-				m_name = attributes.value("name").toString();
+				tile.transitionNorthWest = tile.category;
+				tile.transitionNorthEast = tile.category;
+				tile.transitionSouthEast = tile.category;
+				tile.transitionSouthWest = tile.category;
+				tile.type = (attributes.hasAttribute("type")?stringToType(attributes.value("type").toString()):m_categories.at(tile.category).type);
 			}
-			else if (reader.name().toString() == "category")
+			else
 			{
-				QXmlStreamAttributes attributes = reader.attributes();
-
-				m_categories.append(attributes.value("name").toString());
-				m_categoryBackgrounds.append(stringToBackgrounds(attributes.value("backgrounds").toString()));
-				m_categoryTypes.append(stringToType(attributes.value("type").toString()));
+				tile.transitionNorthWest = attributes.value("northWest").toString().toInt();
+				tile.transitionNorthEast = attributes.value("northEast").toString().toInt();
+				tile.transitionSouthEast = attributes.value("southEast").toString().toInt();
+				tile.transitionSouthWest = attributes.value("southWest").toString().toInt();
+				tile.type = TileTypeTransition;
 			}
-			else if (reader.name().toString() == "tile" || reader.name().toString() == "transition")
-			{
-				QXmlStreamAttributes attributes = reader.attributes();
-				TileInformation tile;
-				tile.valid = true;
-				tile.visible = !attributes.hasAttribute("hidden");
-				tile.ignore = attributes.hasAttribute("ignore");
-				tile.id = attributes.value("id").toString().toInt();
-				tile.category = attributes.value("category").toString().toInt();
-				tile.tileset = m_type;
-				tile.backgrounds = (attributes.hasAttribute("backgrounds")?stringToBackgrounds(attributes.value("backgrounds").toString()):m_categoryBackgrounds.at(tile.category));
 
-				if (reader.name().toString() == "tile")
-				{
-					tile.transitionNorthWest = tile.category;
-					tile.transitionNorthEast = tile.category;
-					tile.transitionSouthEast = tile.category;
-					tile.transitionSouthWest = tile.category;
-					tile.type = (attributes.hasAttribute("type")?stringToType(attributes.value("type").toString()):m_categoryTypes.at(tile.category));
-				}
-				else
-				{
-					tile.transitionNorthWest = attributes.value("northWest").toString().toInt();
-					tile.transitionNorthEast = attributes.value("northEast").toString().toInt();
-					tile.transitionSouthEast = attributes.value("southEast").toString().toInt();
-					tile.transitionSouthWest = attributes.value("southWest").toString().toInt();
-					tile.type = TileTypeTransition;
-				}
-
-				m_tiles.append(tile);
-			}
+			m_tiles.append(tile);
 		}
 	}
 
@@ -115,15 +122,15 @@ void Tileset::createCache(TilesetType tileset, int size)
 {
 	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
 
-	m_textureCache.clear();
-
-	for (int i = 0; i < tiles.count(); ++i)
-	{
-		m_textureCache[tiles.at(i).id] = Tileset::pixmap(tileset, tiles.at(i).id, size);
-	}
+	QPixmapCache::clear();
 
 	m_cachedTileset = tileset;
 	m_textureSize = size;
+
+	for (int i = 0; i < tiles.count(); ++i)
+	{
+		QPixmapCache::insert(QString::number(tiles.at(i).id), Tileset::pixmap(tileset, tiles.at(i).id, size));
+	}
 }
 
 QPixmap Tileset::pixmap(TileInformation tile, int size)
@@ -135,23 +142,28 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 
 	if (tile.tileset == m_cachedTileset && size == m_textureSize)
 	{
-		return m_textureCache[tile.id];
+		QPixmap pixmap;
+
+		if (QPixmapCache::find(QString::number(tile.id), &pixmap))
+		{
+			return pixmap;
+		}
 	}
 
 	QString fileName = QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png")
-					   .arg(SettingManager::value("dataPath").toString() + QDir::separator())
-					   .arg(QDir::separator())
-					   .arg(static_cast<int>(tile.tileset))
-					   .arg(size)
-					   .arg(QDir::separator())
-					   .arg((tile.id < 10)?QString('0'):QString())
-					   .arg(tile.id);
+		.arg(SettingManager::value("dataPath").toString() + QDir::separator())
+		.arg(QDir::separator())
+		.arg(static_cast<int>(tile.tileset))
+		.arg(size)
+		.arg(QDir::separator())
+		.arg((tile.id < 10)?QString('0'):QString())
+		.arg(tile.id);
 
 	if (tile.valid && QFile::exists(fileName))
 	{
-		if (tile.backgrounds.count())
+		if (tile.background)
 		{
-			QPixmap background = pixmap(Tileset::tileset(tile.tileset)->tiles(false, tile.backgrounds.first()).first(), size);
+			QPixmap background = pixmap(Tileset::tileset(tile.tileset)->tiles(false, tile.background).first(), size);
 			QPainter painter(&background);
 			painter.drawPixmap(0, 0, QPixmap(fileName));
 
@@ -233,19 +245,6 @@ TileType Tileset::stringToType(const QString &type)
 	return TileTypeOther;
 }
 
-QList<int> Tileset::stringToBackgrounds(const QString &backgrounds)
-{
-	QStringList strings = backgrounds.split(',', QString::SkipEmptyParts);
-	QList<int> numbers;
-
-	for (int i = 0; i < strings.count(); ++i)
-	{
-		numbers.append(strings.at(i).toInt());
-	}
-
-	return numbers;
-}
-
 TilesetType Tileset::type()
 {
 	return m_type;
@@ -274,7 +273,14 @@ TileInformation Tileset::tile(int tile)
 
 QStringList Tileset::categories()
 {
-	return m_categories;
+	QStringList categories;
+
+	for (int i = 0; i < m_categories.count(); ++i)
+	{
+		categories.append(m_categories.at(i).title);
+	}
+
+	return categories;
 }
 
 QList<TileInformation> Tileset::tiles(bool includeTransitions, int category, TileTypes types)

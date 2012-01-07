@@ -2,7 +2,6 @@
 #define TILESET_H
 
 #include <QtCore/QObject>
-#include <QtCore/QStringList>
 
 
 class QPixmap;
@@ -32,12 +31,20 @@ enum TileType
 
 Q_DECLARE_FLAGS(TileTypes, TileType)
 
+struct CategoryInformation
+{
+	int background;
+	TileType type;
+	QString title;
+};
+
 struct TileInformation
 {
 	bool valid;
 	bool visible;
 	bool ignore;
 	int id;
+	int background;
 	int category;
 	int transitionNorthWest;
 	int transitionNorthEast;
@@ -45,7 +52,6 @@ struct TileInformation
 	int transitionSouthWest;
 	TileType type;
 	TilesetType tileset;
-	QList<int> backgrounds;
 };
 
 class Tileset : public QObject
@@ -72,14 +78,11 @@ public:
 
 protected:
 	TileType stringToType(const QString &type);
-	QList<int> stringToBackgrounds(const QString &backgrounds);
 
 private:
 	TilesetType m_type;
 	QString m_name;
-	QStringList m_categories;
-	QList<QList<int> > m_categoryBackgrounds;
-	QList<TileType> m_categoryTypes;
+	QList<CategoryInformation> m_categories;
 	QList<TileInformation> m_tiles;
 };
 
