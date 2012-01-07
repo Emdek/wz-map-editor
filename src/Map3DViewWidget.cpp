@@ -3,8 +3,8 @@
 #include "SettingManager.h"
 #include "Tileset.h"
 
-#include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
+#include <QTime>
 
 #include <cstdio>
 #include <cmath>
@@ -61,7 +61,8 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 void Map3DViewWidget::paintGL()
 {
-	//qDebug("Map3DViewWidget::paintGL();");
+	QTime t;
+	t.start();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -107,7 +108,7 @@ void Map3DViewWidget::paintGL()
 			glColor3f(1.0f, 1.0f, 1.0f);
 		}
 
-		glBegin(GL_TRIANGLES);
+		glBegin(GL_TRIANGLE_STRIP);
 		{
 			for (unsigned int x = 0; x < t.vertex.size(); x++)
 			{
@@ -121,14 +122,13 @@ void Map3DViewWidget::paintGL()
 	}
 
 	glMatrixMode(GL_MODELVIEW);
+
+	qDebug("Map3DViewWidget::paintGL(): redraw time: %d ms", t.elapsed());
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
 {
 	setZoom(m_zoom + (event->delta() / 32));
-
-	_glSelect(m_currentx, height() - m_currenty);
-	repaint();
 
 	event->accept();
 }
@@ -173,17 +173,16 @@ void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 	{
 		m_rotationZ -= (m_currentx - event->pos().x());
 		m_rotationX -= (m_currenty - event->pos().y());
+		repaint();
 	}
 	if (m_moving == true)
 	{
 		m_offsetX -= (m_currentx - event->pos().x()) / (m_zoom / 1.65f);
 		m_offsetY += (m_currenty - event->pos().y()) / (m_zoom / 1.65f);
+		repaint();
 	}
 	m_currentx = event->pos().x();
 	m_currenty = event->pos().y();
-
-	_glSelect(event->pos().x(), height() - event->pos().y());
-	repaint();
 
 	emit cooridantesChanged(m_currentx, m_currenty, m_currentz);
 }
@@ -206,6 +205,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 		emit zoomChanged(zoom);
 		emit cooridantesChanged(m_currentx, m_currenty, m_currentz);
+		repaint();
 	}
 }
 
@@ -312,24 +312,21 @@ void Map3DViewWidget::setMap(Map *data)
 			vert2.v = 0;
 
 			vert3.x = posX - 1.0;
-			vert3.y = posY;
-			vert3.z = tile_left_top;
-			vert3.u = 1;
+			vert3.y = posY - 1.0;
+			vert3.z = tile_left_bottom;
+			vert3.u = 0;
 			vert3.v = 1;
 
 			vert4.x = posX - 1.0;
-			vert4.y = posY - 1.0;
-			vert4.z = tile_left_bottom;
-			vert4.u = 0;
+			vert4.y = posY;
+			vert4.z = tile_left_top;
+			vert4.u = 1;
 			vert4.v = 1;
 
 			ent.vertex.push_back(vert1);
 			ent.vertex.push_back(vert2);
 			ent.vertex.push_back(vert3);
-
-			ent.vertex.push_back(vert3);
 			ent.vertex.push_back(vert4);
-			ent.vertex.push_back(vert1);
 
 			ent.flip = flip;
 			ent.rotation = rotation;
