@@ -350,15 +350,15 @@ int MapParser::deserializeTerrain(QDataStream &stream)
 
 	if (terrainTypes[0] == 2 && terrainTypes[1] == 2 && terrainTypes[2] == 2)
 	{
-		m_map->setTileset(TilesetTypeUrban);
+		m_map->setTileset(UrbanTileset);
 	}
 	else if (terrainTypes[0] == 0 && terrainTypes[1] == 0 && terrainTypes[2] == 2)
 	{
-		m_map->setTileset(TilesetTypeRockies);
+		m_map->setTileset(RockiesTileset);
 	}
 	else
 	{
-		m_map->setTileset(TilesetTypeArizona);
+		m_map->setTileset(ArizonaTileset);
 	}
 
 	m_map->setTerrainTypes(terrainTypes);

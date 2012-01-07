@@ -26,7 +26,7 @@ void Map::clear()
 
 	m_levelName = "Unnamed";
 	m_size = QSize(10, 10);
-	m_tilesetType = TilesetTypeArizona;
+	m_tilesetType = ArizonaTileset;
 	m_tiles.clear();
 	m_gateways.clear();
 	m_modified = true;

@@ -12,7 +12,7 @@ namespace WZMapEditor
 {
 
 QHash<TilesetType, Tileset*> m_tilesets;
-TilesetType m_cachedTileset = TilesetTypeArizona;
+TilesetType m_cachedTileset = ArizonaTileset;
 int m_textureSize = 0;
 
 Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
@@ -22,20 +22,20 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 
 	if (tilesetName == "urban")
 	{
-		m_type = TilesetTypeUrban;
+		m_type = UrbanTileset;
 	}
 	else if (tilesetName == "rockies")
 	{
-		m_type = TilesetTypeRockies;
+		m_type = RockiesTileset;
 	}
 	else
 	{
-		m_type = TilesetTypeArizona;
+		m_type = ArizonaTileset;
 	}
 
 	CategoryInformation category;
 	category.background = 0;
-	category.type = TileTypeOther;
+	category.type = OtherTile;
 	category.title = tr("All");
 
 	m_categories.append(category);
@@ -96,7 +96,7 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 				tile.transitionNorthEast = attributes.value("northEast").toString().toInt();
 				tile.transitionSouthEast = attributes.value("southEast").toString().toInt();
 				tile.transitionSouthWest = attributes.value("southWest").toString().toInt();
-				tile.type = TileTypeTransition;
+				tile.type = TransitionTile;
 			}
 
 			m_tiles.append(tile);
@@ -214,35 +214,35 @@ TileType Tileset::stringToType(const QString &type)
 {
 	if (type.isEmpty())
 	{
-		return TileTypeGround;
+		return GroundTile;
 	}
 
 	if (type == "water")
 	{
-		return TileTypeWater;
+		return WaterTile;
 	}
 
 	if (type == "road")
 	{
-		return TileTypeRoad;
+		return RoadTile;
 	}
 
 	if (type == "tracks")
 	{
-		return TileTypeTracks;
+		return TracksTile;
 	}
 
 	if (type == "crater")
 	{
-		return TileTypeCrater;
+		return CraterTile;
 	}
 
 	if (type == "cliff")
 	{
-		return TileTypeCliff;
+		return CliffTile;
 	}
 
-	return TileTypeOther;
+	return OtherTile;
 }
 
 TilesetType Tileset::type()
@@ -289,7 +289,7 @@ QList<TileInformation> Tileset::tiles(bool includeTransitions, int category, Til
 
 	for (int i = 0; i < m_tiles.count(); ++i)
 	{
-		if ((!includeTransitions && !m_tiles.at(i).category && types != TileTypeTransition) || !m_tiles.at(i).visible)
+		if ((!includeTransitions && !m_tiles.at(i).category && types != TransitionTile) || !m_tiles.at(i).visible)
 		{
 			continue;
 		}

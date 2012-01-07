@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_zoomSlider(new QSlider(Qt::Horizontal, this)),
 	m_coordinatesLabel(new QLabel(this)),
 	m_fileNameLabel(new QLabel(tr("Unnamed"), this)),
-	m_currentTileset(TilesetTypeNone),
+	m_currentTileset(NoTileset),
 	m_mainWindowUi(new Ui::MainWindow()),
 	m_map2DEditorWidgetUi(new Ui::Map2DEditorWidget()),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
@@ -138,15 +138,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionAboutApplication->setIcon(QIcon(":/icons/warzone2100mapeditor.png"));
 	m_mainWindowUi->actionAboutQt->setIcon(QIcon(":/icons/qt.png"));
 
-	m_tilesetUi->tileTypeComboBox->setItemData(0, TileTypeAll);
-	m_tilesetUi->tileTypeComboBox->setItemData(1, TileTypeGround);
-	m_tilesetUi->tileTypeComboBox->setItemData(2, TileTypeWater);
-	m_tilesetUi->tileTypeComboBox->setItemData(3, TileTypeRoad);
-	m_tilesetUi->tileTypeComboBox->setItemData(4, TileTypeTracks);
-	m_tilesetUi->tileTypeComboBox->setItemData(5, TileTypeCrater);
-	m_tilesetUi->tileTypeComboBox->setItemData(6, TileTypeCliff);
-	m_tilesetUi->tileTypeComboBox->setItemData(7, TileTypeTransition);
-	m_tilesetUi->tileTypeComboBox->setItemData(8, TileTypeOther);
+	m_tilesetUi->tileTypeComboBox->setItemData(0, AllTiles);
+	m_tilesetUi->tileTypeComboBox->setItemData(1, GroundTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(2, WaterTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(3, RoadTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(4, TracksTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(5, CraterTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(6, CliffTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(7, TransitionTile);
+	m_tilesetUi->tileTypeComboBox->setItemData(8, OtherTile);
 
 	ActionManager::registerAction(m_mainWindowUi->actionNew);
 	ActionManager::registerAction(m_mainWindowUi->actionOpen);
@@ -176,7 +176,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
 	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
-	Tileset::createCache(TilesetTypeArizona, SettingManager::value("tileSize").toInt());
+	Tileset::createCache(ArizonaTileset, SettingManager::value("tileSize").toInt());
 
 	updateTilesetView();
 
@@ -260,7 +260,7 @@ void MainWindow::actionNew()
 
 		m_map = new Map(this);
 		m_map->setModified(true);
-		m_map->setTileset(TilesetTypeArizona);
+		m_map->setTileset(ArizonaTileset);
 
 		m_fileNameLabel->setText("Unnamed");
 		m_fileNameLabel->setToolTip(QString());

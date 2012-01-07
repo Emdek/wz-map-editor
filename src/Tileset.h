@@ -11,23 +11,23 @@ namespace WZMapEditor
 
 enum TilesetType
 {
-	TilesetTypeNone = 0,
-	TilesetTypeArizona = 1, // 102
-	TilesetTypeUrban = 2, // 222
-	TilesetTypeRockies = 3 // 002
+	NoTileset = 0,
+	ArizonaTileset = 1, // 102
+	UrbanTileset = 2, // 222
+	RockiesTileset = 3 // 002
 };
 
 enum TileType
 {
-	TileTypeGround = 1,
-	TileTypeWater = 2,
-	TileTypeRoad = 4,
-	TileTypeTracks = 8,
-	TileTypeCrater = 16,
-	TileTypeCliff = 32,
-	TileTypeTransition = 64,
-	TileTypeOther = 128,
-	TileTypeAll = TileTypeGround | TileTypeWater| TileTypeRoad | TileTypeTracks | TileTypeCrater | TileTypeCliff | TileTypeTransition | TileTypeOther
+	GroundTile = 1,
+	WaterTile = 2,
+	RoadTile = 4,
+	TracksTile = 8,
+	CraterTile = 16,
+	CliffTile = 32,
+	TransitionTile = 64,
+	OtherTile = 128,
+	AllTiles = GroundTile | WaterTile| RoadTile | TracksTile | CraterTile | CliffTile | TransitionTile | OtherTile
 };
 
 Q_DECLARE_FLAGS(TileTypes, TileType)
@@ -75,7 +75,7 @@ public:
 	QString name();
 	TileInformation tile(int tile);
 	QStringList categories();
-	QList<TileInformation> tiles(bool includeTransitions = true, int category = 0, TileTypes types = TileTypeAll);
+	QList<TileInformation> tiles(bool includeTransitions = true, int category = 0, TileTypes types = AllTiles);
 
 protected:
 	TileType stringToType(const QString &type);
