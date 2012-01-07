@@ -11,6 +11,7 @@ namespace WZMapEditor
 
 enum TilesetType
 {
+	TilesetTypeNone = 0,
 	TilesetTypeArizona = 1, // 102
 	TilesetTypeUrban = 2, // 222
 	TilesetTypeRockies = 3 // 002

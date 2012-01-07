@@ -5,7 +5,6 @@
 #include "ToolBarManager.h"
 #include "PreferencesManager.h"
 #include "MapSettingsManager.h"
-#include "Tileset.h"
 #include "Map.h"
 #include "MapParser.h"
 
@@ -32,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_zoomSlider(new QSlider(Qt::Horizontal, this)),
 	m_coordinatesLabel(new QLabel(this)),
 	m_fileNameLabel(new QLabel(tr("Unnamed"), this)),
+	m_currentTileset(TilesetTypeNone),
 	m_mainWindowUi(new Ui::MainWindow()),
 	m_map2DEditorWidgetUi(new Ui::Map2DEditorWidget()),
 	m_tilesetUi(new Ui::TilesetDockWidget()),
@@ -258,6 +258,7 @@ void MainWindow::actionNew()
 
 		m_map = new Map(this);
 		m_map->setModified(true);
+		m_map->setTileset(TilesetTypeArizona);
 
 		m_fileNameLabel->setText("Unnamed");
 		m_fileNameLabel->setToolTip(QString());
@@ -454,10 +455,18 @@ void MainWindow::updateTilesetView()
 
 	if (tileset)
 	{
-		if (!m_tilesetUi->tileCategoryComboBox->count())
+		if (m_currentTileset != tileset->type())
 		{
+			m_currentTileset = tileset->type();
+
+			disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+			disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+
 			m_tilesetUi->tileCategoryComboBox->clear();
 			m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
+
+			connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+			connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 		}
 
 		QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));

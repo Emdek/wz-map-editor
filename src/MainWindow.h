@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "Tileset.h"
+
 #include <QtGui/QMainWindow>
 #include <QtGui/QDockWidget>
 #include <QtGui/QLabel>
@@ -66,6 +68,7 @@ private:
 	QSlider *m_zoomSlider;
 	QLabel *m_coordinatesLabel;
 	QLabel *m_fileNameLabel;
+	TilesetType m_currentTileset;
 	Ui::MainWindow *m_mainWindowUi;
 	Ui::Map2DEditorWidget *m_map2DEditorWidgetUi;
 	Ui::TilesetDockWidget *m_tilesetUi;

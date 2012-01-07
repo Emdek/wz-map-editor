@@ -3,7 +3,6 @@
 
 #include "Map.h"
 
-#include <QtCore/QHash>
 #include <QtCore/QObject>
 
 
