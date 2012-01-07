@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Tileset.h"
+#include "Map.h"
 
 namespace WZMapEditor
 {
@@ -23,28 +24,23 @@ struct Vertex
 	float v;
 };
 
-enum EntityType {
-	TypeTerrain,
-	TypeStructure
-};
-
 struct Entity
 {
 	//Object(Vertex v[4], GLuint t, QPoint f, float r);
 	EntityType type;
 
 	// position on wz map
-	int        x;
-	int        y;
+	int x;
+	int y;
 
-	bool       hovered;
-	bool       selected;
+	bool hovered;
+	bool selected;
 
 	std::vector<Vertex> vertex; // object verticles
 
 	GLuint texid;
 	QPoint flip;
-	float  rotation;
+	float rotation;
 };
 
 class Map3DViewWidget : public QGLWidget
@@ -96,8 +92,8 @@ private:
 	struct used_texture
 	{
 		TilesetType tileset;
-		int         tiletexture;
-		GLuint      texid;
+		int tiletexture;
+		GLuint texid;
 	};
 	std::vector<used_texture> m_used_textures;
 

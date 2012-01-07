@@ -4,7 +4,7 @@
 namespace WZMapEditor
 {
 
-MapTile::MapTile() : gateway(false), rotation(0), texture(0), height(0), flip(FlipTypeNone)
+MapTile::MapTile() : gateway(false), rotation(0), texture(0), height(0), flip(NoFlip)
 {
 }
 

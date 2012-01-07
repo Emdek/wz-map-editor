@@ -46,7 +46,7 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 	menu.addAction(tr("Tile: %1 %2").arg(pixmap.x()).arg(pixmap.y()));
 	menu.addAction(tr("Texture: %1").arg(tile.texture));
 	menu.addAction(tr("Rotation: %1").arg(tile.rotation));
-	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & FlipTypeHorizontal)?'y':'n').arg((tile.flip & FlipTypeVertical)?'y':'n'));
+	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & HorizontalFlip)?'y':'n').arg((tile.flip & VerticalFlip)?'y':'n'));
 
 	menu.exec(event->globalPos());
 }
@@ -96,8 +96,8 @@ void Map2DViewWidget::setMap(Map *data)
 		{
 			MapTile tile(m_map->tile(i, j));
 			QGraphicsPixmapItem *pixmap = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
-			pixmap->scale(((tile.flip & FlipTypeHorizontal)?-1:1), ((tile.flip & FlipTypeVertical)?-1:1));
-			pixmap->setOffset(((tile.flip & FlipTypeHorizontal)?-tileSize:0), ((tile.flip & FlipTypeVertical)?-tileSize:0));
+			pixmap->scale(((tile.flip & HorizontalFlip)?-1:1), ((tile.flip & VerticalFlip)?-1:1));
+			pixmap->setOffset(((tile.flip & HorizontalFlip)?-tileSize:0), ((tile.flip & VerticalFlip)?-tileSize:0));
 			pixmap->setTransformOriginPoint((tileSize / 2) + pixmap->offset().x(), (tileSize / 2) + pixmap->offset().y());
 			pixmap->setRotation(tile.rotation);
 

@@ -194,7 +194,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 			m_tiles[i].resize(m_map->size().height());
 			stream >> texture >> height;
 			tile.texture = (texture & 0x01ff);
-			tile.flip = ((texture & 0x8000 && texture & 0x4000)?FlipTypeDiagonal:((texture & 0x8000)?FlipTypeHorizontal:((texture & 0x4000)?FlipTypeVertical:FlipTypeNone)));
+			tile.flip = ((texture & 0x8000 && texture & 0x4000)?FlipTypeDiagonal:((texture & 0x8000)?HorizontalFlip:((texture & 0x4000)?VerticalFlip:NoFlip)));
 			tile.rotation = (((texture & 0x3000) >> 12) * 90);
 			tile.height = height;
 			tile.position.rx() = i;
@@ -494,7 +494,7 @@ int MapParser::deserializeStructures(QDataStream &stream)
 			stream.skipRawData(1 * 4);
 		}
 
-		entity.type = MapObjectTypeStructure;
+		entity.type = StructureEntity;
 
 		if (entity.player > MAX_PLAYERS)
 		{
@@ -584,7 +584,7 @@ int MapParser::deserializeDroids(QDataStream &stream)
 
 		stream.skipRawData(3 * 4);
 
-		entity.type = MapObjectTypeDroid;
+		entity.type = DroidEntity;
 
 		// sanity check
 		if (entity.position.x() >= (m_tiles.size() * TILE_WIDTH) || entity.position.y() >= (m_tiles.at(0).size() * TILE_HEIGHT))

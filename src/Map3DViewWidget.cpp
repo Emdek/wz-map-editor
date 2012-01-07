@@ -1,5 +1,4 @@
 #include "Map3DViewWidget.h"
-#include "Map.h"
 #include "Tileset.h"
 #include "SettingManager.h"
 #include "Tileset.h"
@@ -225,11 +224,11 @@ void Map3DViewWidget::setMap(Map *data)
 		{
 			// set objects
 			Entity ent;
-			ent.type     = TypeTerrain;
-			ent.x        = i;
-			ent.y        = j;
+			ent.type = TerrainEntity;
+			ent.x = i;
+			ent.y = j;
 			ent.selected = false;
-			ent.hovered  = false;
+			ent.hovered = false;
 
 			// set verticles and textures for cache
 
@@ -296,7 +295,7 @@ void Map3DViewWidget::setMap(Map *data)
 			float posY = 1.0 * j - centerFactorY;
 			float posX = 1.0 * i - centerFactorX;
 
-			QPoint flip(((tile.flip & FlipTypeHorizontal) ? -1.0 : 1.0), ((tile.flip & FlipTypeVertical) ? 1.0 : -1.0));
+			QPoint flip(((tile.flip & HorizontalFlip) ? -1.0 : 1.0), ((tile.flip & VerticalFlip) ? 1.0 : -1.0));
 			float rotation((GLfloat)(tile.rotation + 90));
 
 			Vertex vert1, vert2, vert3, vert4;
