@@ -45,7 +45,6 @@ void Map3DViewWidget::initializeGL()
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
@@ -68,9 +67,6 @@ void Map3DViewWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//glEnable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
-
 	glTranslatef(0.0, 0.0, ((1.0 / m_zoom) * -2000));
 	glRotatef(m_rotationX / 4.0, 1.0, 0.0, 0.0);
 	glRotatef(m_rotationY / 4.0, 0.0, 1.0, 0.0);
@@ -82,13 +78,13 @@ void Map3DViewWidget::paintGL()
 		return;
 	}
 
+	glMatrixMode(GL_TEXTURE);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		Entity t = m_entities[i];
 
 		glLoadName(i);
-
-		glMatrixMode(GL_TEXTURE);
 
 		glPushMatrix();
 
@@ -97,12 +93,15 @@ void Map3DViewWidget::paintGL()
 
 		glBindTexture(GL_TEXTURE_2D, t.texid);
 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		if (t.hovered == true)
 		{
 			glColor3f(1.0f, 0.6f, 0.5f);
+			t.hovered = false;
 		}
 		else
 		{
@@ -120,8 +119,6 @@ void Map3DViewWidget::paintGL()
 		glEnd();
 
 		glPopMatrix();
-
-		t.hovered = false;
 	}
 
 	glMatrixMode(GL_MODELVIEW);
@@ -222,15 +219,12 @@ void Map3DViewWidget::setMap(Map *data)
 	qDebug("Map3DWidget::setMap()");
 	m_map = data;
 
-	// generate empty texture - default, texid = 0
-	glGenTextures(1, 0);
 	m_entities.clear();
 
 	for (int i = 1; i <= m_map->size().width(); ++i)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
-			printf("setMap(): %i x %i\n", i, j);
 			// set objects
 			Entity ent;
 			ent.type     = TypeTerrain;
@@ -269,7 +263,10 @@ void Map3DViewWidget::setMap(Map *data)
 				t.texid       = ent.texid;
 				m_used_textures.push_back(t);
 			}
-			//printf("[tile] %i\t%i\n", tile.texture, ent.texid);
+			if (ent.texid == 0)
+			{
+				printf("error while loading texture %i %i\n", m_map->tileset(), tile.texture);
+			}
 
 			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
 
@@ -373,6 +370,7 @@ int Map3DViewWidget::zoom()
 
 void Map3DViewWidget::_glSelect(int x, int y)
 {
+	return;
 	GLuint buff[64] = {0};
 	GLint hits, view[4];
 
@@ -407,7 +405,6 @@ void Map3DViewWidget::_glSelect(int x, int y)
 		m_entities[s].hovered = true;
 		printf("[hit %i] %i:\t%i x %i\n", i, s, m_entities[s].x, m_entities[s].y);
 	}
-	printf("\n");
 	//_listHits(hits,buff);
 
 	glMatrixMode(GL_MODELVIEW);
