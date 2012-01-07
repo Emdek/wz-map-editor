@@ -95,9 +95,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 	QToolButton *zoomInButton = new QToolButton(this);
 	zoomInButton->setDefaultAction(m_mainWindowUi->actionZoomIn);
+	zoomInButton->setAutoRepeat(true);
 
 	QToolButton *zoomOutButton = new QToolButton(this);
 	zoomOutButton->setDefaultAction(m_mainWindowUi->actionZoomOut);
+	zoomOutButton->setAutoRepeat(true);
 
 	m_mainWindowUi->statusBar->addPermanentWidget(m_fileNameLabel);
 	m_mainWindowUi->statusBar->addPermanentWidget(m_coordinatesLabel);
