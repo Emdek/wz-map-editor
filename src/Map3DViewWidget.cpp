@@ -275,10 +275,10 @@ void Map3DViewWidget::setMap(Map *data)
 			QPoint flip(((tile.flip & HorizontalFlip) ? -1.0 : 1.0), ((tile.flip & VerticalFlip) ? 1.0 : -1.0));
 			float rotation((GLfloat)(tile.rotation + 90));
 
-			Vertex v1 = {posX,       posY - 1.0, tile_right_bottom, 0, 0};
-			Vertex v2 = {posX,       posY,       tile_right_top,    1, 0};
-			Vertex v3 = {posX - 1.0, posY - 1.0, tile_left_bottom,  0, 1};
-			Vertex v4 = {posX - 1.0, posY,       tile_left_top,     1, 1};
+			Vertex v1 = {{posX,       posY - 1.0, tile_right_bottom}, {0, 0}};
+			Vertex v2 = {{posX,       posY,       tile_right_top   }, {1, 0}};
+			Vertex v3 = {{posX - 1.0, posY - 1.0, tile_left_bottom }, {0, 1}};
+			Vertex v4 = {{posX - 1.0, posY,       tile_left_top    }, {1, 1}};
 
 			m_vboData.push_back(v1);
 			m_vboData.push_back(v2);
