@@ -1,10 +1,12 @@
 #ifndef MAP3DVIEWWIDGET_H
 #define MAP3DVIEWWIDGET_H
 
+#define GL_GLEXT_PROTOTYPES 1
+
 #include <QtCore/QHash>
 #include <QtOpenGL/QGLWidget>
-#include <QtOpenGL/QGLFunctions>
 #include <GL/glu.h>
+#include "GL/glext.h"
 
 #include <vector>
 
@@ -41,7 +43,7 @@ struct Entity
 	float rotation;
 };
 
-class Map3DViewWidget : public QGLWidget, protected QGLFunctions
+class Map3DViewWidget : public QGLWidget
 {
 	Q_OBJECT
 

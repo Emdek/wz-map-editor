@@ -31,7 +31,6 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 
 void Map3DViewWidget::initializeGL()
 {
-	initializeGLFunctions();
 	m_OGLinitialized = true;
 
 	qglClearColor(QColor(0, 0, 32, 0));
