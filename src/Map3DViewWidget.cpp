@@ -21,7 +21,8 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 	m_rotationZ(0),
 	m_offsetX(0),
 	m_offsetY(0),
-	m_zoom(50)
+	m_zoom(50),
+	m_OGLinitialized(false)
 {
 	setMouseTracking(true);
 
@@ -30,13 +31,16 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 
 void Map3DViewWidget::initializeGL()
 {
+	initializeGLFunctions();
+	m_OGLinitialized = true;
+
 	qglClearColor(QColor(0, 0, 32, 0));
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_CULL_FACE);
 	//glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT0);
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
 	glShadeModel(GL_SMOOTH);
@@ -45,6 +49,8 @@ void Map3DViewWidget::initializeGL()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
+
+	setVBO();
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
@@ -61,11 +67,18 @@ void Map3DViewWidget::resizeGL(int width, int height)
 
 void Map3DViewWidget::paintGL()
 {
+	if (!m_map)
+	{
+		return;
+	}
+
 	QTime t;
 	t.start();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
 
 	glTranslatef(0.0, 0.0, ((1.0 / m_zoom) * -2000));
 	glRotatef(m_rotationX / 4.0, 1.0, 0.0, 0.0);
@@ -73,55 +86,17 @@ void Map3DViewWidget::paintGL()
 	glRotatef(m_rotationZ / 4.0, 0.0, 0.0, 1.0);
 	glTranslatef(m_offsetX, m_offsetY, 0.0);
 
-	if (!m_map)
-	{
-		return;
-	}
+	// VBO
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glMatrixMode(GL_TEXTURE);
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (GLvoid *)offsetof(Vertex, pos));
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (GLvoid*)offsetof(Vertex, tex));
 
-	for (unsigned int i = 0; i < m_entities.size(); i++)
-	{
-		Entity t = m_entities[i];
+	glDrawArrays(GL_TRIANGLES, 0, m_vboData.size());
 
-		glLoadName(i);
-
-		glPushMatrix();
-
-		glScalef(t.flip.x(), t.flip.y(), 0.0);
-		glRotatef(t.rotation, 0.0, 0.0, 1.0);
-
-		glBindTexture(GL_TEXTURE_2D, t.texid);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		if (t.hovered == true)
-		{
-			glColor3f(1.0f, 0.6f, 0.5f);
-			t.hovered = false;
-		}
-		else
-		{
-			glColor3f(1.0f, 1.0f, 1.0f);
-		}
-
-		glBegin(GL_TRIANGLE_STRIP);
-		{
-			for (unsigned int x = 0; x < t.vertex.size(); x++)
-			{
-				glTexCoord2f(t.vertex[x].u, t.vertex[x].v);
-				glVertex3f(t.vertex[x].x, t.vertex[x].y, t.vertex[x].z);
-			}
-		}
-		glEnd();
-
-		glPopMatrix();
-	}
-
-	glMatrixMode(GL_MODELVIEW);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	qDebug("Map3DViewWidget::paintGL(): redraw time: %d ms", t.elapsed());
 }
@@ -215,6 +190,7 @@ void Map3DViewWidget::setMap(Map *data)
 	m_map = data;
 
 	m_entities.clear();
+	m_vboData.clear();
 
 	const int tileSize = SettingManager::value("tileSize").toInt();
 
@@ -222,6 +198,8 @@ void Map3DViewWidget::setMap(Map *data)
 	{
 		for (int j = 1; j <= m_map->size().height(); ++j)
 		{
+			GLint texid;
+
 			// set objects
 			Entity ent;
 			ent.type = TerrainEntity;
@@ -252,14 +230,14 @@ void Map3DViewWidget::setMap(Map *data)
 			}
 			if (_old_tex == false)
 			{
-				ent.texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+				texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
 				used_texture t;
 				t.tileset     = m_map->tileset();
 				t.tiletexture = tile.texture;
-				t.texid       = ent.texid;
+				t.texid       = texid;
 				m_used_textures.push_back(t);
 			}
-			if (ent.texid == 0)
+			if (texid == 0)
 			{
 				printf("error while loading texture %i %i\n", m_map->tileset(), tile.texture);
 			}
@@ -298,35 +276,18 @@ void Map3DViewWidget::setMap(Map *data)
 			QPoint flip(((tile.flip & HorizontalFlip) ? -1.0 : 1.0), ((tile.flip & VerticalFlip) ? 1.0 : -1.0));
 			float rotation((GLfloat)(tile.rotation + 90));
 
-			Vertex vert1, vert2, vert3, vert4;
-			vert1.x = posX;
-			vert1.y = posY - 1.0;
-			vert1.z = tile_right_bottom;
-			vert1.u = 0;
-			vert1.v = 0;
+			Vertex v1 = {posX,       posY - 1.0, tile_right_bottom, 0, 0};
+			Vertex v2 = {posX,       posY,       tile_right_top,    1, 0};
+			Vertex v3 = {posX - 1.0, posY - 1.0, tile_left_bottom,  0, 1};
+			Vertex v4 = {posX - 1.0, posY,       tile_left_top,     1, 1};
 
-			vert2.x = posX;
-			vert2.y = posY;
-			vert2.z = tile_right_top;
-			vert2.u = 1;
-			vert2.v = 0;
+			m_vboData.push_back(v1);
+			m_vboData.push_back(v2);
+			m_vboData.push_back(v3);
 
-			vert3.x = posX - 1.0;
-			vert3.y = posY - 1.0;
-			vert3.z = tile_left_bottom;
-			vert3.u = 0;
-			vert3.v = 1;
-
-			vert4.x = posX - 1.0;
-			vert4.y = posY;
-			vert4.z = tile_left_top;
-			vert4.u = 1;
-			vert4.v = 1;
-
-			ent.vertex.push_back(vert1);
-			ent.vertex.push_back(vert2);
-			ent.vertex.push_back(vert3);
-			ent.vertex.push_back(vert4);
+			m_vboData.push_back(v4);
+			m_vboData.push_back(v3);
+			m_vboData.push_back(v2);
 
 			ent.flip = flip;
 			ent.rotation = rotation;
@@ -334,6 +295,8 @@ void Map3DViewWidget::setMap(Map *data)
 			m_entities.push_back(ent);
 		}
 	}
+
+	setVBO();
 
 	repaint();
 
@@ -358,6 +321,20 @@ QSize Map3DViewWidget::sizeHint() const
 int Map3DViewWidget::zoom()
 {
 	return m_zoom;
+}
+
+void Map3DViewWidget::setVBO()
+{
+	if (m_OGLinitialized)
+	{
+		GLuint vboId = 0;
+		glGenBuffers(1, &vboId);
+		glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_vboData.size(), &m_vboData[0], GL_STATIC_DRAW);
+
+		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (GLvoid*)offsetof(Vertex, pos));
+	}
 }
 
 void Map3DViewWidget::_glSelect(int x, int y)

@@ -3,6 +3,7 @@
 
 #include <QtCore/QHash>
 #include <QtOpenGL/QGLWidget>
+#include <QtOpenGL/QGLFunctions>
 #include <GL/glu.h>
 
 #include <vector>
@@ -17,11 +18,8 @@ class Map;
 
 struct Vertex
 {
-	float x;
-	float y;
-	float z;
-	float u;
-	float v;
+	GLfloat pos[3];
+	GLfloat tex[2];
 };
 
 struct Entity
@@ -43,7 +41,7 @@ struct Entity
 	float rotation;
 };
 
-class Map3DViewWidget : public QGLWidget
+class Map3DViewWidget : public QGLWidget, protected QGLFunctions
 {
 	Q_OBJECT
 
@@ -59,6 +57,8 @@ public:
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 	int zoom();
+
+	void setVBO();
 
 public slots:
 	void setZoom(qreal zoom);
@@ -87,7 +87,6 @@ private:
 	int m_zoom;
 
 	std::vector<Entity> m_entities;
-//	std::vector<int> m_selected;
 
 	struct used_texture
 	{
@@ -96,6 +95,9 @@ private:
 		GLuint texid;
 	};
 	std::vector<used_texture> m_used_textures;
+
+	std::vector<Vertex> m_vboData;
+	bool m_OGLinitialized;
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
