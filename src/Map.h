@@ -38,7 +38,7 @@ enum FlipType
 	NoFlip = 0,
 	VerticalFlip = 1,
 	HorizontalFlip = 2,
-	FlipTypeDiagonal = VerticalFlip | HorizontalFlip
+	DiagonalFlip = VerticalFlip | HorizontalFlip
 };
 
 Q_DECLARE_FLAGS(FlipTypes, FlipType)
@@ -141,7 +141,7 @@ private:
 	bool m_modified;
 
 signals:
-	void changed();
+	void changed(QRect area);
 };
 
 }

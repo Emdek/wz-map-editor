@@ -40,10 +40,10 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	}
 
-	const QPoint pixmap = itemAt(event->pos())->data(0).toPoint();
-	const MapTile tile = m_map->tile(pixmap.x(), pixmap.y());
+	const QPoint item = itemAt(event->pos())->data(0).toPoint();
+	const MapTile tile = m_map->tile(item.x(), item.y());
 	QMenu menu;
-	menu.addAction(tr("Tile: %1 %2").arg(pixmap.x()).arg(pixmap.y()));
+	menu.addAction(tr("Tile: %1 %2").arg(item.x()).arg(item.y()));
 	menu.addAction(tr("Texture: %1").arg(tile.texture));
 	menu.addAction(tr("Rotation: %1").arg(tile.rotation));
 	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & HorizontalFlip)?'y':'n').arg((tile.flip & VerticalFlip)?'y':'n'));
@@ -86,6 +86,7 @@ void Map2DViewWidget::setMap(Map *data)
 	m_map = data;
 
 	const qreal tileSize = SettingManager::value("tileSize").toInt();
+	const qreal halfTileSize(tileSize / 2);
 
 	scene()->clear();
 	scene()->setSceneRect(0, 0, (m_map->size().width() * tileSize), (m_map->size().height() * tileSize));
@@ -94,21 +95,20 @@ void Map2DViewWidget::setMap(Map *data)
 	{
 		for (int j = 0; j < m_map->size().height(); ++j)
 		{
-			MapTile tile(m_map->tile(i, j));
-			QGraphicsPixmapItem *pixmap = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
-			pixmap->scale(((tile.flip & HorizontalFlip)?-1:1), ((tile.flip & VerticalFlip)?-1:1));
-			pixmap->setOffset(((tile.flip & HorizontalFlip)?-tileSize:0), ((tile.flip & VerticalFlip)?-tileSize:0));
-			pixmap->setTransformOriginPoint((tileSize / 2) + pixmap->offset().x(), (tileSize / 2) + pixmap->offset().y());
-			pixmap->setRotation(tile.rotation);
+			const MapTile tile(m_map->tile(i, j));
+			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
+			item->setOffset(-halfTileSize, -halfTileSize);
+			item->rotate(tile.rotation);
+			item->scale(((tile.flip & HorizontalFlip)?-1:1), ((tile.flip & VerticalFlip)?-1:1));
 
-			scene()->addItem(pixmap);
+			scene()->addItem(item);
 
-			pixmap->setData(0, QPoint(i, j));
-			pixmap->setPos((i * tileSize), ((m_map->size().height() - j -1) * tileSize));
+			item->setData(0, QPoint(i, j));
+			item->setPos((i * tileSize) + halfTileSize, ((m_map->size().height() - j -1) * tileSize) + halfTileSize);
 		}
 	}
 
-	connect(m_map, SIGNAL(changed()), this, SLOT(repaint()));
+	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));
 }
 
 Map* Map2DViewWidget::map()
