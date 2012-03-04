@@ -99,7 +99,7 @@ void Map3DViewWidget::paintGL()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	qDebug("Map3DViewWidget::paintGL(): redraw time: %d ms", t.elapsed());
+//	qDebug("Map3DViewWidget::paintGL(): redraw time: %d ms", t.elapsed());
 }
 
 void Map3DViewWidget::wheelEvent(QWheelEvent *event)
@@ -223,23 +223,23 @@ void Map3DViewWidget::setMap(Map *data)
 			int centerFactorY = (m_map->size().height() * 1.0) / 2;
 
 			MapTile tile(m_map->tile((i - 1), (j - 1)));
-
 			bool _old_tex = false;
 
-			for (unsigned int x = 0; x < m_used_textures.size(); x++)
+			for (unsigned int x = 0; x < m_used_textures.size(); ++x)
 			{
 				if (m_used_textures[x].tileset == m_map->tileset() && m_used_textures[x].tiletexture == tile.texture)
 				{
 					ent.texid = m_used_textures[x].texid;
 					_old_tex = true;
+
 					break;
 				}
-
 			}
 
 			if (_old_tex == false)
 			{
 				texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
+				qDebug() << "bindTexture" << i << j << texid << tile.texture;
 				used_texture t;
 				t.tileset     = m_map->tileset();
 				t.tiletexture = tile.texture;
