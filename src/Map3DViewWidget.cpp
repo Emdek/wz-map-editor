@@ -3,8 +3,10 @@
 #include "SettingManager.h"
 #include "Tileset.h"
 
+#include <QtCore/QTime>
 #include <QtGui/QMouseEvent>
-#include <QTime>
+
+#include <QDebug>
 
 #include <cstdio>
 #include <cmath>
@@ -147,14 +149,18 @@ void Map3DViewWidget::mouseMoveEvent(QMouseEvent *event)
 	{
 		m_rotationZ -= (m_currentx - event->pos().x());
 		m_rotationX -= (m_currenty - event->pos().y());
+
 		repaint();
 	}
+
 	if (m_moving == true)
 	{
 		m_offsetX -= (m_currentx - event->pos().x()) / (m_zoom / 1.65f);
 		m_offsetY += (m_currenty - event->pos().y()) / (m_zoom / 1.65f);
+
 		repaint();
 	}
+
 	m_currentx = event->pos().x();
 	m_currenty = event->pos().y();
 
@@ -179,6 +185,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 		emit zoomChanged(zoom);
 		emit cooridantesChanged(m_currentx, m_currenty, m_currentz);
+
 		repaint();
 	}
 }
@@ -186,6 +193,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 void Map3DViewWidget::setMap(Map *data)
 {
 	qDebug("Map3DWidget::setMap()");
+
 	m_map = data;
 
 	m_entities.clear();
@@ -217,6 +225,7 @@ void Map3DViewWidget::setMap(Map *data)
 			MapTile tile(m_map->tile((i - 1), (j - 1)));
 
 			bool _old_tex = false;
+
 			for (unsigned int x = 0; x < m_used_textures.size(); x++)
 			{
 				if (m_used_textures[x].tileset == m_map->tileset() && m_used_textures[x].tiletexture == tile.texture)
@@ -227,6 +236,7 @@ void Map3DViewWidget::setMap(Map *data)
 				}
 
 			}
+
 			if (_old_tex == false)
 			{
 				texid = bindTexture(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize), GL_TEXTURE_2D, GL_RGBA, QGLContext::LinearFilteringBindOption);
@@ -236,9 +246,10 @@ void Map3DViewWidget::setMap(Map *data)
 				t.texid       = texid;
 				m_used_textures.push_back(t);
 			}
+
 			if (texid == 0)
 			{
-				printf("error while loading texture %i %i\n", m_map->tileset(), tile.texture);
+				qDebug() << "error while loading texture" << m_map->tileset() << tile.texture;
 			}
 
 			float tile_left_top, tile_left_bottom, tile_right_top, tile_right_bottom;
@@ -299,7 +310,7 @@ void Map3DViewWidget::setMap(Map *data)
 
 	repaint();
 
-	connect(m_map, SIGNAL(changed()), this, SLOT(repaint()));
+	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));
 }
 
 Map* Map3DViewWidget::mapInformation()
@@ -366,13 +377,15 @@ void Map3DViewWidget::_glSelect(int x, int y)
 	hits = glRenderMode(GL_RENDER);
 
 	// select ALL things where mouse is
-	int i;
-	for (i = 0; i < hits; i++)
+	for (int i = 0; i < hits; i++)
 	{
-		int s = (GLubyte)buff[i * 4 + 3];
+		int s = (GLubyte)buff[(i * 4) + 3];
+
 		m_entities[s].hovered = true;
-		printf("[hit %i] %i:\t%i x %i\n", i, s, m_entities[s].x, m_entities[s].y);
+
+		qDebug() << QString("[hit %1] %2:\t%3 x %4").arg(i).arg(s).arg(m_entities[s].x).arg(m_entities[s].y);
 	}
+
 	//_listHits(hits,buff);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -380,8 +393,6 @@ void Map3DViewWidget::_glSelect(int x, int y)
 
 void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
 {
-	int i;
-
 	/*
 		For each hit in the buffer are allocated 4 bytes:
 		1. Number of hits selected (always one,
@@ -393,21 +404,17 @@ void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
 		4. Name of the hit (glLoadName)
 	*/
 
-	printf("%d hits:\n", hits);
+	qDebug() << QString("%1 hits:").arg(hits);
 
-	for (i = 0; i < hits; i++)
+	for (int i = 0; i < hits; i++)
 	{
-		printf(	"Number: %d\n"
-				"Min Z: %d\n"
-				"Max Z: %d\n"
-				"Name on stack: %d\n",
-				(GLubyte)names[i * 4],
-				(GLubyte)names[i * 4 + 1],
-				(GLubyte)names[i * 4 + 2],
-				(GLubyte)names[i * 4 + 3]
-				);
+		qDebug() << "Number:" << (GLubyte)names[i * 4];
+		qDebug() << "Min Z:" << (GLubyte)names[(i * 4) + 1];
+		qDebug() << "Max Z:" << (GLubyte)names[(i * 4) + 2];
+		qDebug() << "Name on stack:" << (GLubyte)names[(i * 4) + 3];
 	}
-	printf("\n");
+
+	qDebug() << "";
 }
 
 }
