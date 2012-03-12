@@ -1,0 +1,616 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		43B91826150D6A5300048554 /* Setup Prebuilt Components */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 43B91829150D6A7F00048554 /* Build configuration list for PBXAggregateTarget "Setup Prebuilt Components" */;
+			buildPhases = (
+				43B9182B150D6A8A00048554 /* MOC */,
+				43B91825150D6A5300048554 /* QT */,
+			);
+			dependencies = (
+			);
+			name = "Setup Prebuilt Components";
+			productName = "Setup Prebuilt Components";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		43B917B0150D66E800048554 /* resources.qrc in Sources */ = {isa = PBXBuildFile; fileRef = 43B917AF150D66E800048554 /* resources.qrc */; };
+		43B917C0150D67D800048554 /* InformationDockWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917B5150D67D800048554 /* InformationDockWidget.ui */; };
+		43B917C1150D67D800048554 /* MainWindow.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917B6150D67D800048554 /* MainWindow.ui */; };
+		43B917C2150D67D800048554 /* Map2DEditorWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917B7150D67D800048554 /* Map2DEditorWidget.ui */; };
+		43B917C3150D67D800048554 /* Map3DEditorWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917B8150D67D800048554 /* Map3DEditorWidget.ui */; };
+		43B917C4150D67D800048554 /* MapSettingsDialog.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917B9150D67D800048554 /* MapSettingsDialog.ui */; };
+		43B917C5150D67D800048554 /* ObjectsDockWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BA150D67D800048554 /* ObjectsDockWidget.ui */; };
+		43B917C6150D67D800048554 /* PreferencesDialog.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BB150D67D800048554 /* PreferencesDialog.ui */; };
+		43B917C7150D67D800048554 /* ShortcutEditorDialog.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BC150D67D800048554 /* ShortcutEditorDialog.ui */; };
+		43B917C8150D67D800048554 /* TerrainDockWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BD150D67D800048554 /* TerrainDockWidget.ui */; };
+		43B917C9150D67D800048554 /* TilesetDockWidget.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BE150D67D800048554 /* TilesetDockWidget.ui */; };
+		43B917CA150D67D800048554 /* ToolBarEditorDialog.ui in Sources */ = {isa = PBXBuildFile; fileRef = 43B917BF150D67D800048554 /* ToolBarEditorDialog.ui */; };
+		43B917EE150D681B00048554 /* ActionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917CB150D681B00048554 /* ActionManager.cpp */; };
+		43B917EF150D681B00048554 /* FileSystemCompleterModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917CD150D681B00048554 /* FileSystemCompleterModel.cpp */; };
+		43B917F0150D681B00048554 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917CF150D681B00048554 /* main.cpp */; };
+		43B917F1150D681B00048554 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D0150D681B00048554 /* MainWindow.cpp */; };
+		43B917F2150D681B00048554 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D2150D681B00048554 /* Map.cpp */; };
+		43B917F3150D681B00048554 /* Map2DViewWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D4150D681B00048554 /* Map2DViewWidget.cpp */; };
+		43B917F4150D681B00048554 /* Map3DViewWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D6150D681B00048554 /* Map3DViewWidget.cpp */; };
+		43B917F5150D681B00048554 /* MapParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D8150D681B00048554 /* MapParser.cpp */; };
+		43B917F6150D681B00048554 /* MapSettingsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DA150D681B00048554 /* MapSettingsManager.cpp */; };
+		43B917F7150D681B00048554 /* MapWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DC150D681B00048554 /* MapWriter.cpp */; };
+		43B917F8150D681B00048554 /* PreferencesManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DE150D681B00048554 /* PreferencesManager.cpp */; };
+		43B917F9150D681B00048554 /* SettingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E0150D681B00048554 /* SettingManager.cpp */; };
+		43B917FA150D681B00048554 /* ShortcutEditorDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E2150D681B00048554 /* ShortcutEditorDelegate.cpp */; };
+		43B917FB150D681B00048554 /* ShortcutEditorWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E4150D681B00048554 /* ShortcutEditorWidget.cpp */; };
+		43B917FC150D681B00048554 /* ShortcutManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E6150D681B00048554 /* ShortcutManager.cpp */; };
+		43B917FD150D681B00048554 /* Tileset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E8150D681B00048554 /* Tileset.cpp */; };
+		43B917FE150D681B00048554 /* ToolBarManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917EA150D681B00048554 /* ToolBarManager.cpp */; };
+		43B917FF150D681B00048554 /* ToolBarWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B917EC150D681B00048554 /* ToolBarWidget.cpp */; };
+		43B91800150D685B00048554 /* MapWriter.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DD150D681B00048554 /* MapWriter.h */; };
+		43B91801150D686000048554 /* PreferencesManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DF150D681B00048554 /* PreferencesManager.h */; };
+		43B91802150D686500048554 /* SettingManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E1150D681B00048554 /* SettingManager.h */; };
+		43B91803150D686900048554 /* ShortcutEditorDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E3150D681B00048554 /* ShortcutEditorDelegate.h */; };
+		43B91804150D686D00048554 /* ShortcutEditorWidget.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E5150D681B00048554 /* ShortcutEditorWidget.h */; };
+		43B91805150D687400048554 /* ShortcutManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E7150D681B00048554 /* ShortcutManager.h */; };
+		43B91806150D687700048554 /* Tileset.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917E9150D681B00048554 /* Tileset.h */; };
+		43B91807150D687D00048554 /* ToolBarManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917EB150D681B00048554 /* ToolBarManager.h */; };
+		43B91808150D688200048554 /* ToolBarWidget.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917ED150D681B00048554 /* ToolBarWidget.h */; };
+		43B91809150D688700048554 /* Map3DViewWidget.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D7150D681B00048554 /* Map3DViewWidget.h */; };
+		43B9180A150D688C00048554 /* MapParser.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D9150D681B00048554 /* MapParser.h */; };
+		43B9180B150D689100048554 /* MapSettingsManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917DB150D681B00048554 /* MapSettingsManager.h */; };
+		43B9180C150D689A00048554 /* Map2DViewWidget.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D5150D681B00048554 /* Map2DViewWidget.h */; };
+		43B9180D150D68A200048554 /* Map.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D3150D681B00048554 /* Map.h */; };
+		43B9180E150D68A600048554 /* MainWindow.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917D1150D681B00048554 /* MainWindow.h */; };
+		43B9180F150D68AB00048554 /* ActionManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 43B917CC150D681B00048554 /* ActionManager.h */; };
+		43B9184B150D6E0B00048554 /* QtCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91847150D6E0B00048554 /* QtCore.framework */; };
+		43B9184C150D6E0B00048554 /* QtGui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91848150D6E0B00048554 /* QtGui.framework */; };
+		43B9184D150D6E0B00048554 /* QtOpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91849150D6E0B00048554 /* QtOpenGL.framework */; };
+		43B9184E150D6E0B00048554 /* QtXml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B9184A150D6E0B00048554 /* QtXml.framework */; };
+		43B91D77150D6E5500048554 /* QtCore.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91847150D6E0B00048554 /* QtCore.framework */; };
+		43B91D78150D6E5500048554 /* QtGui.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91848150D6E0B00048554 /* QtGui.framework */; };
+		43B91D79150D6E5500048554 /* QtOpenGL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91849150D6E0B00048554 /* QtOpenGL.framework */; };
+		43B91D7A150D6E5500048554 /* QtXml.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 43B9184A150D6E0B00048554 /* QtXml.framework */; };
+		43B91D96150D723B00048554 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91D95150D723B00048554 /* OpenGL.framework */; };
+		43B91DAC150D747100048554 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B91811150D6A0C00048554 /* GLUT.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		43B91844150D6CA300048554 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.h";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.moc.cpp",
+			);
+			script = ". configs/rulescripts/h.sh";
+		};
+		43B91845150D6D2A00048554 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.ui";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/ui_${INPUT_FILE_BASE}.h",
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.ui.moc.cpp",
+			);
+			script = ". configs/rulescripts/ui.sh";
+		};
+		43B91846150D6DC000048554 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.qrc";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.rcc.cpp",
+			);
+			script = ". configs/rulescripts/qrc.sh";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		43B9182C150D6AD100048554 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43B91751150D605A00048554 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43B91826150D6A5300048554;
+			remoteInfo = "Setup Prebuilt Components";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43B91858150D6E2E00048554 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				43B91D77150D6E5500048554 /* QtCore.framework in Copy Frameworks */,
+				43B91D78150D6E5500048554 /* QtGui.framework in Copy Frameworks */,
+				43B91D79150D6E5500048554 /* QtOpenGL.framework in Copy Frameworks */,
+				43B91D7A150D6E5500048554 /* QtXml.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		43B91797150D658B00048554 /* WZMapEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WZMapEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43B917A8150D662100048554 /* Base-Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Base-Framework.xcconfig"; path = "configs/Base-Framework.xcconfig"; sourceTree = "<group>"; };
+		43B917A9150D662100048554 /* Project-All.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Project-All.xcconfig"; path = "configs/Project-All.xcconfig"; sourceTree = "<group>"; };
+		43B917AA150D662100048554 /* WZMapEditor-All.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "WZMapEditor-All.xcconfig"; path = "configs/WZMapEditor-All.xcconfig"; sourceTree = "<group>"; };
+		43B917AB150D662100048554 /* WZMapEditor-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "WZMapEditor-Debug.xcconfig"; path = "configs/WZMapEditor-Debug.xcconfig"; sourceTree = "<group>"; };
+		43B917AC150D662100048554 /* WZMapEditor-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "WZMapEditor-Release.xcconfig"; path = "configs/WZMapEditor-Release.xcconfig"; sourceTree = "<group>"; };
+		43B917AD150D663C00048554 /* GenericFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GenericFramework-Info.plist"; path = "Resources/GenericFramework-Info.plist"; sourceTree = "<group>"; };
+		43B917AE150D663C00048554 /* WZMapEditor-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "WZMapEditor-Info.plist"; path = "Resources/WZMapEditor-Info.plist"; sourceTree = "<group>"; };
+		43B917AF150D66E800048554 /* resources.qrc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = resources.qrc; path = src/resources/resources.qrc; sourceTree = "<group>"; };
+		43B917B5150D67D800048554 /* InformationDockWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = InformationDockWidget.ui; path = src/ui/InformationDockWidget.ui; sourceTree = "<group>"; };
+		43B917B6150D67D800048554 /* MainWindow.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = MainWindow.ui; path = src/ui/MainWindow.ui; sourceTree = "<group>"; };
+		43B917B7150D67D800048554 /* Map2DEditorWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Map2DEditorWidget.ui; path = src/ui/Map2DEditorWidget.ui; sourceTree = "<group>"; };
+		43B917B8150D67D800048554 /* Map3DEditorWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Map3DEditorWidget.ui; path = src/ui/Map3DEditorWidget.ui; sourceTree = "<group>"; };
+		43B917B9150D67D800048554 /* MapSettingsDialog.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = MapSettingsDialog.ui; path = src/ui/MapSettingsDialog.ui; sourceTree = "<group>"; };
+		43B917BA150D67D800048554 /* ObjectsDockWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ObjectsDockWidget.ui; path = src/ui/ObjectsDockWidget.ui; sourceTree = "<group>"; };
+		43B917BB150D67D800048554 /* PreferencesDialog.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PreferencesDialog.ui; path = src/ui/PreferencesDialog.ui; sourceTree = "<group>"; };
+		43B917BC150D67D800048554 /* ShortcutEditorDialog.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ShortcutEditorDialog.ui; path = src/ui/ShortcutEditorDialog.ui; sourceTree = "<group>"; };
+		43B917BD150D67D800048554 /* TerrainDockWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TerrainDockWidget.ui; path = src/ui/TerrainDockWidget.ui; sourceTree = "<group>"; };
+		43B917BE150D67D800048554 /* TilesetDockWidget.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TilesetDockWidget.ui; path = src/ui/TilesetDockWidget.ui; sourceTree = "<group>"; };
+		43B917BF150D67D800048554 /* ToolBarEditorDialog.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ToolBarEditorDialog.ui; path = src/ui/ToolBarEditorDialog.ui; sourceTree = "<group>"; };
+		43B917CB150D681B00048554 /* ActionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionManager.cpp; path = src/ActionManager.cpp; sourceTree = "<group>"; };
+		43B917CC150D681B00048554 /* ActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionManager.h; path = src/ActionManager.h; sourceTree = "<group>"; };
+		43B917CD150D681B00048554 /* FileSystemCompleterModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileSystemCompleterModel.cpp; path = src/FileSystemCompleterModel.cpp; sourceTree = "<group>"; };
+		43B917CE150D681B00048554 /* FileSystemCompleterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileSystemCompleterModel.h; path = src/FileSystemCompleterModel.h; sourceTree = "<group>"; };
+		43B917CF150D681B00048554 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		43B917D0150D681B00048554 /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainWindow.cpp; path = src/MainWindow.cpp; sourceTree = "<group>"; };
+		43B917D1150D681B00048554 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainWindow.h; path = src/MainWindow.h; sourceTree = "<group>"; };
+		43B917D2150D681B00048554 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = src/Map.cpp; sourceTree = "<group>"; };
+		43B917D3150D681B00048554 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map.h; path = src/Map.h; sourceTree = "<group>"; };
+		43B917D4150D681B00048554 /* Map2DViewWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map2DViewWidget.cpp; path = src/Map2DViewWidget.cpp; sourceTree = "<group>"; };
+		43B917D5150D681B00048554 /* Map2DViewWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map2DViewWidget.h; path = src/Map2DViewWidget.h; sourceTree = "<group>"; };
+		43B917D6150D681B00048554 /* Map3DViewWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map3DViewWidget.cpp; path = src/Map3DViewWidget.cpp; sourceTree = "<group>"; };
+		43B917D7150D681B00048554 /* Map3DViewWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map3DViewWidget.h; path = src/Map3DViewWidget.h; sourceTree = "<group>"; };
+		43B917D8150D681B00048554 /* MapParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapParser.cpp; path = src/MapParser.cpp; sourceTree = "<group>"; };
+		43B917D9150D681B00048554 /* MapParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapParser.h; path = src/MapParser.h; sourceTree = "<group>"; };
+		43B917DA150D681B00048554 /* MapSettingsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapSettingsManager.cpp; path = src/MapSettingsManager.cpp; sourceTree = "<group>"; };
+		43B917DB150D681B00048554 /* MapSettingsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapSettingsManager.h; path = src/MapSettingsManager.h; sourceTree = "<group>"; };
+		43B917DC150D681B00048554 /* MapWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapWriter.cpp; path = src/MapWriter.cpp; sourceTree = "<group>"; };
+		43B917DD150D681B00048554 /* MapWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapWriter.h; path = src/MapWriter.h; sourceTree = "<group>"; };
+		43B917DE150D681B00048554 /* PreferencesManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreferencesManager.cpp; path = src/PreferencesManager.cpp; sourceTree = "<group>"; };
+		43B917DF150D681B00048554 /* PreferencesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesManager.h; path = src/PreferencesManager.h; sourceTree = "<group>"; };
+		43B917E0150D681B00048554 /* SettingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SettingManager.cpp; path = src/SettingManager.cpp; sourceTree = "<group>"; };
+		43B917E1150D681B00048554 /* SettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingManager.h; path = src/SettingManager.h; sourceTree = "<group>"; };
+		43B917E2150D681B00048554 /* ShortcutEditorDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShortcutEditorDelegate.cpp; path = src/ShortcutEditorDelegate.cpp; sourceTree = "<group>"; };
+		43B917E3150D681B00048554 /* ShortcutEditorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShortcutEditorDelegate.h; path = src/ShortcutEditorDelegate.h; sourceTree = "<group>"; };
+		43B917E4150D681B00048554 /* ShortcutEditorWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShortcutEditorWidget.cpp; path = src/ShortcutEditorWidget.cpp; sourceTree = "<group>"; };
+		43B917E5150D681B00048554 /* ShortcutEditorWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShortcutEditorWidget.h; path = src/ShortcutEditorWidget.h; sourceTree = "<group>"; };
+		43B917E6150D681B00048554 /* ShortcutManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShortcutManager.cpp; path = src/ShortcutManager.cpp; sourceTree = "<group>"; };
+		43B917E7150D681B00048554 /* ShortcutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShortcutManager.h; path = src/ShortcutManager.h; sourceTree = "<group>"; };
+		43B917E8150D681B00048554 /* Tileset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tileset.cpp; path = src/Tileset.cpp; sourceTree = "<group>"; };
+		43B917E9150D681B00048554 /* Tileset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tileset.h; path = src/Tileset.h; sourceTree = "<group>"; };
+		43B917EA150D681B00048554 /* ToolBarManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToolBarManager.cpp; path = src/ToolBarManager.cpp; sourceTree = "<group>"; };
+		43B917EB150D681B00048554 /* ToolBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToolBarManager.h; path = src/ToolBarManager.h; sourceTree = "<group>"; };
+		43B917EC150D681B00048554 /* ToolBarWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToolBarWidget.cpp; path = src/ToolBarWidget.cpp; sourceTree = "<group>"; };
+		43B917ED150D681B00048554 /* ToolBarWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToolBarWidget.h; path = src/ToolBarWidget.h; sourceTree = "<group>"; };
+		43B91811150D6A0C00048554 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		43B91847150D6E0B00048554 /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = external/QT/QtCore.framework; sourceTree = "<group>"; };
+		43B91848150D6E0B00048554 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = external/QT/QtGui.framework; sourceTree = "<group>"; };
+		43B91849150D6E0B00048554 /* QtOpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtOpenGL.framework; path = external/QT/QtOpenGL.framework; sourceTree = "<group>"; };
+		43B9184A150D6E0B00048554 /* QtXml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtXml.framework; path = external/QT/QtXml.framework; sourceTree = "<group>"; };
+		43B91D94150D71C800048554 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
+		43B91D95150D723B00048554 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		43B91DA7150D739600048554 /* glu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glu.h; path = 3rdparty/GL/glu.h; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		43B91795150D658B00048554 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43B91D96150D723B00048554 /* OpenGL.framework in Frameworks */,
+				43B91DAC150D747100048554 /* GLUT.framework in Frameworks */,
+				43B9184B150D6E0B00048554 /* QtCore.framework in Frameworks */,
+				43B9184C150D6E0B00048554 /* QtGui.framework in Frameworks */,
+				43B9184D150D6E0B00048554 /* QtOpenGL.framework in Frameworks */,
+				43B9184E150D6E0B00048554 /* QtXml.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		43B9174F150D605A00048554 = {
+			isa = PBXGroup;
+			children = (
+				43B9179F150D65A800048554 /* WZMapEditor */,
+				43B917A7150D65E800048554 /* Resources */,
+				43B917A6150D65D400048554 /* Configs */,
+				43B91810150D68DB00048554 /* Third Party Libs */,
+				43B917A0150D65B300048554 /* System Libs */,
+				43B91798150D658B00048554 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		43B91798150D658B00048554 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43B91797150D658B00048554 /* WZMapEditor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		43B9179F150D65A800048554 /* WZMapEditor */ = {
+			isa = PBXGroup;
+			children = (
+				43B917B4150D67B600048554 /* src */,
+				43B917B3150D67AF00048554 /* ui */,
+			);
+			name = WZMapEditor;
+			sourceTree = "<group>";
+		};
+		43B917A0150D65B300048554 /* System Libs */ = {
+			isa = PBXGroup;
+			children = (
+				43B91811150D6A0C00048554 /* GLUT.framework */,
+				43B91D95150D723B00048554 /* OpenGL.framework */,
+			);
+			name = "System Libs";
+			sourceTree = "<group>";
+		};
+		43B917A6150D65D400048554 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				43B917A8150D662100048554 /* Base-Framework.xcconfig */,
+				43B917A9150D662100048554 /* Project-All.xcconfig */,
+				43B917AA150D662100048554 /* WZMapEditor-All.xcconfig */,
+				43B917AB150D662100048554 /* WZMapEditor-Debug.xcconfig */,
+				43B917AC150D662100048554 /* WZMapEditor-Release.xcconfig */,
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
+		43B917A7150D65E800048554 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				43B917AF150D66E800048554 /* resources.qrc */,
+				43B917AD150D663C00048554 /* GenericFramework-Info.plist */,
+				43B917AE150D663C00048554 /* WZMapEditor-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		43B917B3150D67AF00048554 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				43B917B5150D67D800048554 /* InformationDockWidget.ui */,
+				43B917B6150D67D800048554 /* MainWindow.ui */,
+				43B917B7150D67D800048554 /* Map2DEditorWidget.ui */,
+				43B917B8150D67D800048554 /* Map3DEditorWidget.ui */,
+				43B917B9150D67D800048554 /* MapSettingsDialog.ui */,
+				43B917BA150D67D800048554 /* ObjectsDockWidget.ui */,
+				43B917BB150D67D800048554 /* PreferencesDialog.ui */,
+				43B917BC150D67D800048554 /* ShortcutEditorDialog.ui */,
+				43B917BD150D67D800048554 /* TerrainDockWidget.ui */,
+				43B917BE150D67D800048554 /* TilesetDockWidget.ui */,
+				43B917BF150D67D800048554 /* ToolBarEditorDialog.ui */,
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
+		43B917B4150D67B600048554 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				43B917CB150D681B00048554 /* ActionManager.cpp */,
+				43B917CC150D681B00048554 /* ActionManager.h */,
+				43B917CD150D681B00048554 /* FileSystemCompleterModel.cpp */,
+				43B917CE150D681B00048554 /* FileSystemCompleterModel.h */,
+				43B917CF150D681B00048554 /* main.cpp */,
+				43B917D0150D681B00048554 /* MainWindow.cpp */,
+				43B917D1150D681B00048554 /* MainWindow.h */,
+				43B917D2150D681B00048554 /* Map.cpp */,
+				43B917D3150D681B00048554 /* Map.h */,
+				43B917D4150D681B00048554 /* Map2DViewWidget.cpp */,
+				43B917D5150D681B00048554 /* Map2DViewWidget.h */,
+				43B917D6150D681B00048554 /* Map3DViewWidget.cpp */,
+				43B917D7150D681B00048554 /* Map3DViewWidget.h */,
+				43B917D8150D681B00048554 /* MapParser.cpp */,
+				43B917D9150D681B00048554 /* MapParser.h */,
+				43B917DA150D681B00048554 /* MapSettingsManager.cpp */,
+				43B917DB150D681B00048554 /* MapSettingsManager.h */,
+				43B917DC150D681B00048554 /* MapWriter.cpp */,
+				43B917DD150D681B00048554 /* MapWriter.h */,
+				43B917DE150D681B00048554 /* PreferencesManager.cpp */,
+				43B917DF150D681B00048554 /* PreferencesManager.h */,
+				43B917E0150D681B00048554 /* SettingManager.cpp */,
+				43B917E1150D681B00048554 /* SettingManager.h */,
+				43B917E2150D681B00048554 /* ShortcutEditorDelegate.cpp */,
+				43B917E3150D681B00048554 /* ShortcutEditorDelegate.h */,
+				43B917E4150D681B00048554 /* ShortcutEditorWidget.cpp */,
+				43B917E5150D681B00048554 /* ShortcutEditorWidget.h */,
+				43B917E6150D681B00048554 /* ShortcutManager.cpp */,
+				43B917E7150D681B00048554 /* ShortcutManager.h */,
+				43B917E8150D681B00048554 /* Tileset.cpp */,
+				43B917E9150D681B00048554 /* Tileset.h */,
+				43B917EA150D681B00048554 /* ToolBarManager.cpp */,
+				43B917EB150D681B00048554 /* ToolBarManager.h */,
+				43B917EC150D681B00048554 /* ToolBarWidget.cpp */,
+				43B917ED150D681B00048554 /* ToolBarWidget.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		43B91810150D68DB00048554 /* Third Party Libs */ = {
+			isa = PBXGroup;
+			children = (
+				43B91D93150D71C800048554 /* GL */,
+				43B91824150D6A1C00048554 /* Qt */,
+			);
+			name = "Third Party Libs";
+			sourceTree = "<group>";
+		};
+		43B91824150D6A1C00048554 /* Qt */ = {
+			isa = PBXGroup;
+			children = (
+				43B91847150D6E0B00048554 /* QtCore.framework */,
+				43B91848150D6E0B00048554 /* QtGui.framework */,
+				43B91849150D6E0B00048554 /* QtOpenGL.framework */,
+				43B9184A150D6E0B00048554 /* QtXml.framework */,
+			);
+			name = Qt;
+			sourceTree = "<group>";
+		};
+		43B91D93150D71C800048554 /* GL */ = {
+			isa = PBXGroup;
+			children = (
+				43B91DA7150D739600048554 /* glu.h */,
+				43B91D94150D71C800048554 /* glext.h */,
+			);
+			name = GL;
+			path = src/GL;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		43B91796150D658B00048554 /* WZMapEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43B9179E150D658C00048554 /* Build configuration list for PBXNativeTarget "WZMapEditor" */;
+			buildPhases = (
+				43B91793150D658B00048554 /* Resources */,
+				43B91794150D658B00048554 /* Sources */,
+				43B91795150D658B00048554 /* Frameworks */,
+				43B91858150D6E2E00048554 /* Copy Frameworks */,
+			);
+			buildRules = (
+				43B91846150D6DC000048554 /* PBXBuildRule */,
+				43B91845150D6D2A00048554 /* PBXBuildRule */,
+				43B91844150D6CA300048554 /* PBXBuildRule */,
+			);
+			dependencies = (
+				43B9182D150D6AD100048554 /* PBXTargetDependency */,
+			);
+			name = WZMapEditor;
+			productName = WZMapEditor;
+			productReference = 43B91797150D658B00048554 /* WZMapEditor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		43B91751150D605A00048554 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				ORGANIZATIONNAME = net.wz2100.;
+			};
+			buildConfigurationList = 43B91754150D605A00048554 /* Build configuration list for PBXProject "WZMapEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 43B9174F150D605A00048554;
+			productRefGroup = 43B91798150D658B00048554 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				43B91796150D658B00048554 /* WZMapEditor */,
+				43B91826150D6A5300048554 /* Setup Prebuilt Components */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		43B91793150D658B00048554 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		43B91825150D6A5300048554 /* QT */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = QT;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ". configs/fetchscripts/SetupPrebuiltComponents-QT.sh";
+		};
+		43B9182B150D6A8A00048554 /* MOC */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = MOC;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=/sw/lib/qt4-mac/bin:/sw/lib/qt4-x11/bin:/opt/local/bin:${PATH}\necho \"Checking for moc...\"\nif ! type -aP moc; then\n    echo \"error: Fatal inability to properly moc the code. (Insure you have installed Qt or risk more mocing.)\" >&2\n    open ./README.BUILD.MAC.txt\n    exit 1\nelif [[ `moc -v 2>&1 | sed -e 's:.*Qt \\(4\\.6\\)\\..)$:\\1:'` < \"4.6\" ]]; then\n    echo \"error: Moc is not properly installed\" >&2\n    exit 1\nfi\nmoc -v\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		43B91794150D658B00048554 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43B9180F150D68AB00048554 /* ActionManager.h in Sources */,
+				43B9180E150D68A600048554 /* MainWindow.h in Sources */,
+				43B9180D150D68A200048554 /* Map.h in Sources */,
+				43B9180C150D689A00048554 /* Map2DViewWidget.h in Sources */,
+				43B9180B150D689100048554 /* MapSettingsManager.h in Sources */,
+				43B9180A150D688C00048554 /* MapParser.h in Sources */,
+				43B91809150D688700048554 /* Map3DViewWidget.h in Sources */,
+				43B91808150D688200048554 /* ToolBarWidget.h in Sources */,
+				43B91807150D687D00048554 /* ToolBarManager.h in Sources */,
+				43B91806150D687700048554 /* Tileset.h in Sources */,
+				43B91805150D687400048554 /* ShortcutManager.h in Sources */,
+				43B91804150D686D00048554 /* ShortcutEditorWidget.h in Sources */,
+				43B91803150D686900048554 /* ShortcutEditorDelegate.h in Sources */,
+				43B91802150D686500048554 /* SettingManager.h in Sources */,
+				43B91801150D686000048554 /* PreferencesManager.h in Sources */,
+				43B91800150D685B00048554 /* MapWriter.h in Sources */,
+				43B917C0150D67D800048554 /* InformationDockWidget.ui in Sources */,
+				43B917C1150D67D800048554 /* MainWindow.ui in Sources */,
+				43B917C2150D67D800048554 /* Map2DEditorWidget.ui in Sources */,
+				43B917C3150D67D800048554 /* Map3DEditorWidget.ui in Sources */,
+				43B917C4150D67D800048554 /* MapSettingsDialog.ui in Sources */,
+				43B917C5150D67D800048554 /* ObjectsDockWidget.ui in Sources */,
+				43B917C6150D67D800048554 /* PreferencesDialog.ui in Sources */,
+				43B917C7150D67D800048554 /* ShortcutEditorDialog.ui in Sources */,
+				43B917C8150D67D800048554 /* TerrainDockWidget.ui in Sources */,
+				43B917C9150D67D800048554 /* TilesetDockWidget.ui in Sources */,
+				43B917CA150D67D800048554 /* ToolBarEditorDialog.ui in Sources */,
+				43B917B0150D66E800048554 /* resources.qrc in Sources */,
+				43B917EE150D681B00048554 /* ActionManager.cpp in Sources */,
+				43B917EF150D681B00048554 /* FileSystemCompleterModel.cpp in Sources */,
+				43B917F0150D681B00048554 /* main.cpp in Sources */,
+				43B917F1150D681B00048554 /* MainWindow.cpp in Sources */,
+				43B917F2150D681B00048554 /* Map.cpp in Sources */,
+				43B917F3150D681B00048554 /* Map2DViewWidget.cpp in Sources */,
+				43B917F4150D681B00048554 /* Map3DViewWidget.cpp in Sources */,
+				43B917F5150D681B00048554 /* MapParser.cpp in Sources */,
+				43B917F6150D681B00048554 /* MapSettingsManager.cpp in Sources */,
+				43B917F7150D681B00048554 /* MapWriter.cpp in Sources */,
+				43B917F8150D681B00048554 /* PreferencesManager.cpp in Sources */,
+				43B917F9150D681B00048554 /* SettingManager.cpp in Sources */,
+				43B917FA150D681B00048554 /* ShortcutEditorDelegate.cpp in Sources */,
+				43B917FB150D681B00048554 /* ShortcutEditorWidget.cpp in Sources */,
+				43B917FC150D681B00048554 /* ShortcutManager.cpp in Sources */,
+				43B917FD150D681B00048554 /* Tileset.cpp in Sources */,
+				43B917FE150D681B00048554 /* ToolBarManager.cpp in Sources */,
+				43B917FF150D681B00048554 /* ToolBarWidget.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		43B9182D150D6AD100048554 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43B91826150D6A5300048554 /* Setup Prebuilt Components */;
+			targetProxy = 43B9182C150D6AD100048554 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		43B91752150D605A00048554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B917A9150D662100048554 /* Project-All.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		43B91753150D605A00048554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B917A9150D662100048554 /* Project-All.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		43B9179B150D658C00048554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B917AB150D662100048554 /* WZMapEditor-Debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		43B9179C150D658C00048554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B917AC150D662100048554 /* WZMapEditor-Release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		43B91827150D6A5400048554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Setup Prebuilt Components";
+			};
+			name = Debug;
+		};
+		43B91828150D6A5400048554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Setup Prebuilt Components";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		43B91754150D605A00048554 /* Build configuration list for PBXProject "WZMapEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43B91752150D605A00048554 /* Debug */,
+				43B91753150D605A00048554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43B9179E150D658C00048554 /* Build configuration list for PBXNativeTarget "WZMapEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43B9179B150D658C00048554 /* Debug */,
+				43B9179C150D658C00048554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43B91829150D6A7F00048554 /* Build configuration list for PBXAggregateTarget "Setup Prebuilt Components" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43B91827150D6A5400048554 /* Debug */,
+				43B91828150D6A5400048554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 43B91751150D605A00048554 /* Project object */;
+}
