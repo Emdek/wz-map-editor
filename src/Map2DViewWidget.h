@@ -25,6 +25,8 @@ public slots:
 
 protected:
 	void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 	void contextMenuEvent(QContextMenuEvent *event);
 
 private:

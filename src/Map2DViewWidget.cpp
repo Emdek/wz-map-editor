@@ -19,6 +19,16 @@ Map2DViewWidget::Map2DViewWidget(QWidget *parent) : QGraphicsView(parent),
 	setMouseTracking(true);
 }
 
+void Map2DViewWidget::mousePressEvent(QMouseEvent *event)
+{
+	QGraphicsView::mousePressEvent(event);
+}
+
+void Map2DViewWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	QGraphicsView::mouseReleaseEvent(event);
+}
+
 void Map2DViewWidget::wheelEvent(QWheelEvent *event)
 {
 	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
