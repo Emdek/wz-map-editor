@@ -11,32 +11,31 @@ class Map;
 
 class Map2DViewWidget : public QGraphicsView
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Map2DViewWidget(QWidget *parent = NULL);
+    Map2DViewWidget(QWidget *parent = NULL);
 
-	void setMap(Map *data);
-	Map* map();
-	int zoom();
+    void setMap(Map *data);
+    Map* map();
+    int zoom();
 
 public slots:
-	void setZoom(qreal zoom);
+    void setZoom(qreal zoom);
 
 protected:
-	void wheelEvent(QWheelEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void contextMenuEvent(QContextMenuEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
 
 private:
-	Map *m_map;
-	int m_zoom;
-	int m_tileSize;
+    Map *m_map;
+    int m_zoom;
 
 signals:
-	void cooridantesChanged(int x, int y, int z);
-	void zoomChanged(int zoom);
+    void cooridantesChanged(int x, int y, int z);
+    void zoomChanged(int zoom);
 };
 
 }
