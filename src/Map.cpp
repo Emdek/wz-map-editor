@@ -62,6 +62,11 @@ void Map::setType(quint32 type)
 	m_gameType = type;
 }
 
+void Map::setTile(MapTile &tile, int x, int y)
+{
+
+}
+
 void Map::setTileset(TilesetType tilesetType)
 {
 	m_tileset = tilesetType;

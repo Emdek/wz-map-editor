@@ -89,6 +89,7 @@ public:
 	void setScrollLimits(const QRect &limits);
 	void setTime(quint32 time);
 	void setType(quint32 type);
+	void setTile(MapTile &tile, int x, int y);
 	void setTileset(TilesetType tilesetType);
 	void setDroids(QList<MapEntity> droids);
 	void setStructures(QList<MapEntity> structures);
