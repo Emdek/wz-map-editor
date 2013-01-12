@@ -59,8 +59,4 @@ DISTFILES += WZMapEditor.xcodeproj \
 	configs \
 	README.BUILD.MAC.txt
 
-UI_DIR = src/ui
-MOC_DIR = src/moc
-OBJECTS_DIR = bin
-
 LIBS += -L/usr/local/lib -lGLU
