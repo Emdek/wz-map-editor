@@ -1,7 +1,6 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-05-03T15:23:43
 # -------------------------------------------------
-QT += opengl
 QT += xml
 TARGET = WZMapEditor
 CONFIG += console
@@ -58,5 +57,3 @@ DISTFILES += WZMapEditor.xcodeproj \
 	Resources \
 	configs \
 	README.BUILD.MAC.txt
-
-LIBS += -L/usr/local/lib -lGLU

@@ -1,12 +1,13 @@
 #ifndef MAP3DVIEWWIDGET_H
 #define MAP3DVIEWWIDGET_H
 
-#define GL_GLEXT_PROTOTYPES 1
+//#define GL_GLEXT_PROTOTYPES 1
 
 #include <QtCore/QHash>
-#include <QtOpenGL/QGLWidget>
-#include <GL/glu.h>
-#include "GL/glext.h"
+#include <QtGui/QWidget>
+//#include <QtOpenGL/QGLWidget>
+//#include <GL/glu.h>
+//#include "GL/glext.h"
 
 #include <vector>
 
@@ -20,8 +21,8 @@ class Map;
 
 struct Vertex
 {
-	GLfloat pos[3];
-	GLfloat tex[2];
+//	GLfloat pos[3];
+//	GLfloat tex[2];
 };
 
 struct Entity
@@ -38,12 +39,12 @@ struct Entity
 
 	std::vector<Vertex> vertex; // object verticles
 
-	GLuint texid;
+//	GLuint texid;
 	QPoint flip;
 	float rotation;
 };
 
-class Map3DViewWidget : public QGLWidget
+class Map3DViewWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -53,7 +54,7 @@ public:
 	void setMap(Map *data);
 
 	void _glSelect(int x, int y);
-	void _listHits(GLint hits, GLuint *names);
+//	void _listHits(GLint hits, GLuint *names);
 
 	Map* mapInformation();
 	QSize minimumSizeHint() const;
@@ -94,7 +95,7 @@ private:
 	{
 		TilesetType tileset;
 		int tiletexture;
-		GLuint texid;
+//		GLuint texid;
 	};
 	std::vector<used_texture> m_used_textures;
 

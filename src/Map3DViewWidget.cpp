@@ -8,13 +8,13 @@
 
 #include <QDebug>
 
-#include <cstdio>
-#include <cmath>
+//#include <cstdio>
+//#include <cmath>
 
 namespace WZMapEditor
 {
 
-Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QWidget(parent),
 	m_map(NULL),
 	m_moving(false),
 	m_rotating(false),
@@ -33,7 +33,7 @@ Map3DViewWidget::Map3DViewWidget(QWidget *parent) : QGLWidget(QGLFormat(QGL::Sam
 
 void Map3DViewWidget::initializeGL()
 {
-	m_OGLinitialized = true;
+/*	m_OGLinitialized = true;
 
 	qglClearColor(QColor(0, 0, 32, 0));
 
@@ -51,19 +51,19 @@ void Map3DViewWidget::initializeGL()
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 
-	setVBO();
+	setVBO();*/
 }
 
 void Map3DViewWidget::resizeGL(int width, int height)
 {
 	//	int size = qMin(width, height);
 	//	glViewport((width - size) / 2, (height - size) / 2, size, size);
-	glViewport(0, 0, width, height);
+/*	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (GLfloat)width / (GLfloat)height, 0.1, 1500.0);
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);*/
 }
 
 void Map3DViewWidget::paintGL()
@@ -73,7 +73,7 @@ void Map3DViewWidget::paintGL()
 		return;
 	}
 
-	QTime t;
+/*	QTime t;
 	t.start();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -97,7 +97,7 @@ void Map3DViewWidget::paintGL()
 	glDrawArrays(GL_TRIANGLES, 0, m_vboData.size());
 
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);*/
 
 //	qDebug("Map3DViewWidget::paintGL(): redraw time: %d ms", t.elapsed());
 }
@@ -123,6 +123,7 @@ void Map3DViewWidget::mousePressEvent(QMouseEvent *event)
 	{
 		event->ignore();
 	}
+
 	event->accept();
 }
 
@@ -140,6 +141,7 @@ void Map3DViewWidget::mouseReleaseEvent(QMouseEvent *event)
 	{
 		event->ignore();
 	}
+
 	event->accept();
 }
 
@@ -192,7 +194,7 @@ void Map3DViewWidget::setZoom(qreal zoom)
 
 void Map3DViewWidget::setMap(Map *data)
 {
-	qDebug("Map3DWidget::setMap()");
+/*	qDebug("Map3DWidget::setMap()");
 
 	m_map = data;
 
@@ -310,7 +312,7 @@ void Map3DViewWidget::setMap(Map *data)
 
 	repaint();
 
-	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));
+	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));*/
 }
 
 Map* Map3DViewWidget::mapInformation()
@@ -335,7 +337,7 @@ int Map3DViewWidget::zoom()
 
 void Map3DViewWidget::setVBO()
 {
-	if (m_OGLinitialized)
+/*	if (m_OGLinitialized)
 	{
 		GLuint vboId = 0;
 		glGenBuffers(1, &vboId);
@@ -344,12 +346,12 @@ void Map3DViewWidget::setVBO()
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_vboData.size(), &m_vboData[0], GL_STATIC_DRAW);
 
 		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (GLvoid*)offsetof(Vertex, pos));
-	}
+	}*/
 }
 
 void Map3DViewWidget::_glSelect(int x, int y)
 {
-	return;
+/*	return;
 	GLuint buff[64] = {0};
 	GLint hits, view[4];
 
@@ -388,12 +390,12 @@ void Map3DViewWidget::_glSelect(int x, int y)
 
 	//_listHits(hits,buff);
 
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);*/
 }
 
-void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
+/*void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
 {
-	/*
+
 		For each hit in the buffer are allocated 4 bytes:
 		1. Number of hits selected (always one,
 									beacuse when we draw each object
@@ -402,7 +404,7 @@ void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
 		2. Min Z
 		3. Max Z
 		4. Name of the hit (glLoadName)
-	*/
+
 
 	qDebug() << QString("%1 hits:").arg(hits);
 
@@ -415,6 +417,6 @@ void Map3DViewWidget::_listHits(GLint hits, GLuint *names)
 	}
 
 	qDebug() << "";
-}
+}*/
 
 }
