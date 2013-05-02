@@ -110,6 +110,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	mouseMode->addAction(m_mainWindowUi->actionMouseModeView);
 	mouseMode->addAction(m_mainWindowUi->actionMouseModeSelect);
 	mouseMode->addAction(m_mainWindowUi->actionMouseModeMove);
+	mouseMode->addAction(m_mainWindowUi->actionMouseModePaint);
 	mouseMode->setExclusive(true);
 
 	m_mainWindowUi->actionNew->setIcon(QIcon::fromTheme("document-new", QIcon(":/icons/document-new.png")));
@@ -130,6 +131,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->actionMouseModeView->setIcon(QIcon(":/icons/input-mouse.png"));
 	m_mainWindowUi->actionMouseModeSelect->setIcon(QIcon(":/icons/edit-select.png"));
 	m_mainWindowUi->actionMouseModeMove->setIcon(QIcon(":/icons/transform-move.png"));;
+	m_mainWindowUi->actionMouseModePaint->setIcon(QIcon(":/icons/tool-pencil.png"));;
 	m_mainWindowUi->actionShortcutsConfiguration->setIcon(QIcon::fromTheme("configure-shortcuts", QIcon(":/icons/configure-shortcuts.png")));
 	m_mainWindowUi->actionToolbarsConfiguration->setIcon(QIcon::fromTheme("configure-toolbars", QIcon(":/icons/configure-toolbars.png")));
 	m_mainWindowUi->actionApplicationConfiguration->setIcon(QIcon::fromTheme("configure", QIcon(":/icons/configure.png")));
@@ -168,6 +170,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionMouseModeView);
 	ActionManager::registerAction(m_mainWindowUi->actionMouseModeSelect);
 	ActionManager::registerAction(m_mainWindowUi->actionMouseModeMove);
+	ActionManager::registerAction(m_mainWindowUi->actionMouseModePaint);
 	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
 	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
