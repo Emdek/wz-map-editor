@@ -96,6 +96,7 @@ void Map2DViewWidget::setMap(Map *data)
 
 	const qreal tileSize = SettingManager::value("tileSize").toInt();
 	const qreal halfTileSize(tileSize / 2);
+	const qreal ellipseSize(tileSize / 5);
 
 	scene()->clear();
 	scene()->setSceneRect(0, 0, (m_map->size().width() * tileSize), (m_map->size().height() * tileSize));
@@ -113,7 +114,22 @@ void Map2DViewWidget::setMap(Map *data)
 			scene()->addItem(item);
 
 			item->setData(0, QPoint(i, j));
-			item->setPos(((i * tileSize) + halfTileSize), ((m_map->size().height() - j -1) * tileSize) + halfTileSize);
+			item->setPos(((i * tileSize) + halfTileSize), ((m_map->size().height() - j - 1) * tileSize) + halfTileSize);
+		}
+	}
+
+	for (int i = 0; i < m_map->size().width(); ++i)
+	{
+		for (int j = 0; j < m_map->size().height(); ++j)
+		{
+			const int ellipseColor = m_map->tile(i, j).height;
+
+			scene()->addEllipse(
+				i * tileSize - ellipseSize / 2, (m_map->size().height() - j - 1) * tileSize - ellipseSize / 2,
+				ellipseSize, ellipseSize,
+				QPen(QColor(ellipseColor, ellipseColor, ellipseColor)),
+				QBrush(QColor(ellipseColor, ellipseColor, ellipseColor))
+			);
 		}
 	}
 
