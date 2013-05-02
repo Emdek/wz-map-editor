@@ -89,6 +89,7 @@
      <addaction name="actionMouseModeView"/>
      <addaction name="actionMouseModeSelect"/>
      <addaction name="actionMouseModeMove"/>
+     <addaction name="actionMouseModePaint"/>
     </widget>
     <addaction name="menuMouseMode"/>
    </widget>
@@ -403,6 +404,14 @@
    </property>
    <property name="text">
     <string>Move</string>
+   </property>
+  </action>
+  <action name="actionMouseModePaint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Paint</string>
    </property>
   </action>
   <action name="actionZoomIn">
