@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-05-03T15:23:43
 # -------------------------------------------------
-QT += xml
+QT += gui widgets xml
 TARGET = WZMapEditor
 CONFIG += console
 CONFIG -= app_bundle

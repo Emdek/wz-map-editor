@@ -7,7 +7,6 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QPixmapCache>
 
-
 namespace WZMapEditor
 {
 
@@ -80,7 +79,7 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 			tile.id = attributes.value("id").toString().toInt();
 			tile.category = attributes.value("category").toString().toInt();
 			tile.tileset = m_type;
-			tile.background = (attributes.hasAttribute("background")?attributes.value("background").toString().toInt():m_categories.at(tile.category).background);
+			tile.background = (attributes.hasAttribute("background") ? attributes.value("background").toString().toInt() : m_categories.at(tile.category).background);
 
 			if (reader.name().toString() == "tile")
 			{
@@ -88,7 +87,7 @@ Tileset::Tileset(const QString &fileName, QObject *parent) : QObject(parent)
 				tile.transitionNorthEast = tile.category;
 				tile.transitionSouthEast = tile.category;
 				tile.transitionSouthWest = tile.category;
-				tile.type = (attributes.hasAttribute("type")?stringToType(attributes.value("type").toString()):m_categories.at(tile.category).type);
+				tile.type = (attributes.hasAttribute("type") ? stringToType(attributes.value("type").toString()) : m_categories.at(tile.category).type);
 			}
 			else
 			{
@@ -156,7 +155,7 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 		.arg(static_cast<int>(tile.tileset))
 		.arg(size)
 		.arg(QDir::separator())
-		.arg((tile.id < 10)?QString('0'):QString())
+		.arg((tile.id < 10) ? QString('0') : QString())
 		.arg(tile.id);
 
 	if (tile.valid && QFile::exists(fileName))

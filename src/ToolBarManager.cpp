@@ -5,9 +5,9 @@
 
 #include "ui_ToolBarEditorDialog.h"
 
-#include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QApplication>
 
 namespace WZMapEditor
 {

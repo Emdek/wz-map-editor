@@ -4,7 +4,7 @@
 //#define GL_GLEXT_PROTOTYPES 1
 
 #include <QtCore/QHash>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 //#include <QtOpenGL/QGLWidget>
 //#include <GL/glu.h>
 //#include "GL/glext.h"
@@ -109,4 +109,4 @@ signals:
 
 }
 
-#endif // MAP3DVIEWWIDGET_H
+#endif

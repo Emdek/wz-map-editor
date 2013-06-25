@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 class QPixmap;
 
 namespace WZMapEditor
@@ -89,4 +88,4 @@ private:
 
 }
 
-#endif // TILESET_H
+#endif

@@ -1,9 +1,9 @@
 #ifndef TOOLBARWIDGET_H
 #define TOOLBARWIDGET_H
 
-#include <QtGui/QToolBar>
-#include <QtGui/QMainWindow>
 #include <QtGui/QContextMenuEvent>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QMainWindow>
 
 namespace WZMapEditor
 {
@@ -29,4 +29,4 @@ signals:
 
 }
 
-#endif // TOOLBARWIDGET_H
+#endif

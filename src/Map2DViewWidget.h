@@ -1,8 +1,7 @@
 #ifndef MAP2DVIEWWIDGET_H
 #define MAP2DVIEWWIDGET_H
 
-#include <QtGui/QGraphicsView>
-
+#include <QtWidgets/QGraphicsView>
 
 namespace WZMapEditor
 {
@@ -40,4 +39,4 @@ signals:
 
 }
 
-#endif // MAP2DVIEWWIDGET_H
+#endif

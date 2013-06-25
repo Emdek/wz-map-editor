@@ -3,10 +3,10 @@
 
 #include "Tileset.h"
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QDockWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QSlider>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QSlider>
 
 
 namespace Ui

@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 namespace WZMapEditor
 {
 
@@ -18,4 +17,4 @@ public:
 
 }
 
-#endif // MAPWRITER_H
+#endif

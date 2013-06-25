@@ -3,10 +3,9 @@
 #include "Tileset.h"
 #include "SettingManager.h"
 
-#include <QtGui/QGraphicsPixmapItem>
-#include <QtGui/QMenu>
 #include <QtGui/QWheelEvent>
-
+#include <QtWidgets/QGraphicsPixmapItem>
+#include <QtWidgets/QMenu>
 
 namespace WZMapEditor
 {
@@ -55,7 +54,7 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 	menu.addAction(tr("Tile: %1 %2").arg(item.x()).arg(item.y()));
 	menu.addAction(tr("Texture: %1").arg(tile.texture));
 	menu.addAction(tr("Rotation: %1").arg(tile.rotation));
-	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & HorizontalFlip)?'y':'n').arg((tile.flip & VerticalFlip)?'y':'n'));
+	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & HorizontalFlip) ? 'y' : 'n').arg((tile.flip & VerticalFlip) ? 'y' : 'n'));
 
 	menu.exec(event->globalPos());
 }
@@ -105,10 +104,13 @@ void Map2DViewWidget::setMap(Map *data)
 		for (int j = 0; j < m_map->size().height(); ++j)
 		{
 			const MapTile tile(m_map->tile(i, j));
+			QTransform transform;
+			transform.rotate(tile.rotation);
+			transform.scale(((tile.flip & HorizontalFlip) ? -1 : 1), ((tile.flip & VerticalFlip) ? -1 : 1));
+
 			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
 			item->setOffset(-halfTileSize, -halfTileSize);
-			item->rotate(tile.rotation);
-			item->scale(((tile.flip & HorizontalFlip)?-1:1), ((tile.flip & VerticalFlip)?-1:1));
+			item->setTransform(transform);
 
 			scene()->addItem(item);
 

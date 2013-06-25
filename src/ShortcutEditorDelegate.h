@@ -1,7 +1,7 @@
 #ifndef SHORTCUTEDITORDELEGATE_H
 #define SHORTCUTEDITORDELEGATE_H
 
-#include <QtGui/QItemDelegate>
+#include <QtWidgets/QItemDelegate>
 
 namespace WZMapEditor
 {
@@ -30,4 +30,4 @@ private:
 
 }
 
-#endif // SHORTCUTEDITORDELEGATE_H
+#endif

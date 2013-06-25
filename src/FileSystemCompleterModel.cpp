@@ -1,6 +1,5 @@
 #include "FileSystemCompleterModel.h"
 
-
 namespace WZMapEditor
 {
 

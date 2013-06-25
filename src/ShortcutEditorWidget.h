@@ -1,10 +1,10 @@
 #ifndef SHORTCUTEDITORWIDGET_H
 #define SHORTCUTEDITORWIDGET_H
 
-#include <QtGui/QWidget>
-#include <QtGui/QLineEdit>
-#include <QtGui/QToolButton>
 #include <QtGui/QKeySequence>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QToolButton>
 
 namespace WZMapEditor
 {
@@ -40,4 +40,4 @@ signals:
 
 }
 
-#endif // SHORTCUTEDITORWIDGET_H
+#endif

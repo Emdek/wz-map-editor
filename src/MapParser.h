@@ -5,7 +5,6 @@
 
 #include <QtCore/QObject>
 
-
 namespace WZMapEditor
 {
 
@@ -35,4 +34,4 @@ private:
 
 }
 
-#endif // MAPPARSER_H
+#endif

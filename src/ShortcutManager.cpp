@@ -5,9 +5,9 @@
 
 #include "ui_ShortcutEditorDialog.h"
 
-#include <QtGui/QMessageBox>
-#include <QtGui/QApplication>
-#include <QtGui/QTableWidgetItem>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QTableWidgetItem>
 
 namespace WZMapEditor
 {

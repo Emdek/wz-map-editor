@@ -1,8 +1,7 @@
 #include "MainWindow.h"
 
 #include <QtCore/QFileInfo>
-#include <QtGui/QApplication>
-
+#include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {

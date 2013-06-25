@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 class QAbstractButton;
 
 namespace Ui
@@ -49,4 +48,4 @@ signals:
 
 }
 
-#endif // TOOLBARMANAGER_H
+#endif

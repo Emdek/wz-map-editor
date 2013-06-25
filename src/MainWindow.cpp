@@ -15,13 +15,12 @@
 #include "ui_TerrainDockWidget.h"
 #include "ui_InformationDockWidget.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QToolButton>
-#include <QtGui/QDesktopServices>
+#include <QtCore/QStandardPaths>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QToolButton>
 
 #define ApplicationName "Warzone 2100 Map Editor"
-
 
 namespace WZMapEditor
 {
@@ -276,7 +275,7 @@ void MainWindow::actionNew()
 
 void MainWindow::actionOpen()
 {
-	openFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QDesktopServices::storageLocation(QDesktopServices::HomeLocation)).toString()).toString(), tr("All Compatible (*.gam)")));
+	openFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first()).toString()).toString(), tr("All Compatible (*.gam)")));
 }
 
 void MainWindow::actionOpenRecent(QAction *action)
@@ -369,7 +368,7 @@ void MainWindow::actionApplicationConfiguration()
 
 void MainWindow::actionAboutApplication()
 {
-	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>%1 %2</b><br />Map viewer and editor for Warzone 2100.").arg(ApplicationName).arg(QApplication::applicationVersion())));
+	QMessageBox::about(this, tr("About Warzone 2100 Map Editor"), QString(tr("<b>%1 %2</b><br>Map viewer and editor for Warzone 2100.").arg(ApplicationName).arg(QApplication::applicationVersion())));
 }
 
 void MainWindow::actionLockToolBars(bool lock)

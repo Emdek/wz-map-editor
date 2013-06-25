@@ -1,6 +1,5 @@
 #include "Map.h"
 
-
 namespace WZMapEditor
 {
 

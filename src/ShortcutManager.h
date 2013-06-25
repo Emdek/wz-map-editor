@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 class QAbstractButton;
 class QKeySequence;
 
@@ -40,4 +39,4 @@ private:
 
 }
 
-#endif // SHORTCUTMANAGER_H
+#endif

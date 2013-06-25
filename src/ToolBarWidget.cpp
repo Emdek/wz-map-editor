@@ -2,7 +2,7 @@
 #include "ActionManager.h"
 #include "SettingManager.h"
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 namespace WZMapEditor
 {

@@ -3,7 +3,6 @@
 #include <QtCore/QSettings>
 #include <QtGui/QKeySequence>
 
-
 namespace WZMapEditor
 {
 

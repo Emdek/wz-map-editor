@@ -14,7 +14,6 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QFileInfo>
 
-
 namespace WZMapEditor
 {
 
@@ -147,4 +146,4 @@ signals:
 
 }
 
-#endif // MAPINFORMATION_H
+#endif

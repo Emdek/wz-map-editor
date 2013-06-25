@@ -4,12 +4,11 @@
 
 #include "ui_PreferencesDialog.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QCompleter>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCompleter>
+#include <QtWidgets/QFileDialog>
 
 #include <math.h>
-
 
 namespace WZMapEditor
 {

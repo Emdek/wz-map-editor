@@ -1,7 +1,7 @@
 #include "ShortcutEditorWidget.h"
 
 #include <QtGui/QKeyEvent>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 
 namespace WZMapEditor
 {

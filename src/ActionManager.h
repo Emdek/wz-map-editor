@@ -2,7 +2,7 @@
 #define ACTIONMANAGER_H
 
 #include <QtCore/QObject>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 namespace WZMapEditor
 {

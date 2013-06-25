@@ -1,8 +1,7 @@
 #ifndef FILESYSTEMCOMPLETERMODEL_H
 #define FILESYSTEMCOMPLETERMODEL_H
 
-#include <QtGui/QDirModel>
-
+#include <QtWidgets/QDirModel>
 
 namespace WZMapEditor
 {
@@ -17,4 +16,4 @@ public:
 
 }
 
-#endif // FILESYSTEMCOMPLETERMODEL_H
+#endif

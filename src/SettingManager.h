@@ -35,4 +35,4 @@ private:
 
 }
 
-#endif // SETTINGMANAGER_H
+#endif

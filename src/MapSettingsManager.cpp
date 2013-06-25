@@ -5,8 +5,7 @@
 #include "ui_MapSettingsDialog.h"
 
 #include <QtCore/QTime>
-#include <QtGui/QMessageBox>
-
+#include <QtWidgets/QMessageBox>
 
 namespace WZMapEditor
 {

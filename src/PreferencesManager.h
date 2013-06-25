@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 class QAbstractButton;
 
 namespace Ui
@@ -33,4 +32,4 @@ private:
 
 }
 
-#endif // PREFERENCESMANAGER_H
+#endif

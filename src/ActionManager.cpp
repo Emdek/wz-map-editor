@@ -1,7 +1,6 @@
 #include "ActionManager.h"
 #include "SettingManager.h"
 
-
 namespace WZMapEditor
 {
 

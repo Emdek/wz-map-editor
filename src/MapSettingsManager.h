@@ -3,7 +3,6 @@
 
 #include <QtCore/QObject>
 
-
 namespace Ui
 {
 	class MapSettingsDialog;
@@ -34,4 +33,4 @@ private:
 
 }
 
-#endif // MAPSETTINGSMANAGER_H
+#endif
