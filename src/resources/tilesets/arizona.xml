@@ -54,9 +54,9 @@
 		<tile category="10" background="3" id="68" />
 		<tile category="10" background="3" id="69" />
 		<tile category="10" background="3" id="70" />
-		<tile category="11" id="18" />
-		<tile category="11" id="46" />
-		<tile category="11" id="71" />
+		<tile category="11" background="3" id="18" />
+		<tile category="11" background="3" id="46" />
+		<tile category="11" background="3" id="71" />
 		<tile category="12" background="3" ignore="true" id="60" />
 		<tile category="12" background="3" ignore="true" id="61" />
 	</tiles>
@@ -92,9 +92,9 @@
 		<transition northWest="5" northEast="5" southEast="7" southWest="7" background="7" id="31" />
 		<transition northWest="5" northEast="7" southEast="5" southWest="5" background="7" id="32" />
 		<transition northWest="7" northEast="7" southEast="7" southWest="5" background="7" id="33" />
-		<transition northWest="11" northEast="3" southEast="3" southWest="11" id="45" />
-		<transition northWest="3" northEast="11" southEast="11" southWest="3" hidden="true" id="45" />
-		<transition northWest="11" northEast="3" southEast="3" southWest="3" id="75" />
-		<transition northWest="3" northEast="11" southEast="11" southWest="11" hidden="true" id="75" />
+		<transition northWest="11" northEast="3" southEast="3" southWest="11" background="3" id="45" />
+		<transition northWest="3" northEast="11" southEast="11" southWest="3" background="3" hidden="true" id="45" />
+		<transition northWest="11" northEast="3" southEast="3" southWest="3" background="3" id="75" />
+		<transition northWest="3" northEast="11" southEast="11" southWest="11" background="3" hidden="true" id="75" />
 	</transitions>
 </tileset>
