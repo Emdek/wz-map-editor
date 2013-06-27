@@ -124,14 +124,13 @@ void Map2DViewWidget::setMap(Map *data)
 	{
 		for (int j = 0; j < m_map->size().height(); ++j)
 		{
-			const int ellipseColor = m_map->tile(i, j).height;
+			const int height = m_map->tile(i, j).height;
+			QGraphicsEllipseItem *ellipse = new QGraphicsEllipseItem(((i * tileSize) - (ellipseSize / 2)), (((m_map->size().height() - j - 1) * tileSize) - ellipseSize / 2), ellipseSize, ellipseSize);
+			ellipse->setBrush(QColor(height, height, height));
+			ellipse->setPen(QColor(height, height, height));
+			ellipse->setToolTip(tr("Height: %1").arg(height));
 
-			scene()->addEllipse(
-				i * tileSize - ellipseSize / 2, (m_map->size().height() - j - 1) * tileSize - ellipseSize / 2,
-				ellipseSize, ellipseSize,
-				QPen(QColor(ellipseColor, ellipseColor, ellipseColor)),
-				QBrush(QColor(ellipseColor, ellipseColor, ellipseColor))
-			);
+			scene()->addItem(ellipse);
 		}
 	}
 
