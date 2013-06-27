@@ -43,8 +43,8 @@
 		<tile category="9" background="1" id="65" />
 		<tile category="9" background="1" id="66" />
 		<tile category="9" id="67" />
-		<tile category="10" id="69" />
-		<tile category="10" id="70" />
+		<tile category="10" background="2" id="69" />
+		<tile category="10" background="2" id="70" />
 		<tile category="11" id="54" />
 		<tile category="11" background="1" id="1" />
 		<tile category="11" background="1" id="2" />
@@ -94,7 +94,7 @@
 		<transition northWest="2" northEast="2" southEast="7" southWest="7" background="7" id="24" />
 		<transition northWest="2" northEast="7" southEast="7" southWest="7" background="7" id="25" />
 		<transition northWest="2" northEast="2" southEast="7" southWest="2" background="7" id="26" />
-		<transition northWest="2" northEast="10" southEast="2" southWest="2" id="68" />
-		<transition northWest="10" northEast="2" southEast="10" southWest="10" hidden="true" id="68" />
+		<transition northWest="2" northEast="10" southEast="2" southWest="2" background="2" id="68" />
+		<transition northWest="10" northEast="2" southEast="10" southWest="10" background="2" hidden="true" id="68" />
 	</transitions>
 </tileset>
