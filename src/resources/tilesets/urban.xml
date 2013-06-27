@@ -69,7 +69,7 @@
 		<transition northWest="3" northEast="3" southEast="3" southWest="4" background="3" id="11" />
 		<transition northWest="4" northEast="3" southEast="3" southWest="4" background="3" id="12" />
 		<transition northWest="3" northEast="2" southEast="2" southWest="3" id="27" />
-		<transition northWest="2" northEast="3" southEast="2" southWest="2" id="29" />
+		<transition northWest="2" northEast="3" southEast="2" southWest="2" background="1" id="29" />
 		<transition northWest="3" northEast="3" southEast="3" southWest="2" id="30" />
 		<transition northWest="5" northEast="1" southEast="1" southWest="5" id="33" />
 		<transition northWest="5" northEast="5" southEast="1" southWest="5" id="34" />
