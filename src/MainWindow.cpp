@@ -463,7 +463,7 @@ void MainWindow::updateTilesetView()
 
 	m_tilesetUi->listWidget->clear();
 
-	QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
+	const QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
 
 	for (int i = 0; i < tiles.count(); ++i)
 	{
@@ -503,7 +503,7 @@ void MainWindow::updateZoom(int zoom)
 
 bool MainWindow::openFile(const QString &fileName)
 {
-	QFileInfo fileInfo(fileName);
+	const QFileInfo fileInfo(fileName);
 
 	if (fileInfo.exists())
 	{
