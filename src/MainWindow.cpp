@@ -443,33 +443,23 @@ void MainWindow::updateRecentFilesMenu()
 
 void MainWindow::updateTilesetView()
 {
-	Tileset *tileset = Tileset::tileset(ArizonaTileset);
+	Tileset *tileset = Tileset::tileset(m_map ? m_map->tileset() : ArizonaTileset);
 
-	if (m_map && m_map->tileset() != NoTileset)
-	{
-		tileset = Tileset::tileset(m_map->tileset());
-	}
-
-	if (m_currentTileset == tileset->type())
-	{
-		return;
-	}
-
-	if (Tileset::cachedTileset() != tileset->type())
+	if (m_currentTileset != tileset->type())
 	{
 		Tileset::createCache(tileset->type(), SettingManager::value("tileSize").toInt());
+
+		m_currentTileset = tileset->type();
+
+		disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+		disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+
+		m_tilesetUi->tileCategoryComboBox->clear();
+		m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
+
+		connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
+		connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 	}
-
-	m_currentTileset = tileset->type();
-
-	disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-	disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-
-	m_tilesetUi->tileCategoryComboBox->clear();
-	m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
-
-	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
-	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 
 	m_tilesetUi->listWidget->clear();
 
