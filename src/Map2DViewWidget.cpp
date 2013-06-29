@@ -112,6 +112,7 @@ void Map2DViewWidget::setMap(Map *data)
 			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
 			item->setOffset(-halfTileSize, -halfTileSize);
 			item->setTransform(transform);
+			item->setToolTip(tr("Texture: %1").arg(tile.texture));
 
 			scene()->addItem(item);
 
