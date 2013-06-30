@@ -48,10 +48,16 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	}
 
-	const QPoint item = itemAt(event->pos())->data(0).toPoint();
-	const MapTile tile = m_map->tile(item.x(), item.y());
+	const QPoint coordinates = itemAt(event->pos())->data(0).toPoint();
+
+	if (coordinates.isNull())
+	{
+		return;
+	}
+
+	const MapTile tile = m_map->tile(coordinates.x(), coordinates.y());
 	QMenu menu;
-	menu.addAction(tr("Tile: %1 %2").arg(item.x()).arg(item.y()));
+	menu.addAction(tr("Tile: %1 %2").arg(coordinates.x()).arg(coordinates.y()));
 	menu.addAction(tr("Texture: %1").arg(tile.texture));
 	menu.addAction(tr("Rotation: %1").arg(tile.rotation));
 	menu.addAction(tr("Flip: %1 %2").arg((tile.flip & HorizontalFlip) ? 'y' : 'n').arg((tile.flip & VerticalFlip) ? 'y' : 'n'));
