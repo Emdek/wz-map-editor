@@ -1,12 +1,12 @@
 #include "ShortcutEditorDelegate.h"
 #include "ActionsManager.h"
-#include "ShortcutManager.h"
+#include "ShortcutsManager.h"
 #include "ShortcutEditorWidget.h"
 
 namespace WZMapEditor
 {
 
-ShortcutEditorDelegate::ShortcutEditorDelegate(ShortcutManager *parent) : QItemDelegate(parent),
+ShortcutEditorDelegate::ShortcutEditorDelegate(ShortcutsManager *parent) : QItemDelegate(parent),
 	m_manager(parent),
 	m_currentIndex(-1)
 {

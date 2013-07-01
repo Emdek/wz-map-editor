@@ -6,14 +6,14 @@
 namespace WZMapEditor
 {
 
-class ShortcutManager;
+class ShortcutsManager;
 
 class ShortcutEditorDelegate : public QItemDelegate
 {
 	Q_OBJECT
 
 public:
-	ShortcutEditorDelegate(ShortcutManager *parent = NULL);
+	ShortcutEditorDelegate(ShortcutsManager *parent = NULL);
 
 	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -24,7 +24,7 @@ public slots:
 	void restore();
 
 private:
-	ShortcutManager *m_manager;
+	ShortcutsManager *m_manager;
 	int m_currentIndex;
 };
 

@@ -1,5 +1,5 @@
-#ifndef SHORTCUTMANAGER_H
-#define SHORTCUTMANAGER_H
+#ifndef SHORTCUTSMANAGER_H
+#define SHORTCUTSMANAGER_H
 
 #include <QtCore/QObject>
 
@@ -16,13 +16,13 @@ namespace WZMapEditor
 
 class MainWindow;
 
-class ShortcutManager : public QObject
+class ShortcutsManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	ShortcutManager(MainWindow *parent = NULL);
-	~ShortcutManager();
+	ShortcutsManager(MainWindow *parent = NULL);
+	~ShortcutsManager();
 
 	bool checkShortcut(const QKeySequence &shortcut, int index);
 

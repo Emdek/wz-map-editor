@@ -1,4 +1,4 @@
-#include "ShortcutManager.h"
+#include "ShortcutsManager.h"
 #include "ShortcutEditorDelegate.h"
 #include "ActionsManager.h"
 #include "MainWindow.h"
@@ -12,7 +12,7 @@
 namespace WZMapEditor
 {
 
-ShortcutManager::ShortcutManager(MainWindow *parent) : QObject(parent),
+ShortcutsManager::ShortcutsManager(MainWindow *parent) : QObject(parent),
 	m_managerUi(new Ui::ShortcutEditorDialog()),
 	m_mainWindow(parent)
 {
@@ -51,12 +51,12 @@ ShortcutManager::ShortcutManager(MainWindow *parent) : QObject(parent),
 	managerDialog.exec();
 }
 
-ShortcutManager::~ShortcutManager()
+ShortcutsManager::~ShortcutsManager()
 {
 	delete m_managerUi;
 }
 
-void ShortcutManager::filter(const QString &filter)
+void ShortcutsManager::filter(const QString &filter)
 {
 	for (int i = 0; i < ActionsManager::getActions().count(); ++i)
 	{
@@ -71,7 +71,7 @@ void ShortcutManager::filter(const QString &filter)
 	}
 }
 
-void ShortcutManager::save()
+void ShortcutsManager::save()
 {
 	const QStringList actions = ActionsManager::getActions();
 
@@ -81,7 +81,7 @@ void ShortcutManager::save()
 	}
 }
 
-void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
+void ShortcutsManager::dialogButtonCliked(QAbstractButton *button)
 {
 	if (m_managerUi->buttonBox->standardButton(button) != QDialogButtonBox::RestoreDefaults)
 	{
@@ -102,7 +102,7 @@ void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 	}
 }
 
-bool ShortcutManager::checkShortcut(const QKeySequence &shortcut, int index)
+bool ShortcutsManager::checkShortcut(const QKeySequence &shortcut, int index)
 {
 	if (shortcut.isEmpty())
 	{

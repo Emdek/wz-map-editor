@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "SettingsManager.h"
 #include "ActionsManager.h"
-#include "ShortcutManager.h"
+#include "ShortcutsManager.h"
 #include "ToolBarManager.h"
 #include "PreferencesManager.h"
 #include "MapSettingsManager.h"
@@ -367,7 +367,7 @@ void MainWindow::actionZoomOriginal()
 
 void MainWindow::actionShortcutsConfiguration()
 {
-	new ShortcutManager(this);
+	new ShortcutsManager(this);
 }
 
 void MainWindow::actionToolbarsConfiguration()
