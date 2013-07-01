@@ -319,6 +319,11 @@ void MainWindow::actionClearRecentFiles()
 	SettingsManager::remove("recentFiles");
 }
 
+void MainWindow::actionSave()
+{
+	QMessageBox::warning(this, tr("Error"), tr("Not implemented yet."));
+}
+
 void MainWindow::actionProperties(bool newMap)
 {
 	new MapSettingsManager(m_map, newMap, this);
@@ -600,7 +605,7 @@ bool MainWindow::canClose()
 
 		if (action == QMessageBox::Save)
 		{
-//			actionSave();
+			actionSave();
 		}
 	}
 

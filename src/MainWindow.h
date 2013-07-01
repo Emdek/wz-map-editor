@@ -8,7 +8,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSlider>
 
-
 namespace Ui
 {
 	class MainWindow;
@@ -42,6 +41,7 @@ public slots:
 	void actionOpen();
 	void actionOpenRecent(QAction *action);
 	void actionClearRecentFiles();
+	void actionSave();
 	void actionProperties(bool newMap = false);
 	void actionFullscreen(bool checked);
 	void action3DView(bool checked);

@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
 	application.setOrganizationDomain("wz2100.net");
 
 	QStringList arguments(QApplication::arguments());
-
 	WZMapEditor::MainWindow mainWindow;
 
 	for (int i = 0; i < arguments.count(); ++i)
