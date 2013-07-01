@@ -1,11 +1,13 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-05-03T15:23:43
 # -------------------------------------------------
+
 QT += gui widgets xml
 TARGET = WZMapEditor
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
+
 SOURCES += src/main.cpp \
 	src/MainWindow.cpp \
 	src/Map2DViewWidget.cpp \
@@ -24,6 +26,7 @@ SOURCES += src/main.cpp \
 	src/FileSystemCompleterModel.cpp \
 	src/MapWriter.cpp \
 	src/MapSettingsManager.cpp
+
 HEADERS += src/MainWindow.h \
 	src/Map2DViewWidget.h \
 	src/Map3DViewWidget.h \
@@ -41,6 +44,7 @@ HEADERS += src/MainWindow.h \
 	src/FileSystemCompleterModel.h \
 	src/MapWriter.h \
 	src/MapSettingsManager.h
+
 FORMS += src/ui/MainWindow.ui \
 	src/ui/ToolBarEditorDialog.ui \
 	src/ui/ShortcutEditorDialog.ui \
@@ -52,7 +56,9 @@ FORMS += src/ui/MainWindow.ui \
 	src/ui/PreferencesDialog.ui \
 	src/ui/Map2DEditorWidget.ui \
 	src/ui/Map3DEditorWidget.ui
+
 RESOURCES += src/resources/resources.qrc
+
 DISTFILES += WZMapEditor.xcodeproj \
 	Resources \
 	configs \
