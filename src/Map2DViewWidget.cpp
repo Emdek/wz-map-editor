@@ -1,7 +1,7 @@
 #include "Map2DViewWidget.h"
 #include "Map.h"
 #include "Tileset.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 
 #include <QtGui/QWheelEvent>
 #include <QtWidgets/QGraphicsPixmapItem>
@@ -99,7 +99,7 @@ void Map2DViewWidget::setMap(Map *data)
 
 	m_map = data;
 
-	const qreal tileSize = SettingManager::value("tileSize").toInt();
+	const qreal tileSize = SettingsManager::getValue("tileSize").toInt();
 	const qreal halfTileSize(tileSize / 2);
 	const qreal ellipseSize(tileSize / 5);
 

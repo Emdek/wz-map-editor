@@ -1,7 +1,7 @@
 #include "ToolBarManager.h"
 #include "ToolBarWidget.h"
 #include "ActionManager.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 
 #include "ui_ToolBarEditorDialog.h"
 
@@ -241,7 +241,7 @@ void ToolBarManager::saveToolBar()
 		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString().mid(6));
 	}
 
-	SettingManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
+	SettingsManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
 
 	m_toolBars.at(m_currentToolBar)->setVisible(m_managerUi->showCheckBox->isChecked());
 	m_toolBars.at(m_currentToolBar)->reload();
@@ -251,7 +251,7 @@ void ToolBarManager::saveToolBar()
 
 void ToolBarManager::restoreToolBar()
 {
-	SettingManager::restore("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName());
+	SettingsManager::restore("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName());
 
 	m_toolBars.at(m_currentToolBar)->setVisible(true);
 	m_toolBars.at(m_currentToolBar)->reload();

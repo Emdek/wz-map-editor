@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 #include "ActionManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
@@ -38,7 +38,32 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_terrainUi(new Ui::TerrainDockWidget()),
 	m_informationUi(new Ui::InformationDockWidget())
 {
-	SettingManager::createInstance(this);
+	QStringList mainToolbar;
+	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
+
+	SettingsManager::createInstance(this);
+	SettingsManager::setDefaultValue("dataPath", QVariant(QString()));
+	SettingsManager::setDefaultValue("tileSize", QVariant(64));
+	SettingsManager::setDefaultValue("zoomLevel", QVariant(100));
+	SettingsManager::setDefaultValue("3DView", QVariant(true));
+	SettingsManager::setDefaultValue("lockToolBars", QVariant(false));
+	SettingsManager::setDefaultValue("toolbars/mainToolbar", QVariant(mainToolbar));
+	SettingsManager::setDefaultValue("actions/New", QVariant(QKeySequence(QKeySequence::New).toString()));
+	SettingsManager::setDefaultValue("actions/Open", QVariant(QKeySequence(QKeySequence::Open).toString()));
+	SettingsManager::setDefaultValue("actions/Save", QVariant(QKeySequence(QKeySequence::Save).toString()));
+	SettingsManager::setDefaultValue("actions/SaveAs", QVariant(QKeySequence(QKeySequence::SaveAs).toString()));
+	SettingsManager::setDefaultValue("actions/Exit", QVariant(QKeySequence(QKeySequence::Quit).toString()));
+	SettingsManager::setDefaultValue("actions/Undo", QVariant(QKeySequence(QKeySequence::Undo).toString()));
+	SettingsManager::setDefaultValue("actions/Redo", QVariant(QKeySequence(QKeySequence::Redo).toString()));
+	SettingsManager::setDefaultValue("actions/ZoomIn", QVariant(QKeySequence(QKeySequence::ZoomIn).toString()));
+	SettingsManager::setDefaultValue("actions/ZoomOut", QVariant(QKeySequence(QKeySequence::ZoomOut).toString()));
+	SettingsManager::setDefaultValue("actions/Help", QVariant(QKeySequence(QKeySequence::HelpContents).toString()));
+	SettingsManager::setDefaultValue("actions/Tileset", QVariant(QKeySequence("Ctrl+1").toString()));
+	SettingsManager::setDefaultValue("actions/Objects", QVariant(QKeySequence("Ctrl+2").toString()));
+	SettingsManager::setDefaultValue("actions/Terrain", QVariant(QKeySequence("Ctrl+3").toString()));
+	SettingsManager::setDefaultValue("actions/Information", QVariant(QKeySequence("Ctrl+4").toString()));
+	SettingsManager::setDefaultValue("actions/ApplicationConfiguration", QVariant(QKeySequence(QKeySequence::Preferences).toString()));
+	SettingsManager::setDefaultValue("actions/Fullscreen", QVariant(QKeySequence("F11").toString()));
 	ActionManager::createInstance(this);
 
 	m_mainWindowUi->setupUi(this);
@@ -178,7 +203,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
 	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
-	Tileset::createCache(ArizonaTileset, SettingManager::value("tileSize").toInt());
+	Tileset::createCache(ArizonaTileset, SettingsManager::getValue("tileSize").toInt());
 
 	updateTilesetView();
 
@@ -217,13 +242,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
 	m_mainWindowUi->map3DViewWidget->setMap(m_map);
 	m_mainWindowUi->mainToolbar->reload();
-	m_mainWindowUi->action3DView->setChecked(SettingManager::value("3DView").toBool());
+	m_mainWindowUi->action3DView->setChecked(SettingsManager::getValue("3DView").toBool());
 
 	action3DView(m_mainWindowUi->action3DView->isChecked());
-	actionLockToolBars(SettingManager::value("lockToolBars").toBool());
-	updateZoom(SettingManager::value("zoomLevel").toInt());
-	restoreGeometry(SettingManager::value("geometry").toByteArray());
-	restoreState(SettingManager::value("windowState").toByteArray());
+	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
+	updateZoom(SettingsManager::getValue("zoomLevel").toInt());
+	restoreGeometry(SettingsManager::getValue("geometry").toByteArray());
+	restoreState(SettingsManager::getValue("windowState").toByteArray());
 }
 
 MainWindow::~MainWindow()
@@ -245,8 +270,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
-	SettingManager::setValue("geometry", saveGeometry());
-	SettingManager::setValue("windowState", saveState());
+	SettingsManager::setValue("geometry", saveGeometry());
+	SettingsManager::setValue("windowState", saveState());
 
 	QMainWindow::closeEvent(event);
 }
@@ -278,7 +303,7 @@ void MainWindow::actionNew()
 
 void MainWindow::actionOpen()
 {
-	openFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingManager::value("lastUsedDir", SettingManager::value("dataPath", QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first()).toString()).toString(), tr("All Compatible (*.gam)")));
+	openFile(QFileDialog::getOpenFileName(this, tr("Open map file"), SettingsManager::getValue("lastUsedDir", SettingsManager::getValue("dataPath", QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first()).toString()).toString(), tr("All Compatible (*.gam)")));
 }
 
 void MainWindow::actionOpenRecent(QAction *action)
@@ -291,7 +316,7 @@ void MainWindow::actionOpenRecent(QAction *action)
 
 void MainWindow::actionClearRecentFiles()
 {
-	SettingManager::remove("recentFiles");
+	SettingsManager::remove("recentFiles");
 }
 
 void MainWindow::actionProperties(bool newMap)
@@ -322,7 +347,7 @@ void MainWindow::action3DView(bool checked)
 	m_mainWindowUi->map2DEditorWidget->setVisible(!checked);
 	m_mainWindowUi->map3DViewWidget->setVisible(checked);
 
-	SettingManager::setValue("3DView", checked);
+	SettingsManager::setValue("3DView", checked);
 }
 
 void MainWindow::actionZoomIn()
@@ -363,9 +388,9 @@ void MainWindow::actionApplicationConfiguration()
 {
 	new PreferencesManager(this);
 
-	if (Tileset::cachedTextureSize() != SettingManager::value("tileSize").toInt())
+	if (Tileset::cachedTextureSize() != SettingsManager::getValue("tileSize").toInt())
 	{
-		Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
+		Tileset::createCache(m_map->tileset(), SettingsManager::getValue("tileSize").toInt());
 	}
 }
 
@@ -378,7 +403,7 @@ void MainWindow::actionLockToolBars(bool lock)
 {
 	m_mainWindowUi->mainToolbar->setMovable(!lock);
 
-	SettingManager::setValue("lockToolBars", lock);
+	SettingsManager::setValue("lockToolBars", lock);
 }
 
 void MainWindow::actionToggleDock()
@@ -420,7 +445,7 @@ void MainWindow::actionToggleDock()
 
 void MainWindow::updateRecentFilesMenu()
 {
-	QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
+	QStringList recentFiles = SettingsManager::getValue("recentFiles").toStringList();
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -447,7 +472,7 @@ void MainWindow::updateTilesetView()
 
 	if (m_currentTileset != tileset->type())
 	{
-		Tileset::createCache(tileset->type(), SettingManager::value("tileSize").toInt());
+		Tileset::createCache(tileset->type(), SettingsManager::getValue("tileSize").toInt());
 
 		m_currentTileset = tileset->type();
 
@@ -498,7 +523,7 @@ void MainWindow::updateZoom(int zoom)
 
 	m_zoomSlider->setToolTip(QString("Zoom: %1%").arg(zoom));
 
-	SettingManager::setValue("zoomLevel", zoom);
+	SettingsManager::setValue("zoomLevel", zoom);
 }
 
 bool MainWindow::openFile(const QString &fileName)
@@ -528,17 +553,17 @@ bool MainWindow::openFile(const QString &fileName)
 			m_fileNameLabel->setText(fileInfo.fileName());
 			m_fileNameLabel->setToolTip(fileInfo.absoluteFilePath());
 
-			QStringList recentFiles = SettingManager::value("recentFiles").toStringList();
+			QStringList recentFiles = SettingsManager::getValue("recentFiles").toStringList();
 			recentFiles.removeAll(fileInfo.absoluteFilePath());
 			recentFiles.prepend(fileInfo.absoluteFilePath());
 			recentFiles = recentFiles.mid(0, 10);
 
-			SettingManager::setValue("recentFiles", recentFiles);
-			SettingManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
+			SettingsManager::setValue("recentFiles", recentFiles);
+			SettingsManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
 
 			if (Tileset::cachedTileset() != m_map->tileset())
 			{
-				Tileset::createCache(m_map->tileset(), SettingManager::value("tileSize").toInt());
+				Tileset::createCache(m_map->tileset(), SettingsManager::getValue("tileSize").toInt());
 			}
 
 			updateTilesetView();

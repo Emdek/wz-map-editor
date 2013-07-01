@@ -16,7 +16,7 @@ SOURCES += src/main.cpp \
 	src/ShortcutEditorDelegate.cpp \
 	src/ShortcutEditorWidget.cpp \
 	src/ToolBarWidget.cpp \
-	src/SettingManager.cpp \
+	src/SettingsManager.cpp \
 	src/MapParser.cpp \
 	src/Map.cpp \
 	src/Tileset.cpp \
@@ -33,7 +33,7 @@ HEADERS += src/MainWindow.h \
 	src/ShortcutEditorDelegate.h \
 	src/ShortcutEditorWidget.h \
 	src/ToolBarWidget.h \
-	src/SettingManager.h \
+	src/SettingsManager.h \
 	src/MapParser.h \
 	src/Map.h \
 	src/Tileset.h \

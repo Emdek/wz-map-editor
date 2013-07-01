@@ -9,7 +9,7 @@
 namespace WZMapEditor
 {
 
-class SettingManager : public QObject
+class SettingsManager : public QObject
 {
 	Q_OBJECT
 
@@ -17,20 +17,21 @@ public:
 	static void createInstance(QObject *parent = NULL);
 	static void restore(const QString &key);
 	static void remove(const QString &key);
+	static void setDefaultValue(const QString &key, const QVariant &value);
 	static void setValue(const QString &key, const QVariant &value);
-	static QVariant defaultValue(const QString &key);
-	static QVariant value(const QString &key, const QVariant &value = QVariant());
-	static QStringList keys();
+	static QVariant getDefaultValue(const QString &key);
+	static QVariant getValue(const QString &key, const QVariant &value = QVariant());
+	static QStringList getKeys(const QString &pattern = QString());
+	static bool contains(const QString &key);
 
 private:
-	SettingManager(QObject *parent = NULL);
+	explicit SettingsManager(QObject *parent = NULL);
 
 	QVariant keyValue(const QString &key);
 	QStringList valueKeys();
 
-	QHash<QString, QVariant> m_defaultSettings;
-
-	static SettingManager *m_instance;
+	static SettingsManager *m_instance;
+	static QHash<QString, QVariant> m_defaultSettings;
 };
 
 }

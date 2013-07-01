@@ -1,5 +1,5 @@
 #include "PreferencesManager.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 #include "FileSystemCompleterModel.h"
 
 #include "ui_PreferencesDialog.h"
@@ -19,7 +19,7 @@ PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	int tileSize = 0;
 
-	switch (SettingManager::value("tileSize").toInt())
+	switch (SettingsManager::getValue("tileSize").toInt())
 	{
 		case 16:
 			tileSize = 3;
@@ -37,7 +37,7 @@ PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
 
 	m_managerUi->setupUi(&managerDialog);
 	m_managerUi->dataPathLineEdit->setCompleter(new QCompleter(new FileSystemCompleterModel(this), this));
-	m_managerUi->dataPathLineEdit->setText(SettingManager::value("dataPath").toString());
+	m_managerUi->dataPathLineEdit->setText(SettingsManager::getValue("dataPath").toString());
 	m_managerUi->tileSizeComboBox->setCurrentIndex(tileSize);
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
@@ -60,8 +60,8 @@ void PreferencesManager::selectDataPath()
 
 void PreferencesManager::save()
 {
-	SettingManager::setValue("dataPath", m_managerUi->dataPathLineEdit->text());
-	SettingManager::setValue("tileSize", (pow(2, (3 - m_managerUi->tileSizeComboBox->currentIndex())) * 16));
+	SettingsManager::setValue("dataPath", m_managerUi->dataPathLineEdit->text());
+	SettingsManager::setValue("tileSize", (pow(2, (3 - m_managerUi->tileSizeComboBox->currentIndex())) * 16));
 }
 
 void PreferencesManager::dialogButtonCliked(QAbstractButton *button)

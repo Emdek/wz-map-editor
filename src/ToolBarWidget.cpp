@@ -1,6 +1,6 @@
 #include "ToolBarWidget.h"
 #include "ActionManager.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 
 #include <QtWidgets/QMenu>
 
@@ -49,7 +49,7 @@ void ToolBarWidget::reload()
 {
 	clear();
 
-	QStringList actions = SettingManager::value("toolbars/" + objectName()).toStringList();
+	QStringList actions = SettingsManager::getValue("toolbars/" + objectName()).toStringList();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{

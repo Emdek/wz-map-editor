@@ -1,6 +1,6 @@
 #include "Map3DViewWidget.h"
 #include "Tileset.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 #include "Tileset.h"
 
 #include <QtCore/QTime>

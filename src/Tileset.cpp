@@ -1,5 +1,5 @@
 #include "Tileset.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QXmlStreamReader>
@@ -136,7 +136,7 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 {
 	if (size == -1)
 	{
-		size = SettingManager::value("tileSize").toInt();
+		size = SettingsManager::getValue("tileSize").toInt();
 	}
 
 	if (tile.tileset == m_cachedTileset && size == m_textureSize)
@@ -150,7 +150,7 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 	}
 
 	QString fileName = QString("%1texpages%2tertilesc%3hw-%4%5tile-%6%7.png")
-		.arg(SettingManager::value("dataPath").toString() + QDir::separator())
+		.arg(SettingsManager::getValue("dataPath").toString() + QDir::separator())
 		.arg(QDir::separator())
 		.arg(static_cast<int>(tile.tileset))
 		.arg(size)

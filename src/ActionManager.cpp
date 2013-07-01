@@ -1,5 +1,5 @@
 #include "ActionManager.h"
-#include "SettingManager.h"
+#include "SettingsManager.h"
 
 namespace WZMapEditor
 {
@@ -42,7 +42,7 @@ void ActionManager::addAction(QAction *action, QString name)
 		}
 	}
 
-	action->setShortcut(QKeySequence(SettingManager::defaultValue("actions/" + name).toString()));
+	action->setShortcut(QKeySequence(SettingsManager::getDefaultValue("actions/" + name).toString()));
 
 	m_actions[name] = action;
 }
@@ -76,7 +76,7 @@ void ActionManager::setShortcut(const QString &action, const QKeySequence &short
 	{
 		m_instance->getActions().value(action)->setShortcut(shortcut);
 
-		SettingManager::setValue("actions/" + action, shortcut.toString());
+		SettingsManager::setValue("actions/" + action, shortcut.toString());
 	}
 }
 
@@ -114,7 +114,7 @@ QKeySequence ActionManager::getDefaultShortcut(QAction *action)
 
 QKeySequence ActionManager::getDefaultShortcut(const QString &action)
 {
-	return QKeySequence(SettingManager::defaultValue("actions/" + action).toString());
+	return QKeySequence(SettingsManager::getDefaultValue("actions/" + action).toString());
 }
 
 QAction* ActionManager::getAction(const QString &action)
