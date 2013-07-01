@@ -1,4 +1,4 @@
-#include "ToolBarManager.h"
+#include "ToolBarsManager.h"
 #include "ToolBarWidget.h"
 #include "ActionsManager.h"
 #include "SettingsManager.h"
@@ -12,7 +12,7 @@
 namespace WZMapEditor
 {
 
-ToolBarManager::ToolBarManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar, QObject *parent) : QObject(parent),
+ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar, QObject *parent) : QObject(parent),
 	m_managerUi(new Ui::ToolBarEditorDialog()),
 	m_toolBars(toolBars),
 	m_currentToolBar(-1),
@@ -49,12 +49,12 @@ ToolBarManager::ToolBarManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *co
 	managerDialog.exec();
 }
 
-ToolBarManager::~ToolBarManager()
+ToolBarsManager::~ToolBarsManager()
 {
 	delete m_managerUi;
 }
 
-void ToolBarManager::loadToolBar(int index)
+void ToolBarsManager::loadToolBar(int index)
 {
 	if (index == m_currentToolBar)
 	{
@@ -120,7 +120,7 @@ void ToolBarManager::loadToolBar(int index)
 	m_currentToolBar = index;
 }
 
-void ToolBarManager::availableActionsCurrentItemChanged(int index)
+void ToolBarsManager::availableActionsCurrentItemChanged(int index)
 {
 	m_managerUi->addButton->setEnabled(index >= 0);
 
@@ -130,7 +130,7 @@ void ToolBarManager::availableActionsCurrentItemChanged(int index)
 	}
 }
 
-void ToolBarManager::currentActionsCurrentItemChanged(int index)
+void ToolBarsManager::currentActionsCurrentItemChanged(int index)
 {
 	m_managerUi->removeButton->setEnabled(index >= 0);
 	m_managerUi->moveUpButton->setEnabled(index > 0);
@@ -142,7 +142,7 @@ void ToolBarManager::currentActionsCurrentItemChanged(int index)
 	}
 }
 
-void ToolBarManager::removeItem()
+void ToolBarsManager::removeItem()
 {
 	if (m_managerUi->currentActionsListWidget->currentRow() >= 0)
 	{
@@ -164,7 +164,7 @@ void ToolBarManager::removeItem()
 	}
 }
 
-void ToolBarManager::addItem()
+void ToolBarsManager::addItem()
 {
 	if (m_managerUi->availableActionsListWidget->currentRow() >= 0)
 	{
@@ -183,7 +183,7 @@ void ToolBarManager::addItem()
 	}
 }
 
-void ToolBarManager::moveUpItem()
+void ToolBarsManager::moveUpItem()
 {
 	const int currentRow = m_managerUi->currentActionsListWidget->currentRow();
 
@@ -198,7 +198,7 @@ void ToolBarManager::moveUpItem()
 	}
 }
 
-void ToolBarManager::moveDownItem()
+void ToolBarsManager::moveDownItem()
 {
 	const int currentRow = m_managerUi->currentActionsListWidget->currentRow();
 
@@ -213,7 +213,7 @@ void ToolBarManager::moveDownItem()
 	}
 }
 
-void ToolBarManager::dialogButtonCliked(QAbstractButton *button)
+void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 {
 	switch (m_managerUi->buttonBox->standardButton(button))
 	{
@@ -234,7 +234,7 @@ void ToolBarManager::dialogButtonCliked(QAbstractButton *button)
 	}
 }
 
-void ToolBarManager::saveToolBar()
+void ToolBarsManager::saveToolBar()
 {
 	QStringList actions;
 
@@ -251,7 +251,7 @@ void ToolBarManager::saveToolBar()
 	setModified(false);
 }
 
-void ToolBarManager::restoreToolBar()
+void ToolBarsManager::restoreToolBar()
 {
 	SettingsManager::restore("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName());
 
@@ -267,7 +267,7 @@ void ToolBarManager::restoreToolBar()
 	loadToolBar(currentToolBar);
 }
 
-void ToolBarManager::setModified(bool modified)
+void ToolBarsManager::setModified(bool modified)
 {
 	m_managerUi->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(modified);
 

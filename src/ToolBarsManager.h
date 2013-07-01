@@ -1,5 +1,5 @@
-#ifndef TOOLBARMANAGER_H
-#define TOOLBARMANAGER_H
+#ifndef TOOLBARSMANAGER_H
+#define TOOLBARSMANAGER_H
 
 #include <QtCore/QObject>
 
@@ -15,13 +15,13 @@ namespace WZMapEditor
 
 class ToolBarWidget;
 
-class ToolBarManager : public QObject
+class ToolBarsManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	ToolBarManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar = NULL, QObject *parent = NULL);
-	~ToolBarManager();
+	ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar = NULL, QObject *parent = NULL);
+	~ToolBarsManager();
 
 public slots:
 	void loadToolBar(int index);

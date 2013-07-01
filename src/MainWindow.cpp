@@ -2,7 +2,7 @@
 #include "SettingsManager.h"
 #include "ActionsManager.h"
 #include "ShortcutsManager.h"
-#include "ToolBarManager.h"
+#include "ToolBarsManager.h"
 #include "PreferencesManager.h"
 #include "MapSettingsManager.h"
 #include "Map.h"
@@ -381,7 +381,7 @@ void MainWindow::actionToolbarsConfiguration()
 		toolbar = qobject_cast<ToolBarWidget*>(sender());
 	}
 
-	new ToolBarManager(toolbars, toolbar, this);
+	new ToolBarsManager(toolbars, toolbar, this);
 }
 
 void MainWindow::actionApplicationConfiguration()
