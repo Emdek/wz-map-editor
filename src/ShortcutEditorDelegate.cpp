@@ -1,4 +1,5 @@
 #include "ShortcutEditorDelegate.h"
+#include "ActionsManager.h"
 #include "ShortcutManager.h"
 #include "ShortcutEditorWidget.h"
 
@@ -21,32 +22,31 @@ void ShortcutEditorDelegate::updateEditorGeometry(QWidget *editor, const QStyleO
 void ShortcutEditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
 	ShortcutEditorWidget *editorWidget = static_cast<ShortcutEditorWidget*>(editor);
-	editorWidget->setSequence(index.model()->data(index, Qt::EditRole).toString());
+	editorWidget->setShortcut(index.model()->data(index, Qt::EditRole).toString());
 }
 
 void ShortcutEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
 	ShortcutEditorWidget *editorWidget = static_cast<ShortcutEditorWidget*>(editor);
+	QKeySequence shortcut = editorWidget->getShortcut();
 
-	QKeySequence sequence = editorWidget->keySequence();
-
-	if (m_manager->checkSequence(sequence, index.row()))
+	if (m_manager->checkShortcut(shortcut, index.row()))
 	{
-		model->setData(index, sequence.toString(QKeySequence::NativeText), Qt::EditRole);
+		model->setData(index, shortcut.toString(QKeySequence::NativeText), Qt::EditRole);
 	}
 }
 
 void ShortcutEditorDelegate::restore()
 {
 	ShortcutEditorWidget *editor = static_cast<ShortcutEditorWidget*>(sender());
-	editor->setSequence(m_manager->restoreDefaultShortcut(editor->index()));
+	editor->setShortcut(ActionsManager::getDefaultShortcut(editor->getAction()));
 }
 
 QWidget* ShortcutEditorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	Q_UNUSED(option)
 
-	ShortcutEditorWidget *editor = new ShortcutEditorWidget(index.model()->data(index, Qt::EditRole).toString(), index.row(), parent);
+	ShortcutEditorWidget *editor = new ShortcutEditorWidget(index.data(Qt::UserRole).toString(), index.data(Qt::EditRole).toString(), parent);
 
 	connect(editor, SIGNAL(restore()), this, SLOT(restore()));
 

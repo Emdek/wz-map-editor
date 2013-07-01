@@ -6,12 +6,12 @@
 namespace WZMapEditor
 {
 
-ShortcutEditorWidget::ShortcutEditorWidget(const QString &keySequence, int index, QWidget *parent) : QWidget(parent),
-	m_keySequence(keySequence),
+ShortcutEditorWidget::ShortcutEditorWidget(const QString &action, const QString &shortcut, QWidget *parent) : QWidget(parent),
+	m_action(action),
+	m_shortcut(shortcut),
 	m_lineEdit(new QLineEdit(this)),
 	m_clearButton(new QToolButton(this)),
 	m_restoreButton(new QToolButton(this)),
-	m_index(index),
 	m_isRecording(false)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -28,7 +28,7 @@ ShortcutEditorWidget::ShortcutEditorWidget(const QString &keySequence, int index
 	m_clearButton->setToolTip(tr("Clear"));
 	m_clearButton->setIcon(QIcon(":/icons/edit-clear-locationbar-rtl.png"));
 	m_clearButton->setCheckable(false);
-	m_clearButton->setEnabled(!m_keySequence.isEmpty());
+	m_clearButton->setEnabled(!m_shortcut.isEmpty());
 
 	m_restoreButton->setToolTip(tr("Restore Default"));
 	m_restoreButton->setIcon(QIcon(":/icons/edit-undo.png"));
@@ -45,35 +45,35 @@ ShortcutEditorWidget::ShortcutEditorWidget(const QString &keySequence, int index
 
 void ShortcutEditorWidget::updateDisplay()
 {
-	m_lineEdit->setText(m_keySequence.toString(QKeySequence::NativeText));
+	m_lineEdit->setText(m_shortcut.toString(QKeySequence::NativeText));
 }
 
 void ShortcutEditorWidget::clear()
 {
-	m_keySequence = QKeySequence();
+	m_shortcut = QKeySequence();
 
 	m_clearButton->setEnabled(false);
 
 	updateDisplay();
 }
 
-void ShortcutEditorWidget::setSequence(const QString &keySequence)
+void ShortcutEditorWidget::setShortcut(const QKeySequence &shortcut)
 {
-	m_keySequence = QKeySequence(keySequence);
+	m_shortcut = shortcut;
 
-	m_clearButton->setEnabled(!m_keySequence.isEmpty());
+	m_clearButton->setEnabled(!m_shortcut.isEmpty());
 
 	updateDisplay();
 }
 
-QKeySequence ShortcutEditorWidget::keySequence() const
+QString ShortcutEditorWidget::getAction() const
 {
-	return m_keySequence;
+	return m_action;
 }
 
-int ShortcutEditorWidget::index()
+QKeySequence ShortcutEditorWidget::getShortcut() const
 {
-	return m_index;
+	return m_shortcut;
 }
 
 bool ShortcutEditorWidget::eventFilter(QObject *object, QEvent *event)
@@ -102,7 +102,7 @@ bool ShortcutEditorWidget::eventFilter(QObject *object, QEvent *event)
 
 		if (!m_isRecording)
 		{
-			m_recordedSequence = QString();
+			m_recording = QString();
 
 			m_isRecording = true;
 		}
@@ -127,13 +127,13 @@ bool ShortcutEditorWidget::eventFilter(QObject *object, QEvent *event)
 
 		if (m_isRecording)
 		{
-			if (!m_recordedSequence.isEmpty() && !m_recordedSequence.endsWith("+"))
+			if (!m_recording.isEmpty() && !m_recording.endsWith("+"))
 			{
-				m_recordedSequence.append("+");
+				m_recording.append("+");
 			}
 
-			m_recordedSequence.append(QKeySequence(key).toString());
-			m_keySequence = QKeySequence(m_recordedSequence);
+			m_recording.append(QKeySequence(key).toString());
+			m_shortcut = QKeySequence(m_recording);
 
 			updateDisplay();
 		}

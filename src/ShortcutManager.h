@@ -24,8 +24,7 @@ public:
 	ShortcutManager(MainWindow *parent = NULL);
 	~ShortcutManager();
 
-	QString restoreDefaultShortcut(int index);
-	bool checkSequence(const QKeySequence &sequence, int index);
+	bool checkShortcut(const QKeySequence &shortcut, int index);
 
 public slots:
 	void filter(const QString &filter);

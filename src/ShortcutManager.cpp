@@ -33,6 +33,7 @@ ShortcutManager::ShortcutManager(MainWindow *parent) : QObject(parent),
 		descriptionItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
 		QTableWidgetItem *editingItem = new QTableWidgetItem(action->shortcut().toString(QKeySequence::NativeText));
+		editingItem->setData(Qt::UserRole, action->objectName());
 		editingItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
 		m_managerUi->shortcutsView->setItem(i, 0, descriptionItem);
@@ -101,34 +102,18 @@ void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 	}
 }
 
-QString ShortcutManager::restoreDefaultShortcut(int index)
+bool ShortcutManager::checkShortcut(const QKeySequence &shortcut, int index)
 {
-	const QStringList actions = ActionsManager::getActions();
-
-	if (index >= 0 && index < actions.count())
-	{
-		QAction *action = ActionsManager::getAction(actions.at(index));
-
-		ActionsManager::restoreDefaultShortcut(action);
-
-		return action->shortcut().toString(QKeySequence::NativeText);
-	}
-
-	return QString();
-}
-
-bool ShortcutManager::checkSequence(const QKeySequence &sequence, int index)
-{
-	if (sequence.isEmpty())
+	if (shortcut.isEmpty())
 	{
 		return true;
 	}
 
 	for (int i = 0; i < m_managerUi->shortcutsView->rowCount(); ++i)
 	{
-		if (!m_managerUi->shortcutsView->item(i, 1)->text().isEmpty() && i != index && QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()).matches(sequence) == QKeySequence::ExactMatch)
+		if (!m_managerUi->shortcutsView->item(i, 1)->text().isEmpty() && i != index && QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()).matches(shortcut) == QKeySequence::ExactMatch)
 		{
-			if (QMessageBox::question(QApplication::topLevelWidgets().at(0), QApplication::applicationName(), tr("Shortcut \"%1\" is already used by action \"%2\".\nDo you want to replace it?").arg(sequence.toString(QKeySequence::NativeText)).arg(m_managerUi->shortcutsView->item(i, 0)->text()), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
+			if (QMessageBox::question(QApplication::topLevelWidgets().at(0), QApplication::applicationName(), tr("Shortcut \"%1\" is already used by action \"%2\".\nDo you want to replace it?").arg(shortcut.toString(QKeySequence::NativeText)).arg(m_managerUi->shortcutsView->item(i, 0)->text()), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
 			{
 				m_managerUi->shortcutsView->item(i, 1)->setText(QString());
 

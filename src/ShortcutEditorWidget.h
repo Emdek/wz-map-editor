@@ -14,24 +14,24 @@ class ShortcutEditorWidget : public QWidget
 	Q_OBJECT
 
 public:
-	ShortcutEditorWidget(const QString &keySequence, int index, QWidget *parent = NULL);
+	ShortcutEditorWidget(const QString &action, const QString &shortcut, QWidget *parent = NULL);
 
 	void updateDisplay();
-	QKeySequence keySequence() const;
-	int index();
+	QString getAction() const;
+	QKeySequence getShortcut() const;
 	bool eventFilter(QObject *object, QEvent *event);
 
 public slots:
 	void clear();
-	void setSequence(const QString &keySequence);
+	void setShortcut(const QKeySequence &shortcut);
 
 private:
-	QKeySequence m_keySequence;
+	QString m_action;
+	QString m_recording;
+	QKeySequence m_shortcut;
 	QLineEdit *m_lineEdit;
 	QToolButton *m_clearButton;
 	QToolButton *m_restoreButton;
-	QString m_recordedSequence;
-	int m_index;
 	bool m_isRecording;
 
 signals:
