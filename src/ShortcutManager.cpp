@@ -1,6 +1,6 @@
 #include "ShortcutManager.h"
 #include "ShortcutEditorDelegate.h"
-#include "ActionManager.h"
+#include "ActionsManager.h"
 #include "MainWindow.h"
 
 #include "ui_ShortcutEditorDialog.h"
@@ -20,16 +20,19 @@ ShortcutManager::ShortcutManager(MainWindow *parent) : QObject(parent),
 	m_managerUi->setupUi(&managerDialog);
 
 	m_managerUi->shortcutsView->setColumnCount(2);
-	m_managerUi->shortcutsView->setRowCount(ActionManager::actions().count());
+	m_managerUi->shortcutsView->setRowCount(ActionsManager::getActions().count());
 	m_managerUi->shortcutsView->setItemDelegate(new ShortcutEditorDelegate(this));
 
-	for (int i = 0; i < ActionManager::actions().count(); ++i)
+	const QStringList actions = ActionsManager::getActions();
+
+	for (int i = 0; i < actions.count(); ++i)
 	{
-		QTableWidgetItem *descriptionItem = new QTableWidgetItem(ActionManager::actions().at(i)->icon(), ActionManager::actions().at(i)->text());
-		descriptionItem->setToolTip(ActionManager::actions().at(i)->text());
+		QAction *action = ActionsManager::getAction(actions.at(i));
+		QTableWidgetItem *descriptionItem = new QTableWidgetItem(action->icon(), action->text());
+		descriptionItem->setToolTip(action->text());
 		descriptionItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
-		QTableWidgetItem *editingItem = new QTableWidgetItem(ActionManager::actions().at(i)->shortcut().toString(QKeySequence::NativeText));
+		QTableWidgetItem *editingItem = new QTableWidgetItem(action->shortcut().toString(QKeySequence::NativeText));
 		editingItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
 		m_managerUi->shortcutsView->setItem(i, 0, descriptionItem);
@@ -54,7 +57,7 @@ ShortcutManager::~ShortcutManager()
 
 void ShortcutManager::filter(const QString &filter)
 {
-	for (int i = 0; i < ActionManager::actions().count(); ++i)
+	for (int i = 0; i < ActionsManager::getActions().count(); ++i)
 	{
 		if (filter.isEmpty() || m_managerUi->shortcutsView->item(i, 0)->text().contains(filter, Qt::CaseInsensitive) || m_managerUi->shortcutsView->item(i, 1)->text().contains(filter, Qt::CaseInsensitive))
 		{
@@ -69,36 +72,46 @@ void ShortcutManager::filter(const QString &filter)
 
 void ShortcutManager::save()
 {
-	for (int i = 0; i < ActionManager::actions().count(); ++i)
+	const QStringList actions = ActionsManager::getActions();
+
+	for (int i = 0; i < actions.count(); ++i)
 	{
-		ActionManager::setShortcut(ActionManager::actions().at(i), QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
+		ActionsManager::setShortcut(ActionsManager::getAction(actions.at(i)), QKeySequence(m_managerUi->shortcutsView->item(i, 1)->text()));
 	}
 }
 
 void ShortcutManager::dialogButtonCliked(QAbstractButton *button)
 {
-	if (m_managerUi->buttonBox->standardButton(button) == QDialogButtonBox::RestoreDefaults)
-	{
-		for (int i = 0; i < ActionManager::actions().count(); ++i)
-		{
-			ActionManager::restoreDefaultShortcut(ActionManager::actions().at(i));
-
-			m_managerUi->shortcutsView->item(i, 1)->setText(ActionManager::actions().at(i)->shortcut().toString(QKeySequence::NativeText));
-		}
-	}
-	else
+	if (m_managerUi->buttonBox->standardButton(button) != QDialogButtonBox::RestoreDefaults)
 	{
 		deleteLater();
+
+		return;
+	}
+
+	const QStringList actions = ActionsManager::getActions();
+
+	for (int i = 0; i < actions.count(); ++i)
+	{
+		QAction *action = ActionsManager::getAction(actions.at(i));
+
+		ActionsManager::restoreDefaultShortcut(action);
+
+		m_managerUi->shortcutsView->item(i, 1)->setText(action->shortcut().toString(QKeySequence::NativeText));
 	}
 }
 
 QString ShortcutManager::restoreDefaultShortcut(int index)
 {
-	if (index >= 0 && index < ActionManager::actions().count())
-	{
-		ActionManager::restoreDefaultShortcut(ActionManager::actions().at(index));
+	const QStringList actions = ActionsManager::getActions();
 
-		return ActionManager::actions().at(index)->shortcut().toString(QKeySequence::NativeText);
+	if (index >= 0 && index < actions.count())
+	{
+		QAction *action = ActionsManager::getAction(actions.at(index));
+
+		ActionsManager::restoreDefaultShortcut(action);
+
+		return action->shortcut().toString(QKeySequence::NativeText);
 	}
 
 	return QString();

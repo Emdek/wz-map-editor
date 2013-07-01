@@ -1,5 +1,5 @@
-#ifndef ACTIONMANAGER_H
-#define ACTIONMANAGER_H
+#ifndef ACTIONSMANAGER_H
+#define ACTIONSMANAGER_H
 
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
@@ -7,34 +7,35 @@
 namespace WZMapEditor
 {
 
-class ActionManager : public QObject
+class ActionsManager : public QObject
 {
 	Q_OBJECT
 
 public:
 	static void createInstance(QObject *parent = NULL);
 	static void registerAction(QAction *action, QString name = QString());
-	static void registerActions(QList<QAction*> actions);
+	static void registerActions(QList<QAction*> getActions);
 	static void setShortcut(QAction *action, const QKeySequence &shortcut);
 	static void setShortcut(const QString &action, const QKeySequence &shortcut);
 	static void restoreDefaultShortcut(QAction *action);
 	static void restoreDefaultShortcut(const QString &action);
+	static QAction* getAction(const QString &action);
+	static QKeySequence getShortcut(QAction *action);
+	static QKeySequence getShortcut(const QString &action);
 	static QKeySequence getDefaultShortcut(QAction *action);
 	static QKeySequence getDefaultShortcut(const QString &action);
-	static QAction* getAction(const QString &action);
-	static QList<QAction*> actions();
+	static QStringList getActions();
+	static bool hasShortcut(const QKeySequence &shortcut, const QString &excludeAction = QString());
 
 private:
-	ActionManager(QObject *parent = NULL);
+	explicit ActionsManager(QObject *parent = NULL);
 
 	void addAction(QAction *action, QString name = QString());
-	QHash<QString, QAction*> getActions();
 
-	QHash<QString, QAction*> m_actions;
-
-	static ActionManager *m_instance;
+	static ActionsManager *m_instance;
+	static QHash<QString, QAction*> m_actions;
 };
 
 }
 
-#endif // ACTIONMANAGER_H
+#endif

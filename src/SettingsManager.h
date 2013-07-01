@@ -1,5 +1,5 @@
-#ifndef SETTINGMANAGER_H
-#define SETTINGMANAGER_H
+#ifndef SETTINGSMANAGER_H
+#define SETTINGSMANAGER_H
 
 #include <QtCore/QObject>
 #include <QtCore/QHash>

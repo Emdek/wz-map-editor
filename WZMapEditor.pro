@@ -10,7 +10,7 @@ SOURCES += src/main.cpp \
 	src/MainWindow.cpp \
 	src/Map2DViewWidget.cpp \
 	src/Map3DViewWidget.cpp \
-	src/ActionManager.cpp \
+	src/ActionsManager.cpp \
 	src/ToolBarManager.cpp \
 	src/ShortcutManager.cpp \
 	src/ShortcutEditorDelegate.cpp \
@@ -27,7 +27,7 @@ SOURCES += src/main.cpp \
 HEADERS += src/MainWindow.h \
 	src/Map2DViewWidget.h \
 	src/Map3DViewWidget.h \
-	src/ActionManager.h \
+	src/ActionsManager.h \
 	src/ToolBarManager.h \
 	src/ShortcutManager.h \
 	src/ShortcutEditorDelegate.h \

@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "SettingsManager.h"
-#include "ActionManager.h"
+#include "ActionsManager.h"
 #include "ShortcutManager.h"
 #include "ToolBarManager.h"
 #include "PreferencesManager.h"
@@ -64,7 +64,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	SettingsManager::setDefaultValue("actions/Information", QVariant(QKeySequence("Ctrl+4").toString()));
 	SettingsManager::setDefaultValue("actions/ApplicationConfiguration", QVariant(QKeySequence(QKeySequence::Preferences).toString()));
 	SettingsManager::setDefaultValue("actions/Fullscreen", QVariant(QKeySequence("F11").toString()));
-	ActionManager::createInstance(this);
 
 	m_mainWindowUi->setupUi(this);
 
@@ -174,34 +173,35 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_tilesetUi->tileTypeComboBox->setItemData(7, TransitionTile);
 	m_tilesetUi->tileTypeComboBox->setItemData(8, OtherTile);
 
-	ActionManager::registerAction(m_mainWindowUi->actionNew);
-	ActionManager::registerAction(m_mainWindowUi->actionOpen);
-	ActionManager::registerAction(m_mainWindowUi->actionOpenRecent);
-	ActionManager::registerAction(m_mainWindowUi->actionSave);
-	ActionManager::registerAction(m_mainWindowUi->actionSaveAs);
-	ActionManager::registerAction(m_mainWindowUi->actionProperties);
-	ActionManager::registerAction(m_mainWindowUi->actionExit);
-	ActionManager::registerAction(m_mainWindowUi->actionUndo);
-	ActionManager::registerAction(m_mainWindowUi->actionRedo);
-	ActionManager::registerAction(m_mainWindowUi->actionFullscreen);
-	ActionManager::registerAction(m_mainWindowUi->action3DView);
-	ActionManager::registerAction(m_mainWindowUi->actionZoomIn);
-	ActionManager::registerAction(m_mainWindowUi->actionZoomOut);
-	ActionManager::registerAction(m_mainWindowUi->actionZoomOriginal);
-	ActionManager::registerAction(m_mainWindowUi->actionTileset);
-	ActionManager::registerAction(m_mainWindowUi->actionTerrain);
-	ActionManager::registerAction(m_mainWindowUi->actionInformation);
-	ActionManager::registerAction(m_mainWindowUi->actionObjects);
-	ActionManager::registerAction(m_mainWindowUi->actionMouseModeView);
-	ActionManager::registerAction(m_mainWindowUi->actionMouseModeSelect);
-	ActionManager::registerAction(m_mainWindowUi->actionMouseModeMove);
-	ActionManager::registerAction(m_mainWindowUi->actionMouseModePaint);
-	ActionManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
-	ActionManager::registerAction(m_mainWindowUi->actionHelp);
-	ActionManager::registerAction(m_mainWindowUi->actionAboutQt);
-	ActionManager::registerAction(m_mainWindowUi->actionAboutApplication);
+	ActionsManager::createInstance(this);
+	ActionsManager::registerAction(m_mainWindowUi->actionNew);
+	ActionsManager::registerAction(m_mainWindowUi->actionOpen);
+	ActionsManager::registerAction(m_mainWindowUi->actionOpenRecent);
+	ActionsManager::registerAction(m_mainWindowUi->actionSave);
+	ActionsManager::registerAction(m_mainWindowUi->actionSaveAs);
+	ActionsManager::registerAction(m_mainWindowUi->actionProperties);
+	ActionsManager::registerAction(m_mainWindowUi->actionExit);
+	ActionsManager::registerAction(m_mainWindowUi->actionUndo);
+	ActionsManager::registerAction(m_mainWindowUi->actionRedo);
+	ActionsManager::registerAction(m_mainWindowUi->actionFullscreen);
+	ActionsManager::registerAction(m_mainWindowUi->action3DView);
+	ActionsManager::registerAction(m_mainWindowUi->actionZoomIn);
+	ActionsManager::registerAction(m_mainWindowUi->actionZoomOut);
+	ActionsManager::registerAction(m_mainWindowUi->actionZoomOriginal);
+	ActionsManager::registerAction(m_mainWindowUi->actionTileset);
+	ActionsManager::registerAction(m_mainWindowUi->actionTerrain);
+	ActionsManager::registerAction(m_mainWindowUi->actionInformation);
+	ActionsManager::registerAction(m_mainWindowUi->actionObjects);
+	ActionsManager::registerAction(m_mainWindowUi->actionMouseModeView);
+	ActionsManager::registerAction(m_mainWindowUi->actionMouseModeSelect);
+	ActionsManager::registerAction(m_mainWindowUi->actionMouseModeMove);
+	ActionsManager::registerAction(m_mainWindowUi->actionMouseModePaint);
+	ActionsManager::registerAction(m_mainWindowUi->actionShortcutsConfiguration);
+	ActionsManager::registerAction(m_mainWindowUi->actionToolbarsConfiguration);
+	ActionsManager::registerAction(m_mainWindowUi->actionApplicationConfiguration);
+	ActionsManager::registerAction(m_mainWindowUi->actionHelp);
+	ActionsManager::registerAction(m_mainWindowUi->actionAboutQt);
+	ActionsManager::registerAction(m_mainWindowUi->actionAboutApplication);
 
 	Tileset::createCache(ArizonaTileset, SettingsManager::getValue("tileSize").toInt());
 

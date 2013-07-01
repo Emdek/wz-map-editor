@@ -1,5 +1,5 @@
 #include "ToolBarWidget.h"
-#include "ActionManager.h"
+#include "ActionsManager.h"
 #include "SettingsManager.h"
 
 #include <QtWidgets/QMenu>
@@ -59,7 +59,7 @@ void ToolBarWidget::reload()
 		}
 		else
 		{
-			addAction(ActionManager::getAction(actions.at(i)));
+			addAction(ActionsManager::getAction(actions.at(i)));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #include "ToolBarManager.h"
 #include "ToolBarWidget.h"
-#include "ActionManager.h"
+#include "ActionsManager.h"
 #include "SettingsManager.h"
 
 #include "ui_ToolBarEditorDialog.h"
@@ -82,29 +82,31 @@ void ToolBarManager::loadToolBar(int index)
 	m_managerUi->availableActionsListWidget->clear();
 	m_managerUi->availableActionsListWidget->addItem(tr("--- separator ---"));
 
-	QList<QAction*> toolBarActions = m_toolBars.at(index)->actions();
+	const QList<QAction*> actions = m_toolBars.at(index)->actions();
 
-	for (int i = 0; i < ActionManager::actions().count(); ++i)
+	for (int i = 0; i < actions.count(); ++i)
 	{
-		if (!toolBarActions.contains(ActionManager::actions().at(i)))
+		if (actions.at(i)->isSeparator())
 		{
-			QListWidgetItem *item = new QListWidgetItem(ActionManager::actions().at(i)->icon(), ActionManager::actions().at(i)->text(), m_managerUi->availableActionsListWidget);
-			item->setData(Qt::UserRole, ActionManager::actions().at(i)->objectName());
-
-			m_managerUi->availableActionsListWidget->addItem(item);
+			continue;
 		}
+
+		QListWidgetItem *item = new QListWidgetItem(actions.at(i)->icon(), actions.at(i)->text(), m_managerUi->availableActionsListWidget);
+		item->setData(Qt::UserRole, actions.at(i)->objectName());
+
+		m_managerUi->availableActionsListWidget->addItem(item);
 	}
 
-	for (int i = 0; i < toolBarActions.count(); ++i)
+	for (int i = 0; i < actions.count(); ++i)
 	{
-		if (toolBarActions.at(i)->isSeparator())
+		if (actions.at(i)->isSeparator())
 		{
 			m_managerUi->currentActionsListWidget->addItem(new QListWidgetItem(tr("--- separator ---"), m_managerUi->currentActionsListWidget));
 		}
 		else
 		{
-			QListWidgetItem *item = new QListWidgetItem(toolBarActions.at(i)->icon(), toolBarActions.at(i)->text(), m_managerUi->currentActionsListWidget);
-			item->setData(Qt::UserRole, toolBarActions.at(i)->objectName());
+			QListWidgetItem *item = new QListWidgetItem(actions.at(i)->icon(), actions.at(i)->text(), m_managerUi->currentActionsListWidget);
+			item->setData(Qt::UserRole, actions.at(i)->objectName());
 
 			m_managerUi->currentActionsListWidget->addItem(item);
 		}
