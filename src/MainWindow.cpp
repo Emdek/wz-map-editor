@@ -420,7 +420,7 @@ void MainWindow::actionToggleDock()
 		return;
 	}
 
-	QString name = action->objectName().mid(6);
+	const QString name = action->objectName().mid(6);
 
 	for (int i = 0; i < m_docks.count(); ++i)
 	{
