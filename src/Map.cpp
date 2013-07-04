@@ -61,9 +61,12 @@ void Map::setType(quint32 type)
 	m_gameType = type;
 }
 
-void Map::setTile(MapTile &tile, int x, int y)
+void Map::setTile(const MapTile &tile, int x, int y)
 {
-
+	if (x >= 0 && y >= 0 && x < m_size.width() && y < m_size.height())
+	{
+		m_tiles[x][y] = tile;
+	}
 }
 
 void Map::setTileset(TilesetType tilesetType)
