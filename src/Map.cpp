@@ -63,10 +63,16 @@ void Map::setType(quint32 type)
 
 void Map::setTile(const MapTile &tile, int x, int y)
 {
-	if (x >= 0 && y >= 0 && x < m_size.width() && y < m_size.height())
+	if (x < 0 || y < 0 || x >= m_size.width() || y > m_size.height())
 	{
-		m_tiles[x][y] = tile;
+		return;
 	}
+
+	m_tiles[x][y] = tile;
+
+	m_modified = true;
+
+	emit modified();
 }
 
 void Map::setTileset(TilesetType tilesetType)
@@ -116,7 +122,7 @@ void Map::setModified(bool modified)
 
 MapTile Map::tile(int x, int y)
 {
-	if (x >= m_tiles.count() || y >= m_tiles.at(x).count())
+	if (x < 0 || y < 0 || x >= m_tiles.count() || y >= m_tiles.at(x).count())
 	{
 		return MapTile();
 	}

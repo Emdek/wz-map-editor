@@ -134,14 +134,14 @@ void Map2DViewWidget::setMap(Map *data)
 			const int height = m_map->tile(i, j).height;
 			QGraphicsEllipseItem *item = new QGraphicsEllipseItem(((i * tileSize) - (ellipseSize / 2)), (((m_map->size().height() - j - 1) * tileSize) - ellipseSize / 2), ellipseSize, ellipseSize);
 			item->setBrush(QColor(height, height, height));
-            item->setPen(QPen(Qt::NoPen));
+			item->setPen(QPen(Qt::NoPen));
 			item->setToolTip(tr("Height: %1").arg(height));
 
 			scene()->addItem(item);
 		}
 	}
 
-	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));
+	connect(m_map, SIGNAL(modified()), this, SLOT(repaint()));
 }
 
 Map* Map2DViewWidget::map()

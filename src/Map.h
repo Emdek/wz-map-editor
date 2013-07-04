@@ -80,7 +80,6 @@ public:
 	Map(QObject *parent = NULL);
 
 	int deserialize(const QFileInfo& fileNfo);
-
 	void clear();
 	void setFilePath(const QString &filePath);
 	void setName(const QString &name);
@@ -141,7 +140,7 @@ private:
 	bool m_modified;
 
 signals:
-	void changed(QRect area);
+	void modified();
 };
 
 }
