@@ -81,31 +81,31 @@ public:
 
 	int deserialize(const QFileInfo& fileNfo);
 	void clear();
-	void setFilePath(const QString &filePath);
-	void setName(const QString &name);
-	void setSize(const QSize &size);
+	void setFilePath(const QString &getFilePath);
+	void setName(const QString &getName);
+	void setSize(const QSize &getSize);
 	void setScrollLimits(const QRect &limits);
-	void setTime(quint32 time);
-	void setType(quint32 type);
-	void setTile(const MapTile &tile, int x, int y);
+	void setTime(quint32 getTime);
+	void setType(quint32 getType);
+	void setTile(const MapTile &getTile, int x, int y);
 	void setTileset(TilesetType tilesetType);
 	void setDroids(QList<MapEntity> droids);
 	void setStructures(QList<MapEntity> structures);
 	void setFeatures(QList<MapEntity> features);
-	void setTiles(QVector<QVector<MapTile> > tiles);
+	void setTiles(QVector<QVector<MapTile> > getTiles);
 	void setGateways(QList<MapGateway> gateways);
 	void setTerrainTypes(QList<quint16> terrainTypes);
 	void setPlayerPresent(QVector<bool> playerPresent);
 	void setModified(bool modified);
-	MapTile tile(int x, int y);
-	QString filePath();
-	QString name();
-	QSize size();
-	QRect scrollLimits();
-	quint32 time();
-	quint32 type();
-	TilesetType tileset();
-	QVector<QVector<MapTile> > tiles();
+	MapTile getTile(int x, int y);
+	QString getFilePath();
+	QString getName();
+	QSize getSize();
+	QRect getScrollLimits();
+	quint32 getTime();
+	quint32 getType();
+	TilesetType getTileset();
+	QVector<QVector<MapTile> > getTiles();
 	bool isModified();
 
 private:

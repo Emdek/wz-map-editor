@@ -120,7 +120,7 @@ void Map::setModified(bool modified)
 	m_modified = modified;
 }
 
-MapTile Map::tile(int x, int y)
+MapTile Map::getTile(int x, int y)
 {
 	if (x < 0 || y < 0 || x >= m_tiles.count() || y >= m_tiles.at(x).count())
 	{
@@ -132,41 +132,41 @@ MapTile Map::tile(int x, int y)
 	}
 }
 
-QString Map::filePath()
+QString Map::getFilePath()
 {
 	return m_filePath;
 }
 
-QString Map::name()
+QString Map::getName()
 {
 	return m_levelName;
 }
 
-QSize Map::size()
+QSize Map::getSize()
 {
 	return m_size;
 }
-QRect Map::scrollLimits()
+QRect Map::getScrollLimits()
 {
 	return m_scrollLimits;
 }
 
-quint32 Map::time()
+quint32 Map::getTime()
 {
 	return m_gameTime;
 }
 
-quint32 Map::type()
+quint32 Map::getType()
 {
 	return m_gameType;
 }
 
-TilesetType Map::tileset()
+TilesetType Map::getTileset()
 {
 	return m_tileset;
 }
 
-QVector<QVector<MapTile> > Map::tiles()
+QVector<QVector<MapTile> > Map::getTiles()
 {
 	return m_tiles;
 }

@@ -315,7 +315,7 @@ void Map3DViewWidget::setMap(Map *data)
 	connect(m_map, SIGNAL(changed(QRect)), this, SLOT(repaint()));*/
 }
 
-Map* Map3DViewWidget::mapInformation()
+Map* Map3DViewWidget::getMap()
 {
 	return m_map;
 }
@@ -330,7 +330,7 @@ QSize Map3DViewWidget::sizeHint() const
 	return QSize(320, 240);
 }
 
-int Map3DViewWidget::zoom()
+int Map3DViewWidget::getZoom()
 {
 	return m_zoom;
 }

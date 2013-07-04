@@ -17,16 +17,16 @@ MapSettingsManager::MapSettingsManager(Map *map, bool newMap, QObject *parent) :
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	m_managerUi->setupUi(&managerDialog);
-	m_managerUi->nameLineEdit->setText(m_map->name());
+	m_managerUi->nameLineEdit->setText(m_map->getName());
 	m_managerUi->tilesetComboBox->addItems(Tileset::names());
-	m_managerUi->tilesetComboBox->setCurrentIndex(static_cast<int>(m_map->tileset()) - 1);
-	m_managerUi->widthSpinBox->setValue(m_map->size().width());
-	m_managerUi->heightSpinBox->setValue(m_map->size().height());
-	m_managerUi->timeEdit->setTime(QTime().addSecs(m_map->time()));
-	m_managerUi->minimumXSpinBox->setValue(m_map->scrollLimits().left());
-	m_managerUi->maximumXSpinBox->setValue(m_map->scrollLimits().right());
-	m_managerUi->minimumYSpinBox->setValue(m_map->scrollLimits().bottom());
-	m_managerUi->maximumYSpinBox->setValue(m_map->scrollLimits().top());
+	m_managerUi->tilesetComboBox->setCurrentIndex(static_cast<int>(m_map->getTileset()) - 1);
+	m_managerUi->widthSpinBox->setValue(m_map->getSize().width());
+	m_managerUi->heightSpinBox->setValue(m_map->getSize().height());
+	m_managerUi->timeEdit->setTime(QTime().addSecs(m_map->getTime()));
+	m_managerUi->minimumXSpinBox->setValue(m_map->getScrollLimits().left());
+	m_managerUi->maximumXSpinBox->setValue(m_map->getScrollLimits().right());
+	m_managerUi->minimumYSpinBox->setValue(m_map->getScrollLimits().bottom());
+	m_managerUi->maximumYSpinBox->setValue(m_map->getScrollLimits().top());
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(&managerDialog, SIGNAL(accepted()), this, SLOT(save()));
@@ -42,9 +42,9 @@ MapSettingsManager::~MapSettingsManager()
 
 void MapSettingsManager::changeTileset(int index)
 {
-	if (!m_newMap && (index != (static_cast<int>(m_map->tileset()) - 1) && QMessageBox::question(QApplication::topLevelWidgets().at(0), tr("Confirm"), tr("Do you really want to change tileset?\nThis change require reset of map information!"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No))
+	if (!m_newMap && (index != (static_cast<int>(m_map->getTileset()) - 1) && QMessageBox::question(QApplication::topLevelWidgets().at(0), tr("Confirm"), tr("Do you really want to change tileset?\nThis change require reset of map information!"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No))
 	{
-		m_managerUi->tilesetComboBox->setCurrentIndex(static_cast<int>(m_map->tileset()) - 1);
+		m_managerUi->tilesetComboBox->setCurrentIndex(static_cast<int>(m_map->getTileset()) - 1);
 	}
 }
 
@@ -56,7 +56,7 @@ void MapSettingsManager::save()
 	scrollLimits.setTop(m_managerUi->minimumYSpinBox->value());
 	scrollLimits.setBottom(m_managerUi->maximumYSpinBox->value());
 
-	if (m_managerUi->tilesetComboBox->currentIndex() != (static_cast<int>(m_map->tileset()) - 1))
+	if (m_managerUi->tilesetComboBox->currentIndex() != (static_cast<int>(m_map->getTileset()) - 1))
 	{
 		m_map->clear();
 	}

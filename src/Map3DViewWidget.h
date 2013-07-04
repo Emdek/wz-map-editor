@@ -56,15 +56,15 @@ public:
 	void _glSelect(int x, int y);
 //	void _listHits(GLint hits, GLuint *names);
 
-	Map* mapInformation();
+	Map* getMap();
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
-	int zoom();
+	int getZoom();
 
 	void setVBO();
 
 public slots:
-	void setZoom(qreal zoom);
+	void setZoom(qreal getZoom);
 
 protected:
 	void initializeGL();
@@ -104,7 +104,7 @@ private:
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
-	void zoomChanged(int zoom);
+	void zoomChanged(int getZoom);
 };
 
 }

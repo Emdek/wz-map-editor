@@ -395,7 +395,7 @@ void MainWindow::actionApplicationConfiguration()
 
 	if (Tileset::cachedTextureSize() != SettingsManager::getValue("tileSize").toInt())
 	{
-		Tileset::createCache(m_map->tileset(), SettingsManager::getValue("tileSize").toInt());
+		Tileset::createCache(m_map->getTileset(), SettingsManager::getValue("tileSize").toInt());
 	}
 }
 
@@ -473,7 +473,7 @@ void MainWindow::updateRecentFilesMenu()
 
 void MainWindow::updateTilesetView()
 {
-	Tileset *tileset = Tileset::tileset(m_map ? m_map->tileset() : ArizonaTileset);
+	Tileset *tileset = Tileset::tileset(m_map ? m_map->getTileset() : ArizonaTileset);
 
 	if (m_currentTileset != tileset->type())
 	{
@@ -516,12 +516,12 @@ void MainWindow::updateZoom(int zoom)
 		m_zoomSlider->setValue(zoom);
 	}
 
-	if (m_map2DEditorWidgetUi->map2DViewWidget->zoom() != zoom)
+	if (m_map2DEditorWidgetUi->map2DViewWidget->getZoom() != zoom)
 	{
 		m_map2DEditorWidgetUi->map2DViewWidget->setZoom(zoom);
 	}
 
-	if (m_mainWindowUi->map3DViewWidget->zoom() != zoom)
+	if (m_mainWindowUi->map3DViewWidget->getZoom() != zoom)
 	{
 		m_mainWindowUi->map3DViewWidget->setZoom(zoom);
 	}
@@ -541,15 +541,15 @@ bool MainWindow::openFile(const QString &fileName)
 
 		MapParser *mapParser = new MapParser(fileName, this);
 
-		if (mapParser->error().isEmpty())
+		if (mapParser->getErrorString().isEmpty())
 		{
-			m_map2DEditorWidgetUi->map2DViewWidget->setMap(mapParser->map());
-			m_mainWindowUi->map3DViewWidget->setMap(mapParser->map());
+			m_map2DEditorWidgetUi->map2DViewWidget->setMap(mapParser->getMap());
+			m_mainWindowUi->map3DViewWidget->setMap(mapParser->getMap());
 
 			QApplication::restoreOverrideCursor();
 
 			m_map->deleteLater();
-			m_map = mapParser->map();
+			m_map = mapParser->getMap();
 
 			mapParser->deleteLater();
 
@@ -566,9 +566,9 @@ bool MainWindow::openFile(const QString &fileName)
 			SettingsManager::setValue("recentFiles", recentFiles);
 			SettingsManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
 
-			if (Tileset::cachedTileset() != m_map->tileset())
+			if (Tileset::cachedTileset() != m_map->getTileset())
 			{
-				Tileset::createCache(m_map->tileset(), SettingsManager::getValue("tileSize").toInt());
+				Tileset::createCache(m_map->getTileset(), SettingsManager::getValue("tileSize").toInt());
 			}
 
 			updateTilesetView();
@@ -579,7 +579,7 @@ bool MainWindow::openFile(const QString &fileName)
 		{
 			QApplication::restoreOverrideCursor();
 
-			QMessageBox::critical(this, tr("Map loading error"), mapParser->error());
+			QMessageBox::critical(this, tr("Map loading error"), mapParser->getErrorString());
 
 			mapParser->deleteLater();
 

@@ -55,7 +55,7 @@ void Map2DViewWidget::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	}
 
-	const MapTile tile = m_map->tile(coordinates.x(), coordinates.y());
+	const MapTile tile = m_map->getTile(coordinates.x(), coordinates.y());
 	QMenu menu;
 	menu.addAction(tr("Tile: %1 %2").arg(coordinates.x()).arg(coordinates.y()));
 	menu.addAction(tr("Texture: %1").arg(tile.texture));
@@ -104,18 +104,18 @@ void Map2DViewWidget::setMap(Map *data)
 	const qreal ellipseSize(tileSize / 5);
 
 	scene()->clear();
-	scene()->setSceneRect(0, 0, (m_map->size().width() * tileSize), (m_map->size().height() * tileSize));
+	scene()->setSceneRect(0, 0, (m_map->getSize().width() * tileSize), (m_map->getSize().height() * tileSize));
 
-	for (int i = 0; i < m_map->size().width(); ++i)
+	for (int i = 0; i < m_map->getSize().width(); ++i)
 	{
-		for (int j = 0; j < m_map->size().height(); ++j)
+		for (int j = 0; j < m_map->getSize().height(); ++j)
 		{
-			const MapTile tile(m_map->tile(i, j));
+			const MapTile tile(m_map->getTile(i, j));
 			QTransform transform;
 			transform.rotate(tile.rotation);
 			transform.scale(((tile.flip & HorizontalFlip) ? -1 : 1), ((tile.flip & VerticalFlip) ? -1 : 1));
 
-			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->tileset(), tile.texture, tileSize));
+			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->getTileset(), tile.texture, tileSize));
 			item->setOffset(-halfTileSize, -halfTileSize);
 			item->setTransform(transform);
 			item->setToolTip(tr("Texture: %1").arg(tile.texture));
@@ -123,16 +123,16 @@ void Map2DViewWidget::setMap(Map *data)
 			scene()->addItem(item);
 
 			item->setData(0, QPoint(i, j));
-			item->setPos(((i * tileSize) + halfTileSize), ((m_map->size().height() - j - 1) * tileSize) + halfTileSize);
+			item->setPos(((i * tileSize) + halfTileSize), ((m_map->getSize().height() - j - 1) * tileSize) + halfTileSize);
 		}
 	}
 
-	for (int i = 0; i < m_map->size().width(); ++i)
+	for (int i = 0; i < m_map->getSize().width(); ++i)
 	{
-		for (int j = 0; j < m_map->size().height(); ++j)
+		for (int j = 0; j < m_map->getSize().height(); ++j)
 		{
-			const int height = m_map->tile(i, j).height;
-			QGraphicsEllipseItem *item = new QGraphicsEllipseItem(((i * tileSize) - (ellipseSize / 2)), (((m_map->size().height() - j - 1) * tileSize) - ellipseSize / 2), ellipseSize, ellipseSize);
+			const int height = m_map->getTile(i, j).height;
+			QGraphicsEllipseItem *item = new QGraphicsEllipseItem(((i * tileSize) - (ellipseSize / 2)), (((m_map->getSize().height() - j - 1) * tileSize) - ellipseSize / 2), ellipseSize, ellipseSize);
 			item->setBrush(QColor(height, height, height));
 			item->setPen(QPen(Qt::NoPen));
 			item->setToolTip(tr("Height: %1").arg(height));
@@ -144,12 +144,12 @@ void Map2DViewWidget::setMap(Map *data)
 	connect(m_map, SIGNAL(modified()), this, SLOT(repaint()));
 }
 
-Map* Map2DViewWidget::map()
+Map* Map2DViewWidget::getMap()
 {
 	return m_map;
 }
 
-int Map2DViewWidget::zoom()
+int Map2DViewWidget::getZoom()
 {
 	return m_zoom;
 }

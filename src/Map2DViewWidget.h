@@ -16,11 +16,11 @@ public:
 	Map2DViewWidget(QWidget *parent = NULL);
 
 	void setMap(Map *data);
-	Map* map();
-	int zoom();
+	Map* getMap();
+	int getZoom();
 
 public slots:
-	void setZoom(qreal zoom);
+	void setZoom(qreal getZoom);
 
 protected:
 	void wheelEvent(QWheelEvent *event);
@@ -34,7 +34,7 @@ private:
 
 signals:
 	void cooridantesChanged(int x, int y, int z);
-	void zoomChanged(int zoom);
+	void zoomChanged(int getZoom);
 };
 
 }

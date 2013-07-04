@@ -15,8 +15,8 @@ class MapParser : public QObject
 public:
 	MapParser(const QString &filePath, QObject *parent = NULL);
 
-	Map* map();
-	QString error() const;
+	Map* getMap();
+	QString getErrorString() const;
 
 protected:
 	int deserializeMap(QDataStream &stream);

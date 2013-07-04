@@ -184,11 +184,11 @@ int MapParser::deserializeMap(QDataStream &stream)
 		m_tiles.push_back(QVector<MapTile>());
 	}
 
-	for (j = 0; j < m_map->size().height(); ++j)
+	for (j = 0; j < m_map->getSize().height(); ++j)
 	{
-		for (int i = 0; i < m_map->size().width(); ++i)
+		for (int i = 0; i < m_map->getSize().width(); ++i)
 		{
-			m_tiles[i].resize(m_map->size().height());
+			m_tiles[i].resize(m_map->getSize().height());
 
 			stream >> texture >> height;
 
@@ -199,7 +199,7 @@ int MapParser::deserializeMap(QDataStream &stream)
 			tile.position.rx() = i;
 			tile.position.ry() = j;
 
-			m_tiles[i][m_map->size().height() - j - 1] = tile;
+			m_tiles[i][m_map->getSize().height() - j - 1] = tile;
 		}
 	}
 
@@ -695,12 +695,12 @@ int MapParser::deserializeFeatures(QDataStream &stream)
 	return 0;
 }
 
-Map* MapParser::map()
+Map* MapParser::getMap()
 {
 	return m_map;
 }
 
-QString MapParser::error() const
+QString MapParser::getErrorString() const
 {
 	return m_error;
 }
