@@ -20,7 +20,7 @@ void SettingsManager::createInstance(QObject *parent)
 
 void SettingsManager::restore(const QString &key)
 {
-	QSettings().setValue(key, m_instance->getDefaultValue(key));
+	QSettings().remove(key);
 }
 
 void SettingsManager::remove(const QString &key)
