@@ -82,31 +82,35 @@ void ToolBarsManager::loadToolBar(int index)
 	m_managerUi->availableActionsListWidget->clear();
 	m_managerUi->availableActionsListWidget->addItem(tr("--- separator ---"));
 
-	const QList<QAction*> actions = m_toolBars.at(index)->actions();
+	const QList<QAction*> currentActions = m_toolBars.at(index)->actions();
+	QStringList availableActions = ActionsManager::getActions();
+	availableActions.sort();
 
-	for (int i = 0; i < actions.count(); ++i)
+	for (int i = 0; i < availableActions.count(); ++i)
 	{
-		if (actions.at(i)->isSeparator())
+		QAction *action = ActionsManager::getAction(availableActions.at(i));
+
+		if (!action || action->isSeparator() || currentActions.contains(action))
 		{
 			continue;
 		}
 
-		QListWidgetItem *item = new QListWidgetItem(actions.at(i)->icon(), actions.at(i)->text(), m_managerUi->availableActionsListWidget);
-		item->setData(Qt::UserRole, actions.at(i)->objectName());
+		QListWidgetItem *item = new QListWidgetItem(action->icon(), action->text(), m_managerUi->availableActionsListWidget);
+		item->setData(Qt::UserRole, action->objectName());
 
 		m_managerUi->availableActionsListWidget->addItem(item);
 	}
 
-	for (int i = 0; i < actions.count(); ++i)
+	for (int i = 0; i < currentActions.count(); ++i)
 	{
-		if (actions.at(i)->isSeparator())
+		if (currentActions.at(i)->isSeparator())
 		{
 			m_managerUi->currentActionsListWidget->addItem(new QListWidgetItem(tr("--- separator ---"), m_managerUi->currentActionsListWidget));
 		}
 		else
 		{
-			QListWidgetItem *item = new QListWidgetItem(actions.at(i)->icon(), actions.at(i)->text(), m_managerUi->currentActionsListWidget);
-			item->setData(Qt::UserRole, actions.at(i)->objectName());
+			QListWidgetItem *item = new QListWidgetItem(currentActions.at(i)->icon(), currentActions.at(i)->text(), m_managerUi->currentActionsListWidget);
+			item->setData(Qt::UserRole, currentActions.at(i)->objectName());
 
 			m_managerUi->currentActionsListWidget->addItem(item);
 		}
@@ -219,7 +223,6 @@ void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 	{
 		case QDialogButtonBox::Ok:
 			saveToolBar();
-
 			deleteLater();
 		break;
 		case QDialogButtonBox::Apply:
