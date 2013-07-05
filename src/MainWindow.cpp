@@ -252,6 +252,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->map3DViewWidget->setMap(m_map);
 	m_mainWindowUi->action3DView->setChecked(SettingsManager::getValue("3DView").toBool());
 
+	action3DView(m_mainWindowUi->action3DView->isChecked());
+	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
+	updateZoom(SettingsManager::getValue("zoomLevel").toInt());
+	restoreGeometry(SettingsManager::getValue("geometry").toByteArray());
+	restoreState(SettingsManager::getValue("windowState").toByteArray());
+
 	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
 
 	for (int i = 0; i < toolbars.count(); ++i)
@@ -265,12 +271,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 		connect(action, SIGNAL(toggled(bool)), toolbars.at(i), SLOT(setVisible(bool)));
 		connect(toolbars.at(i), SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
 	}
-
-	action3DView(m_mainWindowUi->action3DView->isChecked());
-	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
-	updateZoom(SettingsManager::getValue("zoomLevel").toInt());
-	restoreGeometry(SettingsManager::getValue("geometry").toByteArray());
-	restoreState(SettingsManager::getValue("windowState").toByteArray());
 }
 
 MainWindow::~MainWindow()
