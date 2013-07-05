@@ -28,7 +28,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item row="0" column="0">
@@ -49,7 +58,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuHelp">
@@ -112,8 +121,23 @@
      </property>
      <addaction name="actionMainToolbar"/>
     </widget>
+    <widget class="QMenu" name="menuVisibility">
+     <property name="title">
+      <string>Visibility</string>
+     </property>
+     <addaction name="actionToggleStructuresVisibility"/>
+     <addaction name="actionToggleDroidsVisibility"/>
+     <addaction name="actionToggleFeaturesVisibility"/>
+     <addaction name="separator"/>
+     <addaction name="actionToggleTexturesVisibility"/>
+     <addaction name="actionToggleHeightIndicatorsVisibility"/>
+     <addaction name="separator"/>
+     <addaction name="actionToggleScrollLimitsVisibility"/>
+     <addaction name="actionToggleGatewaysVisibility"/>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="action3DView"/>
+    <addaction name="menuVisibility"/>
     <addaction name="separator"/>
     <addaction name="actionZoomIn"/>
     <addaction name="actionZoomOut"/>
@@ -174,6 +198,17 @@
      <width>16</width>
      <height>16</height>
     </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="WZMapEditor::ToolBarWidget" name="visibilityToolBar">
+   <property name="windowTitle">
+    <string>Visibility Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -432,6 +467,83 @@
   <action name="actionProperties">
    <property name="text">
     <string>Properties...</string>
+   </property>
+  </action>
+  <action name="actionToggleFeaturesVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Features</string>
+   </property>
+  </action>
+  <action name="actionToggleStructuresVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Structures</string>
+   </property>
+  </action>
+  <action name="actionToggleDroidsVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Droids</string>
+   </property>
+  </action>
+  <action name="actionToggleGatewaysVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Gateways</string>
+   </property>
+  </action>
+  <action name="actionToggleScrollLimitsVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Scroll Limits</string>
+   </property>
+  </action>
+  <action name="actionToggleTexturesVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Textures</string>
+   </property>
+  </action>
+  <action name="actionToggleHeightIndicatorsVisibility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Height Indicators</string>
    </property>
   </action>
  </widget>

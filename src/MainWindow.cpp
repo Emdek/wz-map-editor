@@ -41,6 +41,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	QStringList mainToolbar;
 	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
 
+	QStringList visibilityToolbar;
+	visibilityToolbar << "ToggleStructuresVisibility" << "ToggleDroidsVisibility" << "ToggleFeaturesVisibility" << QString() << "ToggleTexturesVisibility" << "ToggleHeightIndicatorsVisibility" << QString() << "ToggleScrollLimitsVisibility" << "ToggleGatewaysVisibility";
+
 	SettingsManager::createInstance(this);
 	SettingsManager::setDefaultValue("dataPath", QVariant(QString()));
 	SettingsManager::setDefaultValue("tileSize", QVariant(64));
@@ -48,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	SettingsManager::setDefaultValue("3DView", QVariant(true));
 	SettingsManager::setDefaultValue("lockToolBars", QVariant(false));
 	SettingsManager::setDefaultValue("toolbars/mainToolbar", QVariant(mainToolbar));
+	SettingsManager::setDefaultValue("toolbars/visibilityToolbar", QVariant(visibilityToolbar));
 	SettingsManager::setDefaultValue("actions/New", QVariant(QKeySequence(QKeySequence::New).toString()));
 	SettingsManager::setDefaultValue("actions/Open", QVariant(QKeySequence(QKeySequence::Open).toString()));
 	SettingsManager::setDefaultValue("actions/Save", QVariant(QKeySequence(QKeySequence::Save).toString()));
@@ -188,6 +192,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	ActionsManager::registerAction(m_mainWindowUi->actionZoomIn);
 	ActionsManager::registerAction(m_mainWindowUi->actionZoomOut);
 	ActionsManager::registerAction(m_mainWindowUi->actionZoomOriginal);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleStructuresVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleDroidsVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleFeaturesVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleTexturesVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleHeightIndicatorsVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleScrollLimitsVisibility);
+	ActionsManager::registerAction(m_mainWindowUi->actionToggleGatewaysVisibility);
 	ActionsManager::registerAction(m_mainWindowUi->actionTileset);
 	ActionsManager::registerAction(m_mainWindowUi->actionTerrain);
 	ActionsManager::registerAction(m_mainWindowUi->actionInformation);
@@ -242,6 +253,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
 	m_mainWindowUi->map3DViewWidget->setMap(m_map);
 	m_mainWindowUi->mainToolbar->reload();
+	m_mainWindowUi->visibilityToolBar->reload();
 	m_mainWindowUi->action3DView->setChecked(SettingsManager::getValue("3DView").toBool());
 
 	action3DView(m_mainWindowUi->action3DView->isChecked());
@@ -378,8 +390,7 @@ void MainWindow::actionShortcutsConfiguration()
 void MainWindow::actionToolbarsConfiguration()
 {
 	ToolBarWidget *toolbar = NULL;
-	QList<ToolBarWidget*> toolbars;
-	toolbars.append(m_mainWindowUi->mainToolbar);
+	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
 
 	if (sender()->inherits("ToolBarWidget"))
 	{
@@ -406,7 +417,12 @@ void MainWindow::actionAboutApplication()
 
 void MainWindow::actionLockToolBars(bool lock)
 {
-	m_mainWindowUi->mainToolbar->setMovable(!lock);
+	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
+
+	for (int i = 0; i < toolbars.count(); ++i)
+	{
+		toolbars.at(i)->setMovable(!lock);
+	}
 
 	SettingsManager::setValue("lockToolBars", lock);
 }
