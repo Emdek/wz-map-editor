@@ -399,12 +399,17 @@ void MainWindow::actionShortcutsConfiguration()
 
 void MainWindow::actionToolbarsConfiguration()
 {
-	ToolBarWidget *toolbar = NULL;
 	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
+	ToolBarWidget *toolbar = NULL;
 
-	if (sender()->inherits("ToolBarWidget"))
+	for (int i = 0; i < toolbars.count(); ++i)
 	{
-		toolbar = qobject_cast<ToolBarWidget*>(sender());
+		if (toolbars.at(i)->objectName() == sender()->objectName())
+		{
+			toolbar = toolbars.at(i);
+
+			break;
+		}
 	}
 
 	new ToolBarsManager(toolbars, toolbar, this);

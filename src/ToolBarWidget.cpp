@@ -37,6 +37,7 @@ void ToolBarWidget::contextMenuEvent(QContextMenuEvent *event)
 	actionLock->setChecked(!isMovable());
 
 	QAction *actionConfigure = menu.addAction(QIcon(":/icons/configure-toolbars.png"), tr("Configure Toolbars..."));
+	actionConfigure->setObjectName(objectName());
 
 	connect(actionShow, SIGNAL(toggled(bool)), this, SLOT(setVisible(bool)));
 	connect(actionLock, SIGNAL(toggled(bool)), parent(), SLOT(actionLockToolBars(bool)));
