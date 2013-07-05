@@ -119,7 +119,6 @@
      <property name="title">
       <string>Toolbars</string>
      </property>
-     <addaction name="actionMainToolbar"/>
     </widget>
     <widget class="QMenu" name="menuVisibility">
      <property name="title">

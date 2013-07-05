@@ -233,7 +233,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_mainWindowUi->actionTerrain, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionInformation, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
 	connect(m_mainWindowUi->actionObjects, SIGNAL(triggered()), this, SLOT(actionToggleDock()));
-	connect(m_mainWindowUi->actionMainToolbar, SIGNAL(toggled(bool)), m_mainWindowUi->mainToolbar, SLOT(setVisible(bool)));
 	connect(m_mainWindowUi->actionShortcutsConfiguration, SIGNAL(triggered()), this, SLOT(actionShortcutsConfiguration()));
 	connect(m_mainWindowUi->actionToolbarsConfiguration, SIGNAL(triggered()), this, SLOT(actionToolbarsConfiguration()));
 	connect(m_mainWindowUi->actionApplicationConfiguration, SIGNAL(triggered()), this, SLOT(actionApplicationConfiguration()));
@@ -245,16 +244,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	connect(m_map2DEditorWidgetUi->map2DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
 	connect(m_mainWindowUi->map3DViewWidget, SIGNAL(zoomChanged(int)), this, SLOT(updateZoom(int)));
 	connect(m_zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(updateZoom(int)));
-	connect(m_mainWindowUi->mainToolbar, SIGNAL(visibilityChanged(bool)), m_mainWindowUi->actionMainToolbar, SLOT(setChecked(bool)));
 	connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 	connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 	connect(m_tilesetUi->showTransitionTilesCheckBox, SIGNAL(clicked()), this, SLOT(updateTilesetView()));
 
 	m_map2DEditorWidgetUi->map2DViewWidget->setMap(m_map);
 	m_mainWindowUi->map3DViewWidget->setMap(m_map);
-	m_mainWindowUi->mainToolbar->reload();
-	m_mainWindowUi->visibilityToolBar->reload();
 	m_mainWindowUi->action3DView->setChecked(SettingsManager::getValue("3DView").toBool());
+
+	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
+
+	for (int i = 0; i < toolbars.count(); ++i)
+	{
+		toolbars.at(i)->reload();
+
+		QAction *action = m_mainWindowUi->menuToolbars->addAction(toolbars.at(i)->windowTitle());
+		action->setCheckable(true);
+		action->setChecked(toolbars.at(i)->isVisible());
+
+		connect(action, SIGNAL(toggled(bool)), toolbars.at(i), SLOT(setVisible(bool)));
+		connect(toolbars.at(i), SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+	}
 
 	action3DView(m_mainWindowUi->action3DView->isChecked());
 	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
