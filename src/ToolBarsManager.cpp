@@ -243,7 +243,7 @@ void ToolBarsManager::saveToolBar()
 
 	for (int i = 0; i < m_managerUi->currentActionsListWidget->count(); ++i)
 	{
-		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString().mid(6));
+		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
 	}
 
 	SettingsManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
