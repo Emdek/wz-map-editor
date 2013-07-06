@@ -52,7 +52,7 @@ QVariant SettingsManager::getValue(const QString &key, const QVariant &value)
 {
 	const QVariant defaultKeyValue = getDefaultValue(key);
 
-	return QSettings().value(key, (defaultKeyValue.isNull()?value:defaultKeyValue));
+	return QSettings().value(key, (defaultKeyValue.isNull() ? value : defaultKeyValue));
 }
 
 QStringList SettingsManager::valueKeys()
