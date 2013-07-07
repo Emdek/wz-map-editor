@@ -83,7 +83,7 @@ void ToolBarsManager::loadToolBar(int index)
 	m_managerUi->availableActionsListWidget->addItem(tr("--- separator ---"));
 
 	const QList<QAction*> currentActions = m_toolBars.at(index)->actions();
-	QStringList availableActions = ActionsManager::getActions();
+	QStringList availableActions = ActionsManager::getIdentifiers();
 	availableActions.sort();
 
 	for (int i = 0; i < availableActions.count(); ++i)

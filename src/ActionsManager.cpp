@@ -143,7 +143,7 @@ QKeySequence ActionsManager::getDefaultShortcut(const QString &action)
 	return QKeySequence(SettingsManager::getDefaultValue("Actions/" + action).toString());
 }
 
-QStringList ActionsManager::getActions()
+QStringList ActionsManager::getIdentifiers()
 {
 	return m_actions.keys();
 }

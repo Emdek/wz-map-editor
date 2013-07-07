@@ -20,10 +20,10 @@ ShortcutsManager::ShortcutsManager(MainWindow *parent) : QObject(parent),
 	m_managerUi->setupUi(&managerDialog);
 
 	m_managerUi->shortcutsView->setColumnCount(2);
-	m_managerUi->shortcutsView->setRowCount(ActionsManager::getActions().count());
+	m_managerUi->shortcutsView->setRowCount(ActionsManager::getIdentifiers().count());
 	m_managerUi->shortcutsView->setItemDelegate(new ShortcutEditorDelegate(this));
 
-	const QStringList actions = ActionsManager::getActions();
+	const QStringList actions = ActionsManager::getIdentifiers();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{
@@ -58,7 +58,7 @@ ShortcutsManager::~ShortcutsManager()
 
 void ShortcutsManager::filter(const QString &filter)
 {
-	for (int i = 0; i < ActionsManager::getActions().count(); ++i)
+	for (int i = 0; i < ActionsManager::getIdentifiers().count(); ++i)
 	{
 		if (filter.isEmpty() || m_managerUi->shortcutsView->item(i, 0)->text().contains(filter, Qt::CaseInsensitive) || m_managerUi->shortcutsView->item(i, 1)->text().contains(filter, Qt::CaseInsensitive))
 		{
@@ -73,7 +73,7 @@ void ShortcutsManager::filter(const QString &filter)
 
 void ShortcutsManager::save()
 {
-	const QStringList actions = ActionsManager::getActions();
+	const QStringList actions = ActionsManager::getIdentifiers();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{
@@ -90,7 +90,7 @@ void ShortcutsManager::dialogButtonCliked(QAbstractButton *button)
 		return;
 	}
 
-	const QStringList actions = ActionsManager::getActions();
+	const QStringList actions = ActionsManager::getIdentifiers();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{

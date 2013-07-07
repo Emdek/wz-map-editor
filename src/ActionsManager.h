@@ -14,7 +14,7 @@ class ActionsManager : public QObject
 public:
 	static void createInstance(QObject *parent = NULL);
 	static void registerAction(QAction *action, QString name = QString());
-	static void registerActions(QList<QAction*> getActions);
+	static void registerActions(QList<QAction*> getIdentifiers);
 	static void setShortcut(QAction *action, const QKeySequence &shortcut);
 	static void setShortcut(const QString &action, const QKeySequence &shortcut);
 	static void restoreDefaultShortcut(QAction *action);
@@ -24,7 +24,7 @@ public:
 	static QKeySequence getShortcut(const QString &action);
 	static QKeySequence getDefaultShortcut(QAction *action);
 	static QKeySequence getDefaultShortcut(const QString &action);
-	static QStringList getActions();
+	static QStringList getIdentifiers();
 	static bool hasShortcut(const QKeySequence &shortcut, const QString &excludeAction = QString());
 
 private:
