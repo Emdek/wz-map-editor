@@ -1,8 +1,9 @@
 #include "MainWindow.h"
-#include "SettingsManager.h"
 #include "ActionsManager.h"
+#include "SettingsManager.h"
 #include "ShortcutsManager.h"
 #include "ToolBarsManager.h"
+#include "ToolBarWidget.h"
 #include "PreferencesManager.h"
 #include "MapSettingsManager.h"
 #include "Map.h"
@@ -16,6 +17,7 @@
 #include "ui_InformationDockWidget.h"
 
 #include <QtCore/QStandardPaths>
+#include <QtGui/QCloseEvent>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QToolButton>
@@ -38,11 +40,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_terrainUi(new Ui::TerrainDockWidget()),
 	m_informationUi(new Ui::InformationDockWidget())
 {
-	QStringList mainToolbar;
-	mainToolbar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
+	QStringList toolBars;
+	toolBars << "mainToolBar" << "visibilityToolBar";
 
-	QStringList visibilityToolbar;
-	visibilityToolbar << "ToggleStructuresVisibility" << "ToggleDroidsVisibility" << "ToggleFeaturesVisibility" << QString() << "ToggleTexturesVisibility" << "ToggleHeightIndicatorsVisibility" << QString() << "ToggleScrollLimitsVisibility" << "ToggleGatewaysVisibility";
+	QStringList mainToolBar;
+	mainToolBar	<< "New" << "Open" << "Save" << QString() << "Fullscreen" << "3DView";
+
+	QStringList visibilityToolBar;
+	visibilityToolBar << "ToggleStructuresVisibility" << "ToggleDroidsVisibility" << "ToggleFeaturesVisibility" << QString() << "ToggleTexturesVisibility" << "ToggleHeightIndicatorsVisibility" << QString() << "ToggleScrollLimitsVisibility" << "ToggleGatewaysVisibility";
 
 	SettingsManager::createInstance(this);
 	SettingsManager::setDefaultValue("dataPath", QVariant(QString()));
@@ -50,24 +55,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	SettingsManager::setDefaultValue("zoomLevel", QVariant(100));
 	SettingsManager::setDefaultValue("3DView", QVariant(true));
 	SettingsManager::setDefaultValue("lockToolBars", QVariant(false));
-	SettingsManager::setDefaultValue("toolbars/mainToolbar", QVariant(mainToolbar));
-	SettingsManager::setDefaultValue("toolbars/visibilityToolbar", QVariant(visibilityToolbar));
-	SettingsManager::setDefaultValue("actions/New", QVariant(QKeySequence(QKeySequence::New).toString()));
-	SettingsManager::setDefaultValue("actions/Open", QVariant(QKeySequence(QKeySequence::Open).toString()));
-	SettingsManager::setDefaultValue("actions/Save", QVariant(QKeySequence(QKeySequence::Save).toString()));
-	SettingsManager::setDefaultValue("actions/SaveAs", QVariant(QKeySequence(QKeySequence::SaveAs).toString()));
-	SettingsManager::setDefaultValue("actions/Exit", QVariant(QKeySequence(QKeySequence::Quit).toString()));
-	SettingsManager::setDefaultValue("actions/Undo", QVariant(QKeySequence(QKeySequence::Undo).toString()));
-	SettingsManager::setDefaultValue("actions/Redo", QVariant(QKeySequence(QKeySequence::Redo).toString()));
-	SettingsManager::setDefaultValue("actions/ZoomIn", QVariant(QKeySequence(QKeySequence::ZoomIn).toString()));
-	SettingsManager::setDefaultValue("actions/ZoomOut", QVariant(QKeySequence(QKeySequence::ZoomOut).toString()));
-	SettingsManager::setDefaultValue("actions/Help", QVariant(QKeySequence(QKeySequence::HelpContents).toString()));
-	SettingsManager::setDefaultValue("actions/Tileset", QVariant(QKeySequence("Ctrl+1").toString()));
-	SettingsManager::setDefaultValue("actions/Objects", QVariant(QKeySequence("Ctrl+2").toString()));
-	SettingsManager::setDefaultValue("actions/Terrain", QVariant(QKeySequence("Ctrl+3").toString()));
-	SettingsManager::setDefaultValue("actions/Information", QVariant(QKeySequence("Ctrl+4").toString()));
-	SettingsManager::setDefaultValue("actions/ApplicationConfiguration", QVariant(QKeySequence(QKeySequence::Preferences).toString()));
-	SettingsManager::setDefaultValue("actions/Fullscreen", QVariant(QKeySequence("F11").toString()));
+	SettingsManager::setDefaultValue("toolBars", QVariant(toolBars));
+	SettingsManager::setDefaultValue("ToolBars/mainToolBar/actions", QVariant(mainToolBar));
+	SettingsManager::setDefaultValue("ToolBars/mainToolBar/title", QVariant(tr("Main Toolbar")));
+	SettingsManager::setDefaultValue("ToolBars/visibilityToolBar/actions", QVariant(visibilityToolBar));
+	SettingsManager::setDefaultValue("ToolBars/visibilityToolBar/title", QVariant(tr("Visibility Toolbar")));
+	SettingsManager::setDefaultValue("Actions/New", QVariant(QKeySequence(QKeySequence::New).toString()));
+	SettingsManager::setDefaultValue("Actions/Open", QVariant(QKeySequence(QKeySequence::Open).toString()));
+	SettingsManager::setDefaultValue("Actions/Save", QVariant(QKeySequence(QKeySequence::Save).toString()));
+	SettingsManager::setDefaultValue("Actions/SaveAs", QVariant(QKeySequence(QKeySequence::SaveAs).toString()));
+	SettingsManager::setDefaultValue("Actions/Exit", QVariant(QKeySequence(QKeySequence::Quit).toString()));
+	SettingsManager::setDefaultValue("Actions/Undo", QVariant(QKeySequence(QKeySequence::Undo).toString()));
+	SettingsManager::setDefaultValue("Actions/Redo", QVariant(QKeySequence(QKeySequence::Redo).toString()));
+	SettingsManager::setDefaultValue("Actions/ZoomIn", QVariant(QKeySequence(QKeySequence::ZoomIn).toString()));
+	SettingsManager::setDefaultValue("Actions/ZoomOut", QVariant(QKeySequence(QKeySequence::ZoomOut).toString()));
+	SettingsManager::setDefaultValue("Actions/Help", QVariant(QKeySequence(QKeySequence::HelpContents).toString()));
+	SettingsManager::setDefaultValue("Actions/Tileset", QVariant(QKeySequence("Ctrl+1").toString()));
+	SettingsManager::setDefaultValue("Actions/Objects", QVariant(QKeySequence("Ctrl+2").toString()));
+	SettingsManager::setDefaultValue("Actions/Terrain", QVariant(QKeySequence("Ctrl+3").toString()));
+	SettingsManager::setDefaultValue("Actions/Information", QVariant(QKeySequence("Ctrl+4").toString()));
+	SettingsManager::setDefaultValue("Actions/ApplicationConfiguration", QVariant(QKeySequence(QKeySequence::Preferences).toString()));
+	SettingsManager::setDefaultValue("Actions/Fullscreen", QVariant(QKeySequence("F11").toString()));
 
 	m_mainWindowUi->setupUi(this);
 
@@ -252,25 +260,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 	m_mainWindowUi->map3DViewWidget->setMap(m_map);
 	m_mainWindowUi->action3DView->setChecked(SettingsManager::getValue("3DView").toBool());
 
-	action3DView(m_mainWindowUi->action3DView->isChecked());
-	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
+	updateToolBars();
 	updateZoom(SettingsManager::getValue("zoomLevel").toInt());
 	restoreGeometry(SettingsManager::getValue("geometry").toByteArray());
 	restoreState(SettingsManager::getValue("windowState").toByteArray());
-
-	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
-
-	for (int i = 0; i < toolbars.count(); ++i)
-	{
-		toolbars.at(i)->reload();
-
-		QAction *action = m_mainWindowUi->menuToolbars->addAction(toolbars.at(i)->windowTitle());
-		action->setCheckable(true);
-		action->setChecked(toolbars.at(i)->isVisible());
-
-		connect(action, SIGNAL(toggled(bool)), toolbars.at(i), SLOT(setVisible(bool)));
-		connect(toolbars.at(i), SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
-	}
+	action3DView(m_mainWindowUi->action3DView->isChecked());
+	actionLockToolBars(SettingsManager::getValue("lockToolBars").toBool());
 }
 
 MainWindow::~MainWindow()
@@ -399,20 +394,20 @@ void MainWindow::actionShortcutsConfiguration()
 
 void MainWindow::actionToolbarsConfiguration()
 {
-	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
-	ToolBarWidget *toolbar = NULL;
+	const QList<ToolBarWidget*> toolBars = findChildren<ToolBarWidget*>();
+	ToolBarWidget *selectedToolBar = NULL;
 
-	for (int i = 0; i < toolbars.count(); ++i)
+	for (int i = 0; i < toolBars.count(); ++i)
 	{
-		if (toolbars.at(i)->objectName() == sender()->objectName())
+		if (toolBars.at(i)->objectName() == sender()->objectName())
 		{
-			toolbar = toolbars.at(i);
+			selectedToolBar = toolBars.at(i);
 
 			break;
 		}
 	}
 
-	new ToolBarsManager(toolbars, toolbar, this);
+	new ToolBarsManager(toolBars, selectedToolBar, this);
 }
 
 void MainWindow::actionApplicationConfiguration()
@@ -432,11 +427,11 @@ void MainWindow::actionAboutApplication()
 
 void MainWindow::actionLockToolBars(bool lock)
 {
-	const QList<ToolBarWidget*> toolbars = findChildren<ToolBarWidget*>();
+	const QList<ToolBarWidget*> toolBars = findChildren<ToolBarWidget*>();
 
-	for (int i = 0; i < toolbars.count(); ++i)
+	for (int i = 0; i < toolBars.count(); ++i)
 	{
-		toolbars.at(i)->setMovable(!lock);
+		toolBars.at(i)->setMovable(!lock);
 	}
 
 	SettingsManager::setValue("lockToolBars", lock);
@@ -481,7 +476,7 @@ void MainWindow::actionToggleDock()
 
 void MainWindow::updateRecentFilesMenu()
 {
-	QStringList recentFiles = SettingsManager::getValue("recentFiles").toStringList();
+	const QStringList recentFiles = SettingsManager::getValue("recentFiles").toStringList();
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -500,6 +495,42 @@ void MainWindow::updateRecentFilesMenu()
 	}
 
 	m_mainWindowUi->menuOpenRecent->setEnabled(recentFiles.count());
+}
+
+void MainWindow::updateToolBars()
+{
+	QStringList currentToolBars = SettingsManager::getValue("toolBars").toStringList();
+	const QList<ToolBarWidget*> existingToolBars = findChildren<ToolBarWidget*>();
+
+	for (int i = (existingToolBars.count() - 1); i >= 0; --i)
+	{
+		if (currentToolBars.contains(existingToolBars.at(i)->objectName()))
+		{
+			existingToolBars.at(i)->reload();
+
+			currentToolBars.removeAt(i);
+		}
+		else
+		{
+			existingToolBars.at(i)->deleteLater();
+		}
+	}
+
+	for (int i = 0; i < currentToolBars.count(); ++i)
+	{
+		ToolBarWidget *toolBar = new ToolBarWidget(currentToolBars.at(i), this);
+		QAction *action = m_mainWindowUi->menuToolbars->addAction(toolBar->windowTitle());
+		action->setCheckable(true);
+		action->setChecked(toolBar->isVisible());
+		action->setObjectName("toggleToolBar" + currentToolBars.at(i));
+
+		ActionsManager::registerAction(action);
+
+		addToolBar(toolBar);
+
+		connect(action, SIGNAL(toggled(bool)), toolBar, SLOT(setVisible(bool)));
+		connect(toolBar, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+	}
 }
 
 void MainWindow::updateTilesetView()

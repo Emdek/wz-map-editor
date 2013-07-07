@@ -7,8 +7,12 @@
 namespace WZMapEditor
 {
 
-ToolBarWidget::ToolBarWidget(QMainWindow *parent) : QToolBar(parent)
+ToolBarWidget::ToolBarWidget(const QString &identifier, QMainWindow *parent) : QToolBar(parent)
 {
+	setObjectName(identifier);
+	setMovable(!SettingsManager::getValue("Window/toolBarsLocked").toBool());
+	setWindowTitle(SettingsManager::getValue("ToolBars/" + objectName() + "/title").toString());
+	reload();
 }
 
 void ToolBarWidget::showEvent(QShowEvent *event)
@@ -50,7 +54,7 @@ void ToolBarWidget::reload()
 {
 	clear();
 
-	QStringList actions = SettingsManager::getValue("toolbars/" + objectName()).toStringList();
+	QStringList actions = SettingsManager::getValue("ToolBars/" + objectName() + "/actions").toStringList();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{

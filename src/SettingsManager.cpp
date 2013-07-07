@@ -1,7 +1,6 @@
 #include "SettingsManager.h"
 
 #include <QtCore/QSettings>
-#include <QtGui/QKeySequence>
 
 namespace WZMapEditor
 {

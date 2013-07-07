@@ -78,7 +78,7 @@ void ActionsManager::setShortcut(const QString &action, const QKeySequence &shor
 	{
 		m_actions.value(action)->setShortcut(shortcut);
 
-		SettingsManager::setValue("Actions/" + action, shortcut.toString());
+		SettingsManager::setValue(("Actions/" + action), shortcut.toString());
 	}
 }
 

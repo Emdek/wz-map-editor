@@ -13,7 +13,7 @@ class ToolBarWidget : public QToolBar
 	Q_OBJECT
 
 public:
-	ToolBarWidget(QMainWindow *parent = NULL);
+	ToolBarWidget(const QString &identifier, QMainWindow *parent = NULL);
 
 public slots:
 	void reload();

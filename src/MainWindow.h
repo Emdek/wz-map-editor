@@ -55,6 +55,7 @@ public slots:
 	void actionLockToolBars(bool lock);
 	void actionToggleDock();
 	void updateRecentFilesMenu();
+	void updateToolBars();
 	void updateTilesetView();
 	void updateCoordinates(int x, int y, int z);
 	void updateZoom(int zoom);
