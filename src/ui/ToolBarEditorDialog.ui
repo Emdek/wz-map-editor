@@ -7,15 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>620</width>
-    <height>336</height>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Configure Toolbars</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/resources.qrc">
-    <normaloff>:/icons/warzone2100mapeditor.png</normaloff>:/icons/warzone2100mapeditor.png</iconset>
+   <iconset>
+    <normaloff>:/icons/logsim.png</normaloff>:/icons/logsim.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
@@ -33,6 +33,42 @@
      <item>
       <widget class="QComboBox" name="toolBarComboBox"/>
      </item>
+     <item>
+      <widget class="QToolButton" name="addToolBarButton">
+       <property name="toolTip">
+        <string>Add Toolbar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/resources.qrc">
+         <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="removeToolBarButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Delete Toolbar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/resources.qrc">
+         <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="renameToolBarButton">
+       <property name="toolTip">
+        <string>Rename Toolbar</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/resources.qrc">
+         <normaloff>:/icons/edit-rename.png</normaloff>:/icons/edit-rename.png</iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -42,6 +78,9 @@
        <property name="text">
         <string>Available actions:</string>
        </property>
+       <property name="buddy">
+        <cstring>availableActionsListWidget</cstring>
+       </property>
       </widget>
      </item>
      <item row="1" column="2">
@@ -49,17 +88,13 @@
        <property name="text">
         <string>Current actions:</string>
        </property>
+       <property name="buddy">
+        <cstring>currentActionsListWidget</cstring>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QListWidget" name="availableActionsListWidget">
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QListWidget" name="availableActionsListWidget"/>
      </item>
      <item row="2" column="2">
       <layout class="QVBoxLayout" name="currentActionsLayout">
@@ -77,7 +112,7 @@
          </property>
          <property name="icon">
           <iconset resource="../resources/resources.qrc">
-           <normaloff>:/icons/arrow-left.png</normaloff>:/icons/arrow-left.png</iconset>
+           <normaloff>:/icons/go-previous.png</normaloff>:/icons/go-previous.png</iconset>
          </property>
         </widget>
        </item>
@@ -88,7 +123,7 @@
          </property>
          <property name="icon">
           <iconset resource="../resources/resources.qrc">
-           <normaloff>:/icons/arrow-right.png</normaloff>:/icons/arrow-right.png</iconset>
+           <normaloff>:/icons/go-next.png</normaloff>:/icons/go-next.png</iconset>
          </property>
         </widget>
        </item>
@@ -115,7 +150,7 @@
          </property>
          <property name="icon">
           <iconset resource="../resources/resources.qrc">
-           <normaloff>:/icons/arrow-down.png</normaloff>:/icons/arrow-down.png</iconset>
+           <normaloff>:/icons/go-down.png</normaloff>:/icons/go-down.png</iconset>
          </property>
         </widget>
        </item>
@@ -126,7 +161,7 @@
          </property>
          <property name="icon">
           <iconset resource="../resources/resources.qrc">
-           <normaloff>:/icons/arrow-up.png</normaloff>:/icons/arrow-up.png</iconset>
+           <normaloff>:/icons/go-up.png</normaloff>:/icons/go-up.png</iconset>
          </property>
         </widget>
        </item>
@@ -168,7 +203,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="showCheckBox">
+    <widget class="QCheckBox" name="visibleCheckBox">
      <property name="text">
       <string>Visible</string>
      </property>
@@ -190,6 +225,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>toolBarComboBox</tabstop>
+  <tabstop>addToolBarButton</tabstop>
+  <tabstop>removeToolBarButton</tabstop>
+  <tabstop>availableActionsListWidget</tabstop>
+  <tabstop>moveUpButton</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>moveDownButton</tabstop>
+  <tabstop>removeButton</tabstop>
+  <tabstop>currentActionsListWidget</tabstop>
+  <tabstop>visibleCheckBox</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>
  </resources>

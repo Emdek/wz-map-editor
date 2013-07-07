@@ -28,7 +28,7 @@ ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(m_managerUi->toolBarComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(loadToolBar(int)));
-	connect(m_managerUi->showCheckBox, SIGNAL(clicked()), this, SLOT(setModified()));
+	connect(m_managerUi->visibleCheckBox, SIGNAL(clicked()), this, SLOT(setModified()));
 	connect(m_managerUi->availableActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(availableActionsCurrentItemChanged(int)));
 	connect(m_managerUi->currentActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(currentActionsCurrentItemChanged(int)));
 	connect(m_managerUi->removeButton, SIGNAL(clicked()), this, SLOT(removeItem()));
@@ -116,7 +116,7 @@ void ToolBarsManager::loadToolBar(int index)
 		}
 	}
 
-	m_managerUi->showCheckBox->setChecked(m_toolBars.at(index)->isVisible());
+	m_managerUi->visibleCheckBox->setChecked(m_toolBars.at(index)->isVisible());
 	m_managerUi->toolBarComboBox->setCurrentIndex(index);
 
 	setModified(false);
@@ -248,7 +248,7 @@ void ToolBarsManager::saveToolBar()
 
 	SettingsManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
 
-	m_toolBars.at(m_currentToolBar)->setVisible(m_managerUi->showCheckBox->isChecked());
+	m_toolBars.at(m_currentToolBar)->setVisible(m_managerUi->visibleCheckBox->isChecked());
 	m_toolBars.at(m_currentToolBar)->reload();
 
 	setModified(false);
