@@ -18,6 +18,9 @@ public:
 public slots:
 	void reload();
 
+protected slots:
+	void configure();
+
 protected:
 	void showEvent(QShowEvent *event);
 	void hideEvent(QHideEvent *event);
@@ -25,6 +28,8 @@ protected:
 
 signals:
 	void visibilityChanged(bool visible);
+	void requestToolBarsLock(bool lock);
+	void requestConfigure(QString toolBar);
 };
 
 }

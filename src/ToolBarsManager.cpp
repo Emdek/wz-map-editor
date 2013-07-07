@@ -12,18 +12,26 @@
 namespace WZMapEditor
 {
 
-ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar, QObject *parent) : QObject(parent),
+ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &selectedToolBar, QObject *parent) : QObject(parent),
 	m_managerUi(new Ui::ToolBarEditorDialog()),
 	m_toolBars(toolBars),
 	m_currentToolBar(-1),
 	m_isCurrentModified(false)
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
+
 	m_managerUi->setupUi(&managerDialog);
+
+	int toolBarToLoad = 0;
 
 	for (int i = 0; i < toolBars.count(); ++i)
 	{
 		m_managerUi->toolBarComboBox->addItem(toolBars.at(i)->windowTitle());
+
+		if (toolBars.at(i)->objectName() == selectedToolBar)
+		{
+			toolBarToLoad = i;
+		}
 	}
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
@@ -36,13 +44,6 @@ ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *
 	connect(m_managerUi->moveUpButton, SIGNAL(clicked()), this, SLOT(moveUpItem()));
 	connect(m_managerUi->moveDownButton, SIGNAL(clicked()), this, SLOT(moveDownItem()));
 	connect(m_managerUi->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonCliked(QAbstractButton*)));
-
-	int toolBarToLoad = toolBars.indexOf(configureToolBar);
-
-	if (toolBarToLoad < 0)
-	{
-		toolBarToLoad = 0;
-	}
 
 	loadToolBar(toolBarToLoad);
 

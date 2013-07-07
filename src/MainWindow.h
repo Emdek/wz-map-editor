@@ -49,7 +49,7 @@ public slots:
 	void actionZoomOut();
 	void actionZoomOriginal();
 	void actionShortcutsConfiguration();
-	void actionToolbarsConfiguration();
+	void actionToolbarsConfiguration(const QString &toolBar = QString());
 	void actionApplicationConfiguration();
 	void actionAboutApplication();
 	void actionLockToolBars(bool lock);

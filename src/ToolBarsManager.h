@@ -20,7 +20,7 @@ class ToolBarsManager : public QObject
 	Q_OBJECT
 
 public:
-	ToolBarsManager(QList<ToolBarWidget*> toolBars, ToolBarWidget *configureToolBar = NULL, QObject *parent = NULL);
+	ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &configureToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
 public slots:

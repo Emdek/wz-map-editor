@@ -40,12 +40,10 @@ void ToolBarWidget::contextMenuEvent(QContextMenuEvent *event)
 	actionLock->setCheckable(true);
 	actionLock->setChecked(!isMovable());
 
-	QAction *actionConfigure = menu.addAction(QIcon(":/icons/configure-toolbars.png"), tr("Configure Toolbars..."));
-	actionConfigure->setObjectName(objectName());
+	menu.addAction(QIcon(":/icons/configure-toolbars.png"), tr("Configure Toolbars..."), this, SLOT(configure()));
 
 	connect(actionShow, SIGNAL(toggled(bool)), this, SLOT(setVisible(bool)));
-	connect(actionLock, SIGNAL(toggled(bool)), parent(), SLOT(actionLockToolBars(bool)));
-	connect(actionConfigure, SIGNAL(triggered()), parent(), SLOT(actionToolbarsConfiguration()));
+	connect(actionLock, SIGNAL(toggled(bool)), this, SIGNAL(requestToolBarsLock(bool)));
 
 	menu.exec(event->globalPos());
 }
@@ -67,6 +65,11 @@ void ToolBarWidget::reload()
 			addAction(ActionsManager::getAction(actions.at(i)));
 		}
 	}
+}
+
+void ToolBarWidget::configure()
+{
+	emit requestConfigure(objectName());
 }
 
 }

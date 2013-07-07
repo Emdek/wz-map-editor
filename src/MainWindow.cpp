@@ -392,22 +392,9 @@ void MainWindow::actionShortcutsConfiguration()
 	new ShortcutsManager(this);
 }
 
-void MainWindow::actionToolbarsConfiguration()
+void MainWindow::actionToolbarsConfiguration(const QString &toolBar)
 {
-	const QList<ToolBarWidget*> toolBars = findChildren<ToolBarWidget*>();
-	ToolBarWidget *selectedToolBar = NULL;
-
-	for (int i = 0; i < toolBars.count(); ++i)
-	{
-		if (toolBars.at(i)->objectName() == sender()->objectName())
-		{
-			selectedToolBar = toolBars.at(i);
-
-			break;
-		}
-	}
-
-	new ToolBarsManager(toolBars, selectedToolBar, this);
+	new ToolBarsManager(findChildren<ToolBarWidget*>(), toolBar, this);
 }
 
 void MainWindow::actionApplicationConfiguration()
@@ -530,6 +517,8 @@ void MainWindow::updateToolBars()
 
 		connect(action, SIGNAL(toggled(bool)), toolBar, SLOT(setVisible(bool)));
 		connect(toolBar, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+		connect(toolBar, SIGNAL(requestToolBarsLock(bool)), this, SLOT(actionLockToolBars(bool)));
+		connect(toolBar, SIGNAL(requestConfigure(QString)), this, SLOT(actionToolbarsConfiguration(QString)));
 	}
 }
 
