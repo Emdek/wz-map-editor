@@ -82,21 +82,28 @@ void ToolBarsManager::loadToolBar(int index)
 	m_managerUi->availableActionsListWidget->clear();
 	m_managerUi->availableActionsListWidget->addItem(tr("--- separator ---"));
 
+	const QStringList availableIdentifiers = ActionsManager::getIdentifiers();
 	const QList<QAction*> currentActions = m_toolBars.at(index)->actions();
-	QStringList availableActions = ActionsManager::getIdentifiers();
-	availableActions.sort();
+	QMultiMap<QString, QAction*> actionsMap;
 
-	for (int i = 0; i < availableActions.count(); ++i)
+	for (int i = 0; i < availableIdentifiers.count(); ++i)
 	{
-		QAction *action = ActionsManager::getAction(availableActions.at(i));
+		QAction *action = ActionsManager::getAction(availableIdentifiers.at(i));
 
 		if (!action || action->isSeparator() || currentActions.contains(action))
 		{
 			continue;
 		}
 
-		QListWidgetItem *item = new QListWidgetItem(action->icon(), action->text(), m_managerUi->availableActionsListWidget);
-		item->setData(Qt::UserRole, action->objectName());
+		actionsMap.insert(action->text(), action);
+	}
+
+	const QList<QAction*> availableActions = actionsMap.values();
+
+	for (int i = 0; i < availableActions.count(); ++i)
+	{
+		QListWidgetItem *item = new QListWidgetItem(availableActions.at(i)->icon(), availableActions.at(i)->text(), m_managerUi->availableActionsListWidget);
+		item->setData(Qt::UserRole, availableActions.at(i)->objectName());
 
 		m_managerUi->availableActionsListWidget->addItem(item);
 	}
