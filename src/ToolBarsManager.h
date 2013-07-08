@@ -23,8 +23,11 @@ public:
 	ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &configureToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
-public slots:
+protected slots:
 	void loadToolBar(int index);
+	void addToolBar();
+	void removeToolBar();
+	void renameToolBar();
 	void availableActionsCurrentItemChanged(int index);
 	void currentActionsCurrentItemChanged(int index);
 	void removeItem();

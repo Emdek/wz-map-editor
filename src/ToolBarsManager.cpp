@@ -132,6 +132,18 @@ void ToolBarsManager::loadToolBar(int index)
 	m_currentToolBar = index;
 }
 
+void ToolBarsManager::addToolBar()
+{
+}
+
+void ToolBarsManager::removeToolBar()
+{
+}
+
+void ToolBarsManager::renameToolBar()
+{
+}
+
 void ToolBarsManager::availableActionsCurrentItemChanged(int index)
 {
 	m_managerUi->addButton->setEnabled(index >= 0);
