@@ -36,6 +36,9 @@ ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(m_managerUi->toolBarComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(loadToolBar(int)));
+	connect(m_managerUi->addToolBarButton, SIGNAL(clicked()), this, SLOT(addToolBar()));
+	connect(m_managerUi->removeToolBarButton, SIGNAL(clicked()), this, SLOT(removeToolBar()));
+	connect(m_managerUi->renameToolBarButton, SIGNAL(clicked()), this, SLOT(renameToolBar()));
 	connect(m_managerUi->visibleCheckBox, SIGNAL(clicked()), this, SLOT(setModified()));
 	connect(m_managerUi->availableActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(availableActionsCurrentItemChanged(int)));
 	connect(m_managerUi->currentActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(currentActionsCurrentItemChanged(int)));
