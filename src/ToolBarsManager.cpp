@@ -269,7 +269,7 @@ void ToolBarsManager::saveToolBar()
 		actions.append(m_managerUi->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
 	}
 
-	SettingsManager::setValue("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName(), actions);
+	SettingsManager::setValue(("ToolBars/" + m_toolBars.at(m_currentToolBar)->objectName() + "/actions"), actions);
 
 	m_toolBars.at(m_currentToolBar)->setVisible(m_managerUi->visibleCheckBox->isChecked());
 	m_toolBars.at(m_currentToolBar)->reload();
@@ -279,7 +279,7 @@ void ToolBarsManager::saveToolBar()
 
 void ToolBarsManager::restoreToolBar()
 {
-	SettingsManager::restore("toolbars/" + m_toolBars.at(m_currentToolBar)->objectName());
+	SettingsManager::restore("ToolBars/" + m_toolBars.at(m_currentToolBar)->objectName() + "/actions");
 
 	m_toolBars.at(m_currentToolBar)->setVisible(true);
 	m_toolBars.at(m_currentToolBar)->reload();
