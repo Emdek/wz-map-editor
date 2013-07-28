@@ -1,5 +1,9 @@
 #include "MapParser.h"
 
+#include "qzip/qzipreader_p.h"
+
+#include <QtCore/QTemporaryDir>
+#include <QtCore/QDirIterator>
 #include <QtCore/QtEndian>
 #include <QtCore/QTime>
 #include <QtDebug>
@@ -64,72 +68,180 @@ static inline int openNSet(const QString &fileName, QFile &file, QDataStream &da
 
     return 0;
 }
-#include <QDebug>
+
 MapParser::MapParser(const QString &filePath, QObject *parent) : QObject(parent),
     m_map(new Map(parent))
 {
     QTime test;
-    QFile file;
-    QFileInfo fileInfo(filePath);
-    QDataStream dataStream;
-    QDir filesDir = fileInfo.absoluteDir();
-    int retVal;
-
     test.start();
 
-    if (!filesDir.cd(fileInfo.baseName()))
-    {
-        m_error = tr("Could not find map directory.");
+    QFileInfo fileInfo(filePath);
+    if(fileInfo.completeSuffix() == QLatin1String("wz")) {
+        QTemporaryDir tmp_dir;
+        if(!tmp_dir.isValid()) {
+            m_error = tr("Could not create temporary directory."); return;
+        }
 
-        return;
+        QZipReader zip_reader(filePath);
+        if(!zip_reader.extractAll(tmp_dir.path())) {
+            m_error = tr("Could not unzip archive."); return;
+        }
+
+        QDirIterator tmp_dir_iter(tmp_dir.path()
+            , QDir::NoDotAndDotDot | QDir::Files, QDirIterator::Subdirectories);
+        while(tmp_dir_iter.hasNext()) {
+            QString fname = tmp_dir_iter.next();
+            if(!fname.endsWith(".gam")) continue;
+            fileInfo = tmp_dir_iter.fileInfo(); break;
+        }
+
+        QFile file;
+        QDataStream dataStream;
+        int retVal;
+
+        QDir filesDir = fileInfo.absoluteDir();
+        if(!filesDir.cd(fileInfo.baseName())) {
+            m_error = tr("Could not find map directory."); return;
+        }
+
+        if(openNSet(filesDir.filePath("game.map"), file, dataStream) != 0) {
+            m_error = tr("Could not open map."); return;
+        }
+
+        retVal = deserializeMap(dataStream);
+        if(retVal != 0) return;
+
+        if(openNSet(filesDir.filePath("ttypes.ttp"), file, dataStream) != 0)
+            qCritical() << "Couldn't open ttypes.ttp.";
+        else deserializeTerrain(dataStream);
+
+        if(openNSet(fileInfo.filePath(), file, dataStream) != 0)
+            qCritical() << "Couldn't open .gam file.";
+
+        deserializeGame(dataStream);
+
+        if(openNSet(filesDir.filePath("struct.bjo"),file,dataStream) == 0)
+            deserializeStructures(dataStream);
+
+        if(openNSet(filesDir.filePath("dinit.bjo"), file, dataStream) == 0)
+            deserializeDroids(dataStream);
+
+        if(openNSet(filesDir.filePath("feat.bjo"), file, dataStream) == 0)
+            deserializeFeatures(dataStream);
+
+        file.close();
+
+        /*Unpack on the fly*/
+        /*QZipReader zip_reader(filePath);
+        if(zip_reader.status() != QZipReader::NoError) {
+            m_error = tr("Could not unzip archive."); return;
+        }
+
+        QString map_fname, map_name;
+
+        QList<QZipReader::FileInfo> f_infos = zip_reader.fileInfoList();
+        QListIterator<QZipReader::FileInfo> f_infos_iter(f_infos);
+        while(f_infos_iter.hasNext()) {
+            const QZipReader::FileInfo &f_i = f_infos_iter.next();
+            if(!f_i.filePath.endsWith(".gam")) continue;
+
+            map_fname = f_i.filePath;
+
+            QString fname = f_i.filePath.section('/', -1);
+            map_name = fname.left(fname.length()-4);
+
+            break;
+        }
+
+        if(map_fname.isEmpty() || map_name.isEmpty()) {
+            m_error = tr("Could not find map file or directory."); return;
+        }
+
+        QStringList map_node_list;
+
+        f_infos_iter.toFront();
+        while(f_infos_iter.hasNext()) {
+            const QZipReader::FileInfo &f_i = f_infos_iter.next();
+            if(f_i.filePath.section('/', -2, -2) != map_name) continue;
+            map_node_list << f_i.filePath;
+        }
+
+        QString map_dname
+            = map_fname.left(map_fname.length()-4) + QLatin1Char('/');
+        if(map_node_list.contains(map_dname + QLatin1String("game.map"))) {
+            QDataStream data_stream(
+                zip_reader.fileData(map_dname + QLatin1String("game.map")));
+            if(deserializeMap(data_stream) != 0) return;
+
+        } else {m_error = tr("Could not open map."); return;}
+
+        if(map_node_list.contains(map_dname + QLatin1String("ttypes.ttp"))) {
+            QDataStream data_stream(
+                zip_reader.fileData(map_dname + QLatin1String("ttypes.ttp")));
+            deserializeTerrain(data_stream);
+
+        } else qCritical() << "Couldn't open ttypes.ttp.";
+
+        {
+            QDataStream data_stream(zip_reader.fileData(map_fname));
+            deserializeGame(data_stream);
+        }
+
+        if(map_node_list.contains(map_dname + QLatin1String("struct.bjo"))) {
+            QDataStream data_stream(
+                zip_reader.fileData(map_dname + QLatin1String("struct.bjo")));
+            deserializeStructures(data_stream);
+        }
+
+        if(map_node_list.contains(map_dname + QLatin1String("dinit.bjo"))) {
+            QDataStream data_stream(
+                zip_reader.fileData(map_dname + QLatin1String("dinit.bjo")));
+            deserializeDroids(data_stream);
+        }
+
+        if(map_node_list.contains(map_dname + QLatin1String("feat.bjo"))) {
+            QDataStream data_stream(
+                zip_reader.fileData(map_dname + QLatin1String("feat.bjo")));
+            deserializeFeatures(data_stream);
+        }*/
+
+    } else {
+        QFile file;
+        QDataStream dataStream;
+        int retVal;
+
+        QDir filesDir = fileInfo.absoluteDir();
+        if(!filesDir.cd(fileInfo.baseName())) {
+            m_error = tr("Could not find map directory."); return;
+        }
+
+        if(openNSet(filesDir.filePath("game.map"), file, dataStream) != 0) {
+            m_error = tr("Could not open map."); return;
+        }
+
+        retVal = deserializeMap(dataStream);
+        if(retVal != 0) return;
+
+        if(openNSet(filesDir.filePath("ttypes.ttp"), file, dataStream) != 0)
+            qCritical() << "Couldn't open ttypes.ttp.";
+        else deserializeTerrain(dataStream);
+
+        if(openNSet(fileInfo.filePath(), file, dataStream) != 0)
+            qCritical() << "Couldn't open .gam file.";
+
+        deserializeGame(dataStream);
+
+        if(openNSet(filesDir.filePath("struct.bjo"),file,dataStream) == 0)
+            deserializeStructures(dataStream);
+
+        if(openNSet(filesDir.filePath("dinit.bjo"), file, dataStream) == 0)
+            deserializeDroids(dataStream);
+
+        if(openNSet(filesDir.filePath("feat.bjo"), file, dataStream) == 0)
+            deserializeFeatures(dataStream);
+
+        file.close();
     }
-
-    if (openNSet(filesDir.filePath("game.map"), file, dataStream) != 0)
-    {
-        m_error = tr("Could not open map.");
-
-        return;
-    }
-
-    retVal = deserializeMap(dataStream);
-
-    if (retVal != 0)
-    {
-        return;
-    }
-
-    if (openNSet(filesDir.filePath("ttypes.ttp"), file, dataStream) != 0)
-    {
-        qCritical() << "Couldn't open ttypes.ttp.";
-    }
-    else
-    {
-        deserializeTerrain(dataStream);
-    }
-
-    if (openNSet(fileInfo.filePath(), file, dataStream) != 0)
-    {
-        qCritical() << "Couldn't open .gam file.";
-    }
-
-    deserializeGame(dataStream);
-
-    if (openNSet(filesDir.filePath("struct.bjo"),file,dataStream) == 0)
-    {
-        deserializeStructures(dataStream);
-    }
-
-    if (openNSet(filesDir.filePath("dinit.bjo"), file, dataStream) == 0)
-    {
-        deserializeDroids(dataStream);
-    }
-
-    if (openNSet(filesDir.filePath("feat.bjo"), file, dataStream) == 0)
-    {
-        deserializeFeatures(dataStream);
-    }
-
-    file.close();
 
     qDebug() << "Deserialize time: " << test.elapsed();
 

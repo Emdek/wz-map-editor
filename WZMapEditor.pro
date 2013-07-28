@@ -43,7 +43,9 @@ HEADERS += src/MainWindow.h \
 	src/PreferencesManager.h \
 	src/FileSystemCompleterModel.h \
 	src/MapWriter.h \
-	src/MapSettingsManager.h
+	src/MapSettingsManager.h \
+    src/qzip/qzipwriter_p.h \
+    src/qzip/qzipreader_p.h
 
 FORMS += src/ui/MainWindow.ui \
 	src/ui/ToolBarEditorDialog.ui \
