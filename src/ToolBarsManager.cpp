@@ -8,6 +8,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QInputDialog>
 
 namespace WZMapEditor
 {
@@ -137,6 +138,26 @@ void ToolBarsManager::loadToolBar(int index)
 
 void ToolBarsManager::addToolBar()
 {
+	const QString name = QInputDialog::getText(QApplication::topLevelWidgets().at(0), tr("Select Toolbar Name"), tr("Toolbar Name:"));
+
+	if (name.isEmpty())
+	{
+		return;
+	}
+
+	const QString identifier = QString("toolBar-%1");
+	const int index = (m_managerUi->toolBarComboBox->currentIndex() + 1);
+	int i = 1;
+
+	while (m_managerUi->toolBarComboBox->findData(identifier.arg(i)) >= 0) {
+		++i;
+	}
+
+	m_managerUi->toolBarComboBox->insertItem(index, name, identifier.arg(i));
+	m_managerUi->toolBarComboBox->setCurrentIndex(index);
+	m_managerUi->visibleCheckBox->setChecked(true);
+	m_managerUi->removeToolBarButton->setEnabled(true);
+	m_managerUi->renameToolBarButton->setEnabled(true);
 }
 
 void ToolBarsManager::removeToolBar()
