@@ -40,7 +40,7 @@ protected slots:
 	void setModified(bool modified = true);
 
 private:
-	Ui::ToolBarEditorDialog *m_managerUi;
+	Ui::ToolBarEditorDialog *m_ui;
 	QList<ToolBarWidget*> m_toolBars;
 	int m_currentToolBar;
 	bool m_isCurrentModified;
