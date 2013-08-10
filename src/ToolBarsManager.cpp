@@ -176,6 +176,14 @@ void ToolBarsManager::removeToolBar()
 
 void ToolBarsManager::renameToolBar()
 {
+	const QString name = QInputDialog::getText(QApplication::topLevelWidgets().at(0), tr("Select Toolbar Name"), tr("Toolbar Name:"), QLineEdit::Normal, m_ui->toolBarComboBox->currentText());
+
+	if (name.isEmpty())
+	{
+		return;
+	}
+
+	m_ui->toolBarComboBox->setItemText(m_ui->toolBarComboBox->currentIndex(), name);
 }
 
 void ToolBarsManager::availableActionsCurrentItemChanged(int index)
