@@ -27,7 +27,7 @@ public slots:
 	void dialogButtonCliked(QAbstractButton *button);
 
 private:
-	Ui::PreferencesDialog *m_managerUi;
+	Ui::PreferencesDialog *m_ui;
 };
 
 }

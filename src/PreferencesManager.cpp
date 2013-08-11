@@ -14,7 +14,7 @@ namespace WZMapEditor
 {
 
 PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
-	m_managerUi(new Ui::PreferencesDialog())
+	m_ui(new Ui::PreferencesDialog())
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	int tileSize = 0;
@@ -35,38 +35,38 @@ PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
 			break;
 	}
 
-	m_managerUi->setupUi(&managerDialog);
-	m_managerUi->dataPathLineEdit->setCompleter(new QCompleter(new FileSystemCompleterModel(this), this));
-	m_managerUi->dataPathLineEdit->setText(SettingsManager::getValue("dataPath").toString());
-	m_managerUi->tileSizeComboBox->setCurrentIndex(tileSize);
+	m_ui->setupUi(&managerDialog);
+	m_ui->dataPathLineEdit->setCompleter(new QCompleter(new FileSystemCompleterModel(this), this));
+	m_ui->dataPathLineEdit->setText(SettingsManager::getValue("dataPath").toString());
+	m_ui->tileSizeComboBox->setCurrentIndex(tileSize);
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(&managerDialog, SIGNAL(accepted()), this, SLOT(save()));
-	connect(m_managerUi->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonCliked(QAbstractButton*)));
-	connect(m_managerUi->selectDataPathButton, SIGNAL(clicked()), this, SLOT(selectDataPath()));
+	connect(m_ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonCliked(QAbstractButton*)));
+	connect(m_ui->selectDataPathButton, SIGNAL(clicked()), this, SLOT(selectDataPath()));
 
 	managerDialog.exec();
 }
 
 PreferencesManager::~PreferencesManager()
 {
-	delete m_managerUi;
+	delete m_ui;
 }
 
 void PreferencesManager::selectDataPath()
 {
-	m_managerUi->dataPathLineEdit->setText(QFileDialog::getExistingDirectory(QApplication::topLevelWidgets().at(0), tr("Select Data Path"), m_managerUi->dataPathLineEdit->text()));
+	m_ui->dataPathLineEdit->setText(QFileDialog::getExistingDirectory(QApplication::topLevelWidgets().at(0), tr("Select Data Path"), m_ui->dataPathLineEdit->text()));
 }
 
 void PreferencesManager::save()
 {
-	SettingsManager::setValue("dataPath", m_managerUi->dataPathLineEdit->text());
-	SettingsManager::setValue("tileSize", (pow(2, (3 - m_managerUi->tileSizeComboBox->currentIndex())) * 16));
+	SettingsManager::setValue("dataPath", m_ui->dataPathLineEdit->text());
+	SettingsManager::setValue("tileSize", (pow(2, (3 - m_ui->tileSizeComboBox->currentIndex())) * 16));
 }
 
 void PreferencesManager::dialogButtonCliked(QAbstractButton *button)
 {
-	if (m_managerUi->buttonBox->standardButton(button) == QDialogButtonBox::Apply)
+	if (m_ui->buttonBox->standardButton(button) == QDialogButtonBox::Apply)
 	{
 		save();
 	}

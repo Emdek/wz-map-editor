@@ -28,7 +28,7 @@ public slots:
 private:
 	Map *m_map;
 	bool m_newMap;
-	Ui::MapSettingsDialog *m_managerUi;
+	Ui::MapSettingsDialog *m_ui;
 };
 
 }

@@ -32,7 +32,7 @@ public slots:
 	void dialogButtonCliked(QAbstractButton *button);
 
 private:
-	Ui::ShortcutEditorDialog *m_managerUi;
+	Ui::ShortcutEditorDialog *m_ui;
 	MainWindow *m_mainWindow;
 };
 
