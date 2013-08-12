@@ -33,7 +33,6 @@ public slots:
 
 private:
 	Ui::ShortcutEditorDialog *m_ui;
-	MainWindow *m_mainWindow;
 };
 
 }
