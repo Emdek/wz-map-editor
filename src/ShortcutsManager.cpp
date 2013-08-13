@@ -1,7 +1,6 @@
 #include "ShortcutsManager.h"
 #include "ShortcutEditorDelegate.h"
 #include "ActionsManager.h"
-#include "MainWindow.h"
 
 #include "ui_ShortcutEditorDialog.h"
 
@@ -12,7 +11,7 @@
 namespace WZMapEditor
 {
 
-ShortcutsManager::ShortcutsManager(MainWindow *parent) : QObject(parent),
+ShortcutsManager::ShortcutsManager(QWidget *parent) : QObject(parent),
 	m_ui(new Ui::ShortcutEditorDialog())
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));

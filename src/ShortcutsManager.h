@@ -14,14 +14,12 @@ namespace Ui
 namespace WZMapEditor
 {
 
-class MainWindow;
-
 class ShortcutsManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	ShortcutsManager(MainWindow *parent = NULL);
+	ShortcutsManager(QWidget *parent = NULL);
 	~ShortcutsManager();
 
 	bool checkShortcut(const QKeySequence &shortcut, int index);
