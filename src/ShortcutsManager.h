@@ -19,7 +19,7 @@ class ShortcutsManager : public QObject
 	Q_OBJECT
 
 public:
-	ShortcutsManager(QWidget *parent = NULL);
+	ShortcutsManager(QObject *parent = NULL);
 	~ShortcutsManager();
 
 	bool checkShortcut(const QKeySequence &shortcut, int index);

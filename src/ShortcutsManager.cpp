@@ -11,7 +11,7 @@
 namespace WZMapEditor
 {
 
-ShortcutsManager::ShortcutsManager(QWidget *parent) : QObject(parent),
+ShortcutsManager::ShortcutsManager(QObject *parent) : QObject(parent),
 	m_ui(new Ui::ShortcutEditorDialog())
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
