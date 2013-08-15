@@ -23,15 +23,19 @@ PreferencesManager::PreferencesManager(QObject *parent) : QObject(parent),
 	{
 		case 16:
 			tileSize = 3;
+
 			break;
 		case 32:
 			tileSize = 2;
+
 			break;
 		case 64:
 			tileSize = 1;
+
 			break;
 		default:
 			tileSize = 0;
+
 			break;
 	}
 
