@@ -22,7 +22,6 @@ void Map::clear()
 {
 	m_playerPresent.clear();
 	m_playerPresent.resize(MAX_PLAYERS);
-
 	m_levelName = "Unnamed";
 	m_size = QSize(10, 10);
 	m_tileset = ArizonaTileset;
@@ -69,7 +68,6 @@ void Map::setTile(const MapTile &tile, int x, int y)
 	}
 
 	m_tiles[x][y] = tile;
-
 	m_modified = true;
 
 	emit modified();
