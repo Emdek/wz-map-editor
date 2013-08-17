@@ -63,21 +63,21 @@ public:
 
 	static void load(QObject *parent = NULL);
 	static void createCache(TilesetType tileset, int size);
-	static QPixmap pixmap(TileInformation tile, int size = -1);
-	static QPixmap pixmap(TilesetType tileset, int tile, int size = -1);
-	static Tileset* tileset(TilesetType type);
-	static QStringList names();
-	static TilesetType cachedTileset();
-	static int cachedTextureSize();
+	static QPixmap getPixmap(TileInformation getTile, int size = -1);
+	static QPixmap getPixmap(TilesetType tileset, int getTile, int size = -1);
+	static Tileset* getTileset(TilesetType type);
+	static QStringList getNames();
+	static TilesetType getCachedTileset();
+	static int getCachedTextureSize();
 
-	TilesetType type();
-	QString name();
-	TileInformation tile(int tile);
-	QStringList categories();
-	QList<TileInformation> tiles(bool includeTransitions = true, int category = 0, TileTypes types = AllTiles);
+	TilesetType getType();
+	QString getName();
+	TileInformation getTile(int tile);
+	QStringList getCategories();
+	QList<TileInformation> getTiles(bool includeTransitions = true, int category = 0, TileTypes types = AllTiles);
 
 protected:
-	TileType stringToType(const QString &type);
+	TileType stringToType(const QString &getType);
 
 private:
 	TilesetType m_type;

@@ -18,7 +18,7 @@ MapSettingsManager::MapSettingsManager(Map *map, bool newMap, QObject *parent) :
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 	m_ui->setupUi(&managerDialog);
 	m_ui->nameLineEdit->setText(m_map->getName());
-	m_ui->tilesetComboBox->addItems(Tileset::names());
+	m_ui->tilesetComboBox->addItems(Tileset::getNames());
 	m_ui->tilesetComboBox->setCurrentIndex(static_cast<int>(m_map->getTileset()) - 1);
 	m_ui->widthSpinBox->setValue(m_map->getSize().width());
 	m_ui->heightSpinBox->setValue(m_map->getSize().height());

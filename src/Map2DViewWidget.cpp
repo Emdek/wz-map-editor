@@ -115,7 +115,7 @@ void Map2DViewWidget::setMap(Map *data)
 			transform.rotate(tile.rotation);
 			transform.scale(((tile.flip & HorizontalFlip) ? -1 : 1), ((tile.flip & VerticalFlip) ? -1 : 1));
 
-			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::pixmap(m_map->getTileset(), tile.texture, tileSize));
+			QGraphicsPixmapItem *item = new QGraphicsPixmapItem(Tileset::getPixmap(m_map->getTileset(), tile.texture, tileSize));
 			item->setOffset(-halfTileSize, -halfTileSize);
 			item->setTransform(transform);
 			item->setToolTip(tr("Texture: %1").arg(tile.texture));

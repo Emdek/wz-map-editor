@@ -401,7 +401,7 @@ void MainWindow::actionApplicationConfiguration()
 {
 	new PreferencesManager(this);
 
-	if (Tileset::cachedTextureSize() != SettingsManager::getValue("tileSize").toInt())
+	if (Tileset::getCachedTextureSize() != SettingsManager::getValue("tileSize").toInt())
 	{
 		Tileset::createCache(m_map->getTileset(), SettingsManager::getValue("tileSize").toInt());
 	}
@@ -524,19 +524,19 @@ void MainWindow::updateToolBars()
 
 void MainWindow::updateTilesetView()
 {
-	Tileset *tileset = Tileset::tileset(m_map ? m_map->getTileset() : ArizonaTileset);
+	Tileset *tileset = Tileset::getTileset(m_map ? m_map->getTileset() : ArizonaTileset);
 
-	if (m_currentTileset != tileset->type())
+	if (m_currentTileset != tileset->getType())
 	{
-		Tileset::createCache(tileset->type(), SettingsManager::getValue("tileSize").toInt());
+		Tileset::createCache(tileset->getType(), SettingsManager::getValue("tileSize").toInt());
 
-		m_currentTileset = tileset->type();
+		m_currentTileset = tileset->getType();
 
 		disconnect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 		disconnect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 
 		m_tilesetUi->tileCategoryComboBox->clear();
-		m_tilesetUi->tileCategoryComboBox->addItems(tileset->categories());
+		m_tilesetUi->tileCategoryComboBox->addItems(tileset->getCategories());
 
 		connect(m_tilesetUi->tileCategoryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
 		connect(m_tilesetUi->tileTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateTilesetView()));
@@ -544,11 +544,11 @@ void MainWindow::updateTilesetView()
 
 	m_tilesetUi->listWidget->clear();
 
-	const QList<TileInformation> tiles = tileset->tiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
+	const QList<TileInformation> tiles = tileset->getTiles(m_tilesetUi->showTransitionTilesCheckBox->isChecked(), m_tilesetUi->tileCategoryComboBox->currentIndex(), static_cast<TileTypes>(m_tilesetUi->tileTypeComboBox->itemData(m_tilesetUi->tileTypeComboBox->currentIndex()).toInt()));
 
 	for (int i = 0; i < tiles.count(); ++i)
 	{
-		QListWidgetItem *item = new QListWidgetItem(tileset->pixmap(tiles.at(i), 128), QString(), m_tilesetUi->listWidget);
+		QListWidgetItem *item = new QListWidgetItem(tileset->getPixmap(tiles.at(i), 128), QString(), m_tilesetUi->listWidget);
 		item->setToolTip(QString("Tile ID: %1").arg(tiles.at(i).id));
 
 		m_tilesetUi->listWidget->addItem(item);
@@ -617,7 +617,7 @@ bool MainWindow::openFile(const QString &fileName)
 			SettingsManager::setValue("recentFiles", recentFiles);
 			SettingsManager::setValue("lastUsedDir", fileInfo.absoluteDir().path());
 
-			if (Tileset::cachedTileset() != m_map->getTileset())
+			if (Tileset::getCachedTileset() != m_map->getTileset())
 			{
 				Tileset::createCache(m_map->getTileset(), SettingsManager::getValue("tileSize").toInt());
 			}

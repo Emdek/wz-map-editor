@@ -113,13 +113,13 @@ void Tileset::load(QObject *parent)
 	{
 		Tileset *tileset = new Tileset(tilesetList.at(i).absoluteFilePath(), parent);
 
-		m_tilesets[tileset->type()] = tileset;
+		m_tilesets[tileset->getType()] = tileset;
 	}
 }
 
 void Tileset::createCache(TilesetType tileset, int size)
 {
-	QList<TileInformation> tiles = Tileset::tileset(tileset)->tiles();
+	QList<TileInformation> tiles = Tileset::getTileset(tileset)->getTiles();
 
 	QPixmapCache::clear();
 
@@ -128,11 +128,11 @@ void Tileset::createCache(TilesetType tileset, int size)
 
 	for (int i = 0; i < tiles.count(); ++i)
 	{
-		QPixmapCache::insert(QString::number(tiles.at(i).id), Tileset::pixmap(tileset, tiles.at(i).id, size));
+		QPixmapCache::insert(QString::number(tiles.at(i).id), Tileset::getPixmap(tileset, tiles.at(i).id, size));
 	}
 }
 
-QPixmap Tileset::pixmap(TileInformation tile, int size)
+QPixmap Tileset::getPixmap(TileInformation tile, int size)
 {
 	if (size == -1)
 	{
@@ -162,7 +162,7 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 	{
 		if (tile.background)
 		{
-			QPixmap background = pixmap(Tileset::tileset(tile.tileset)->tiles(false, tile.background).first(), size);
+			QPixmap background = getPixmap(Tileset::getTileset(tile.tileset)->getTiles(false, tile.background).first(), size);
 			QPainter painter(&background);
 			painter.drawPixmap(0, 0, QPixmap(fileName));
 
@@ -182,28 +182,28 @@ QPixmap Tileset::pixmap(TileInformation tile, int size)
 	}
 }
 
-QPixmap Tileset::pixmap(TilesetType tileset, int tile, int size)
+QPixmap Tileset::getPixmap(TilesetType tileset, int tile, int size)
 {
 	if (m_tilesets.value(tileset, NULL))
 	{
-		return pixmap(m_tilesets[tileset]->tile(tile), size);
+		return getPixmap(m_tilesets[tileset]->getTile(tile), size);
 	}
 
 	return QPixmap();
 }
 
-Tileset* Tileset::tileset(TilesetType type)
+Tileset* Tileset::getTileset(TilesetType type)
 {
 	return m_tilesets.value(type, NULL);
 }
 
-QStringList Tileset::names()
+QStringList Tileset::getNames()
 {
 	QStringList names;
 
 	foreach (Tileset *tileset, m_tilesets)
 	{
-		names.append(tileset->name());
+		names.append(tileset->getName());
 	}
 
 	return names;
@@ -244,17 +244,17 @@ TileType Tileset::stringToType(const QString &type)
 	return OtherTile;
 }
 
-TilesetType Tileset::type()
+TilesetType Tileset::getType()
 {
 	return m_type;
 }
 
-QString Tileset::name()
+QString Tileset::getName()
 {
 	return m_name;
 }
 
-TileInformation Tileset::tile(int tile)
+TileInformation Tileset::getTile(int tile)
 {
 	for (int i = 0; i < m_tiles.count(); ++i)
 	{
@@ -270,7 +270,7 @@ TileInformation Tileset::tile(int tile)
 	return empty;
 }
 
-QStringList Tileset::categories()
+QStringList Tileset::getCategories()
 {
 	QStringList categories;
 
@@ -282,7 +282,7 @@ QStringList Tileset::categories()
 	return categories;
 }
 
-QList<TileInformation> Tileset::tiles(bool includeTransitions, int category, TileTypes types)
+QList<TileInformation> Tileset::getTiles(bool includeTransitions, int category, TileTypes types)
 {
 	QList<TileInformation> tiles;
 
@@ -302,12 +302,12 @@ QList<TileInformation> Tileset::tiles(bool includeTransitions, int category, Til
 	return tiles;
 }
 
-TilesetType Tileset::cachedTileset()
+TilesetType Tileset::getCachedTileset()
 {
 	return m_cachedTileset;
 }
 
-int Tileset::cachedTextureSize()
+int Tileset::getCachedTextureSize()
 {
 	return m_textureSize;
 }
