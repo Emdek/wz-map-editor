@@ -30,7 +30,7 @@ MapSettingsManager::MapSettingsManager(Map *map, bool newMap, QObject *parent) :
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(&managerDialog, SIGNAL(accepted()), this, SLOT(save()));
-	connect(m_ui->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeTileset(int)));
+	connect(m_ui->tilesetComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setTileset(int)));
 
 	managerDialog.exec();
 }
@@ -40,7 +40,7 @@ MapSettingsManager::~MapSettingsManager()
 	delete m_ui;
 }
 
-void MapSettingsManager::changeTileset(int index)
+void MapSettingsManager::setTileset(int index)
 {
 	if (!m_newMap && (index != (static_cast<int>(m_map->getTileset()) - 1) && QMessageBox::question(QApplication::topLevelWidgets().at(0), tr("Confirm"), tr("Do you really want to change tileset?\nThis change require reset of map information!"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No))
 	{

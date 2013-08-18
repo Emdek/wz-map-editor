@@ -22,7 +22,7 @@ public:
 	~MapSettingsManager();
 
 public slots:
-	void changeTileset(int index);
+	void setTileset(int index);
 	void save();
 
 private:
