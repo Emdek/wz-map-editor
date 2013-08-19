@@ -1,6 +1,5 @@
-- implement map parser
-- finish 3D view widget
-- add 2D view widget
+- finish 2D view widget
+- add 3D view widget
 - implement map export
 - random map generator
 - add translations support
