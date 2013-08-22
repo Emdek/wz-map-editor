@@ -31,7 +31,7 @@ void Map2DViewWidget::wheelEvent(QWheelEvent *event)
 {
 	if (event->modifiers() & Qt::CTRL || event->buttons() & Qt::LeftButton)
 	{
-		setZoom(m_zoom + (event->delta() / 32));
+		setZoom(m_zoom + (event->delta() / 8));
 
 		event->accept();
 	}
