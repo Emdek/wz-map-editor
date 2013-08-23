@@ -52,7 +52,7 @@ void ToolBarWidget::reload()
 {
 	clear();
 
-	QStringList actions = SettingsManager::getValue("ToolBars/" + objectName() + "/actions").toStringList();
+	const QStringList actions = SettingsManager::getValue("ToolBars/" + objectName() + "/actions").toStringList();
 
 	for (int i = 0; i < actions.count(); ++i)
 	{
