@@ -13,9 +13,9 @@
 namespace WZMapEditor
 {
 
-ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &selectedToolBar, QObject *parent) : QObject(parent),
+ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> widgets, const QString &selectedToolBar, QObject *parent) : QObject(parent),
 	m_ui(new Ui::ToolBarEditorDialog()),
-	m_toolBars(toolBars),
+	m_widgets(widgets),
 	m_currentToolBar(-1),
 	m_isCurrentModified(false)
 {
@@ -25,11 +25,11 @@ ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> toolBars, const QString &
 
 	int toolBarToLoad = 0;
 
-	for (int i = 0; i < toolBars.count(); ++i)
+	for (int i = 0; i < widgets.count(); ++i)
 	{
-		m_ui->toolBarComboBox->addItem(toolBars.at(i)->windowTitle());
+		m_ui->toolBarComboBox->addItem(widgets.at(i)->windowTitle());
 
-		if (toolBars.at(i)->objectName() == selectedToolBar)
+		if (widgets.at(i)->objectName() == selectedToolBar)
 		{
 			toolBarToLoad = i;
 		}
@@ -66,7 +66,7 @@ void ToolBarsManager::loadToolBar(int index)
 		return;
 	}
 
-	if (index >= m_toolBars.count())
+	if (index >= m_widgets.count())
 	{
 		m_ui->toolBarComboBox->setCurrentIndex(m_currentToolBar);
 	}
@@ -88,7 +88,7 @@ void ToolBarsManager::loadToolBar(int index)
 	m_ui->availableActionsListWidget->addItem(tr("--- separator ---"));
 
 	const QStringList availableIdentifiers = ActionsManager::getIdentifiers();
-	const QList<QAction*> currentActions = m_toolBars.at(index)->actions();
+	const QList<QAction*> currentActions = m_widgets.at(index)->actions();
 	QMultiMap<QString, QAction*> actionsMap;
 
 	for (int i = 0; i < availableIdentifiers.count(); ++i)
@@ -128,7 +128,7 @@ void ToolBarsManager::loadToolBar(int index)
 		}
 	}
 
-	m_ui->visibleCheckBox->setChecked(m_toolBars.at(index)->isVisible());
+	m_ui->visibleCheckBox->setChecked(m_widgets.at(index)->isVisible());
 	m_ui->toolBarComboBox->setCurrentIndex(index);
 
 	setModified(false);
@@ -308,20 +308,20 @@ void ToolBarsManager::saveToolBar()
 		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
 	}
 
-	SettingsManager::setValue(("ToolBars/" + m_toolBars.at(m_currentToolBar)->objectName() + "/actions"), actions);
+	SettingsManager::setValue(("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions"), actions);
 
-	m_toolBars.at(m_currentToolBar)->setVisible(m_ui->visibleCheckBox->isChecked());
-	m_toolBars.at(m_currentToolBar)->reload();
+	m_widgets.at(m_currentToolBar)->setVisible(m_ui->visibleCheckBox->isChecked());
+	m_widgets.at(m_currentToolBar)->reload();
 
 	setModified(false);
 }
 
 void ToolBarsManager::restoreToolBar()
 {
-	SettingsManager::restore("ToolBars/" + m_toolBars.at(m_currentToolBar)->objectName() + "/actions");
+	SettingsManager::restore("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions");
 
-	m_toolBars.at(m_currentToolBar)->setVisible(true);
-	m_toolBars.at(m_currentToolBar)->reload();
+	m_widgets.at(m_currentToolBar)->setVisible(true);
+	m_widgets.at(m_currentToolBar)->reload();
 
 	setModified(false);
 
