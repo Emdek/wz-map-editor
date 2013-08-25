@@ -395,6 +395,8 @@ void MainWindow::actionShortcutsConfiguration()
 void MainWindow::actionToolbarsConfiguration(const QString &toolBar)
 {
 	new ToolBarsManager(findChildren<ToolBarWidget*>(), toolBar, this);
+
+	updateToolBars();
 }
 
 void MainWindow::actionApplicationConfiguration()
