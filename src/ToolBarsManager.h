@@ -23,6 +23,8 @@ public:
 	ToolBarsManager(QList<ToolBarWidget*> widgets, const QString &configureToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
+	void reloadToolbars();
+
 protected slots:
 	void loadToolBar(int index);
 	void addToolBar();
@@ -35,15 +37,11 @@ protected slots:
 	void moveUpItem();
 	void moveDownItem();
 	void dialogButtonCliked(QAbstractButton *button);
-	void saveToolBar();
-	void restoreToolBar();
-	void setModified(bool modified = true);
 
 private:
 	Ui::ToolBarEditorDialog *m_ui;
 	QList<ToolBarWidget*> m_widgets;
 	int m_currentToolBar;
-	bool m_isCurrentModified;
 };
 
 }

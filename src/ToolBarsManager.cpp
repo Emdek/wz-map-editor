@@ -16,8 +16,7 @@ namespace WZMapEditor
 ToolBarsManager::ToolBarsManager(QList<ToolBarWidget*> widgets, const QString &selectedToolBar, QObject *parent) : QObject(parent),
 	m_ui(new Ui::ToolBarEditorDialog()),
 	m_widgets(widgets),
-	m_currentToolBar(-1),
-	m_isCurrentModified(false)
+	m_currentToolBar(-1)
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 
@@ -59,6 +58,10 @@ ToolBarsManager::~ToolBarsManager()
 	delete m_ui;
 }
 
+void ToolBarsManager::reloadToolbars()
+{
+}
+
 void ToolBarsManager::loadToolBar(int index)
 {
 	if (index == m_currentToolBar)
@@ -69,18 +72,6 @@ void ToolBarsManager::loadToolBar(int index)
 	if (index >= m_widgets.count())
 	{
 		m_ui->toolBarComboBox->setCurrentIndex(m_currentToolBar);
-	}
-
-	if (m_isCurrentModified && index >= 0)
-	{
-		if (QMessageBox::question(QApplication::topLevelWidgets().at(0), QApplication::applicationName(), tr("There are unsaved changes in this toolbar, do yo want to save them?"), QMessageBox::Save, QMessageBox::Cancel) == QMessageBox::Cancel)
-		{
-			m_ui->toolBarComboBox->setCurrentIndex(m_currentToolBar);
-
-			return;
-		}
-
-		saveToolBar();
 	}
 
 	m_ui->currentActionsListWidget->clear();
@@ -130,8 +121,6 @@ void ToolBarsManager::loadToolBar(int index)
 
 	m_ui->visibleCheckBox->setChecked(m_widgets.at(index)->isVisible());
 	m_ui->toolBarComboBox->setCurrentIndex(index);
-
-	setModified(false);
 
 	m_currentToolBar = index;
 }
@@ -225,8 +214,6 @@ void ToolBarsManager::removeItem()
 
 		m_ui->currentActionsListWidget->setCurrentItem(NULL);
 		m_ui->availableActionsListWidget->setCurrentItem(NULL);
-
-		setModified(true);
 	}
 }
 
@@ -244,8 +231,6 @@ void ToolBarsManager::addItem()
 		m_ui->currentActionsListWidget->insertItem((m_ui->currentActionsListWidget->currentRow() + 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
 		m_ui->availableActionsListWidget->setCurrentItem(NULL);
-
-		setModified(true);
 	}
 }
 
@@ -259,8 +244,6 @@ void ToolBarsManager::moveUpItem()
 
 		m_ui->currentActionsListWidget->insertItem((currentRow - 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
-
-		setModified(true);
 	}
 }
 
@@ -274,8 +257,6 @@ void ToolBarsManager::moveDownItem()
 
 		m_ui->currentActionsListWidget->insertItem((currentRow + 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
-
-		setModified(true);
 	}
 }
 
@@ -284,14 +265,17 @@ void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 	switch (m_ui->buttonBox->standardButton(button))
 	{
 		case QDialogButtonBox::Ok:
-			saveToolBar();
+//			saveToolBar();
 			deleteLater();
 		break;
 		case QDialogButtonBox::Apply:
-			saveToolBar();
+//			saveToolBar();
 		break;
 		case QDialogButtonBox::RestoreDefaults:
-			restoreToolBar();
+			SettingsManager::restore("toolBars");
+			SettingsManager::restore("ToolBars");
+
+			reloadToolbars();
 		break;
 		default:
 			deleteLater();
@@ -299,44 +283,21 @@ void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 	}
 }
 
-void ToolBarsManager::saveToolBar()
-{
-	QStringList actions;
+//void ToolBarsManager::saveToolBar()
+//{
+//	QStringList actions;
 
-	for (int i = 0; i < m_ui->currentActionsListWidget->count(); ++i)
-	{
-		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
-	}
+//	for (int i = 0; i < m_ui->currentActionsListWidget->count(); ++i)
+//	{
+//		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
+//	}
 
-	SettingsManager::setValue(("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions"), actions);
+//	SettingsManager::setValue(("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions"), actions);
 
-	m_widgets.at(m_currentToolBar)->setVisible(m_ui->visibleCheckBox->isChecked());
-	m_widgets.at(m_currentToolBar)->reload();
+//	m_widgets.at(m_currentToolBar)->setVisible(m_ui->visibleCheckBox->isChecked());
+//	m_widgets.at(m_currentToolBar)->reload();
 
-	setModified(false);
-}
-
-void ToolBarsManager::restoreToolBar()
-{
-	SettingsManager::restore("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions");
-
-	m_widgets.at(m_currentToolBar)->setVisible(true);
-	m_widgets.at(m_currentToolBar)->reload();
-
-	setModified(false);
-
-	int currentToolBar = m_currentToolBar;
-
-	m_currentToolBar = -1;
-
-	loadToolBar(currentToolBar);
-}
-
-void ToolBarsManager::setModified(bool modified)
-{
-	m_ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(modified);
-
-	m_isCurrentModified = modified;
-}
+//	setModified(false);
+//}
 
 }
