@@ -20,7 +20,7 @@ class ToolBarsManager : public QObject
 	Q_OBJECT
 
 public:
-	ToolBarsManager(QList<ToolBarWidget*> widgets, const QString &configureToolBar = QString(), QObject *parent = NULL);
+	ToolBarsManager(const QString &configureToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
 	void reloadToolbars();
@@ -40,7 +40,6 @@ protected slots:
 
 private:
 	Ui::ToolBarEditorDialog *m_ui;
-	QList<ToolBarWidget*> m_widgets;
 	int m_currentToolBar;
 };
 
