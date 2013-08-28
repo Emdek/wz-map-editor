@@ -40,7 +40,6 @@ protected slots:
 
 private:
 	Ui::ToolBarEditorDialog *m_ui;
-	int m_currentToolBar;
 };
 
 }

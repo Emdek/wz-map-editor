@@ -14,8 +14,7 @@ namespace WZMapEditor
 {
 
 ToolBarsManager::ToolBarsManager(const QString &selectedToolBar, QObject *parent) : QObject(parent),
-	m_ui(new Ui::ToolBarEditorDialog()),
-	m_currentToolBar(-1)
+	m_ui(new Ui::ToolBarEditorDialog())
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 
@@ -68,14 +67,9 @@ void ToolBarsManager::reloadToolbars()
 
 void ToolBarsManager::loadToolBar(int index)
 {
-	if (index == m_currentToolBar)
-	{
-		return;
-	}
-
 	if (index >= m_ui->toolBarComboBox->count())
 	{
-		m_ui->toolBarComboBox->setCurrentIndex(m_currentToolBar);
+		m_ui->toolBarComboBox->setCurrentIndex(0);
 	}
 
 	m_ui->currentActionsListWidget->clear();
