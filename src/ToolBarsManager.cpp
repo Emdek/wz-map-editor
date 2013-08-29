@@ -76,51 +76,51 @@ void ToolBarsManager::loadToolBar(int index)
 	m_ui->availableActionsListWidget->clear();
 	m_ui->availableActionsListWidget->addItem(tr("--- separator ---"));
 
-//	const QStringList availableIdentifiers = ActionsManager::getIdentifiers();
-//	const QList<QAction*> currentActions = m_widgets.at(index)->actions();
-//	QMultiMap<QString, QAction*> actionsMap;
+	const QStringList availableIdentifiers = ActionsManager::getIdentifiers();
+	const QStringList currentIdentifiers = m_ui->toolBarComboBox->itemData(index, Qt::UserRole).toHash()["actions"].toStringList();
+	QMultiMap<QString, QAction*> actionsMap;
 
-//	for (int i = 0; i < availableIdentifiers.count(); ++i)
-//	{
-//		QAction *action = ActionsManager::getAction(availableIdentifiers.at(i));
+	for (int i = 0; i < availableIdentifiers.count(); ++i)
+	{
+		QAction *action = ActionsManager::getAction(availableIdentifiers.at(i));
 
-//		if (!action || action->isSeparator() || currentActions.contains(action))
-//		{
-//			continue;
-//		}
+		if (!action || action->isSeparator() || currentIdentifiers.contains(availableIdentifiers.at(i)))
+		{
+			continue;
+		}
 
-//		actionsMap.insert(action->text(), action);
-//	}
+		actionsMap.insert(action->text(), action);
+	}
 
-//	const QList<QAction*> availableActions = actionsMap.values();
+	const QList<QAction*> availableActions = actionsMap.values();
 
-//	for (int i = 0; i < availableActions.count(); ++i)
-//	{
-//		QListWidgetItem *item = new QListWidgetItem(availableActions.at(i)->icon(), availableActions.at(i)->text(), m_ui->availableActionsListWidget);
-//		item->setData(Qt::UserRole, availableActions.at(i)->objectName());
+	for (int i = 0; i < availableActions.count(); ++i)
+	{
+		QListWidgetItem *item = new QListWidgetItem(availableActions.at(i)->icon(), availableActions.at(i)->text(), m_ui->availableActionsListWidget);
+		item->setData(Qt::UserRole, availableActions.at(i)->objectName());
 
-//		m_ui->availableActionsListWidget->addItem(item);
-//	}
+		m_ui->availableActionsListWidget->addItem(item);
+	}
 
-//	for (int i = 0; i < currentActions.count(); ++i)
-//	{
-//		if (currentActions.at(i)->isSeparator())
-//		{
-//			m_ui->currentActionsListWidget->addItem(new QListWidgetItem(tr("--- separator ---"), m_ui->currentActionsListWidget));
-//		}
-//		else
-//		{
-//			QListWidgetItem *item = new QListWidgetItem(currentActions.at(i)->icon(), currentActions.at(i)->text(), m_ui->currentActionsListWidget);
-//			item->setData(Qt::UserRole, currentActions.at(i)->objectName());
+	for (int i = 0; i < currentIdentifiers.count(); ++i)
+	{
+		QAction *action = ActionsManager::getAction(currentIdentifiers.at(i));
 
-//			m_ui->currentActionsListWidget->addItem(item);
-//		}
-//	}
+		if (!action || action->isSeparator())
+		{
+			m_ui->currentActionsListWidget->addItem(new QListWidgetItem(tr("--- separator ---"), m_ui->currentActionsListWidget));
+		}
+		else
+		{
+			QListWidgetItem *item = new QListWidgetItem(action->icon(), action->text(), m_ui->currentActionsListWidget);
+			item->setData(Qt::UserRole, currentIdentifiers.at(i));
+
+			m_ui->currentActionsListWidget->addItem(item);
+		}
+	}
 
 //	m_ui->visibleCheckBox->setChecked(m_widgets.at(index)->isVisible());
-//	m_ui->toolBarComboBox->setCurrentIndex(index);
-
-//	m_currentToolBar = index;
+	m_ui->toolBarComboBox->setCurrentIndex(index);
 }
 
 void ToolBarsManager::addToolBar()
