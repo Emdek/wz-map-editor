@@ -29,7 +29,7 @@ ToolBarsManager::ToolBarsManager(const QString &selectedToolBar, QObject *parent
 		hash["identifier"] = toolBars.at(i);
 		hash["actions"] = SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/actions").toStringList();
 
-		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + objectName() + "/title").toString(), hash);
+		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/title").toString(), hash);
 
 		if (toolBars.at(i) == selectedToolBar)
 		{
