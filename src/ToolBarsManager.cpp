@@ -63,6 +63,7 @@ ToolBarsManager::~ToolBarsManager()
 
 void ToolBarsManager::reloadToolbars()
 {
+///TODO
 }
 
 void ToolBarsManager::loadToolBar(int index)
@@ -121,6 +122,11 @@ void ToolBarsManager::loadToolBar(int index)
 
 //	m_ui->visibleCheckBox->setChecked(m_widgets.at(index)->isVisible());
 	m_ui->toolBarComboBox->setCurrentIndex(index);
+}
+
+void ToolBarsManager::saveToolBar()
+{
+///TODO
 }
 
 void ToolBarsManager::addToolBar()
@@ -197,39 +203,47 @@ void ToolBarsManager::currentActionsCurrentItemChanged(int index)
 
 void ToolBarsManager::removeItem()
 {
-	if (m_ui->currentActionsListWidget->currentRow() >= 0)
+	if (m_ui->currentActionsListWidget->currentRow() < 0)
 	{
-		QListWidgetItem *currentItem = m_ui->currentActionsListWidget->takeItem(m_ui->currentActionsListWidget->currentRow());
-
-		if (currentItem->text() != tr("--- separator ---"))
-		{
-			m_ui->availableActionsListWidget->addItem(currentItem);
-		}
-		else
-		{
-			delete currentItem;
-		}
-
-		m_ui->currentActionsListWidget->setCurrentItem(NULL);
-		m_ui->availableActionsListWidget->setCurrentItem(NULL);
+		return;
 	}
+
+	QListWidgetItem *currentItem = m_ui->currentActionsListWidget->takeItem(m_ui->currentActionsListWidget->currentRow());
+
+	if (currentItem->text() != tr("--- separator ---"))
+	{
+		m_ui->availableActionsListWidget->addItem(currentItem);
+	}
+	else
+	{
+		delete currentItem;
+	}
+
+	m_ui->currentActionsListWidget->setCurrentItem(NULL);
+	m_ui->availableActionsListWidget->setCurrentItem(NULL);
+
+	saveToolBar();
 }
 
 void ToolBarsManager::addItem()
 {
-	if (m_ui->availableActionsListWidget->currentRow() >= 0)
+	if (m_ui->availableActionsListWidget->currentRow() < 0)
 	{
-		QListWidgetItem *currentItem = m_ui->availableActionsListWidget->takeItem(m_ui->availableActionsListWidget->currentRow());
-
-		if (currentItem->text() == tr("--- separator ---"))
-		{
-			m_ui->availableActionsListWidget->insertItem(0, currentItem->clone());
-		}
-
-		m_ui->currentActionsListWidget->insertItem((m_ui->currentActionsListWidget->currentRow() + 1), currentItem);
-		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
-		m_ui->availableActionsListWidget->setCurrentItem(NULL);
+		return;
 	}
+
+	QListWidgetItem *currentItem = m_ui->availableActionsListWidget->takeItem(m_ui->availableActionsListWidget->currentRow());
+
+	if (currentItem->text() == tr("--- separator ---"))
+	{
+		m_ui->availableActionsListWidget->insertItem(0, currentItem->clone());
+	}
+
+	m_ui->currentActionsListWidget->insertItem((m_ui->currentActionsListWidget->currentRow() + 1), currentItem);
+	m_ui->currentActionsListWidget->setCurrentItem(currentItem);
+	m_ui->availableActionsListWidget->setCurrentItem(NULL);
+
+	saveToolBar();
 }
 
 void ToolBarsManager::moveUpItem()
@@ -242,6 +256,8 @@ void ToolBarsManager::moveUpItem()
 
 		m_ui->currentActionsListWidget->insertItem((currentRow - 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
+
+		saveToolBar();
 	}
 }
 
@@ -255,6 +271,8 @@ void ToolBarsManager::moveDownItem()
 
 		m_ui->currentActionsListWidget->insertItem((currentRow + 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
+
+		saveToolBar();
 	}
 }
 

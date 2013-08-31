@@ -23,7 +23,10 @@ public:
 	ToolBarsManager(const QString &configureToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
+
+protected:
 	void reloadToolbars();
+	void saveToolBar();
 
 protected slots:
 	void loadToolBar(int index);
