@@ -126,7 +126,17 @@ void ToolBarsManager::loadToolBar(int index)
 
 void ToolBarsManager::saveToolBar()
 {
-///TODO
+	QStringList actions;
+
+	for (int i = 0; i < m_ui->currentActionsListWidget->count(); ++i)
+	{
+		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
+	}
+
+	QVariantHash hash = m_ui->toolBarComboBox->itemData(m_ui->toolBarComboBox->currentIndex()).toHash();
+	hash["actions"] = actions;
+
+	m_ui->toolBarComboBox->setItemData(m_ui->toolBarComboBox->currentIndex(), hash);
 }
 
 void ToolBarsManager::addToolBar()
@@ -298,22 +308,5 @@ void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 		break;
 	}
 }
-
-//void ToolBarsManager::saveToolBar()
-//{
-//	QStringList actions;
-
-//	for (int i = 0; i < m_ui->currentActionsListWidget->count(); ++i)
-//	{
-//		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
-//	}
-
-//	SettingsManager::setValue(("ToolBars/" + m_widgets.at(m_currentToolBar)->objectName() + "/actions"), actions);
-
-//	m_widgets.at(m_currentToolBar)->setVisible(m_ui->visibleCheckBox->isChecked());
-//	m_widgets.at(m_currentToolBar)->reload();
-
-//	setModified(false);
-//}
 
 }
