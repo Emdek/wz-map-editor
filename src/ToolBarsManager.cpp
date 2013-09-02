@@ -124,7 +124,7 @@ void ToolBarsManager::loadToolBar(int index)
 	m_ui->toolBarComboBox->setCurrentIndex(index);
 }
 
-void ToolBarsManager::saveToolBar()
+void ToolBarsManager::storeToolBar()
 {
 	QStringList actions;
 
@@ -232,7 +232,7 @@ void ToolBarsManager::removeItem()
 	m_ui->currentActionsListWidget->setCurrentItem(NULL);
 	m_ui->availableActionsListWidget->setCurrentItem(NULL);
 
-	saveToolBar();
+	storeToolBar();
 }
 
 void ToolBarsManager::addItem()
@@ -253,7 +253,7 @@ void ToolBarsManager::addItem()
 	m_ui->currentActionsListWidget->setCurrentItem(currentItem);
 	m_ui->availableActionsListWidget->setCurrentItem(NULL);
 
-	saveToolBar();
+	storeToolBar();
 }
 
 void ToolBarsManager::moveUpItem()
@@ -267,7 +267,7 @@ void ToolBarsManager::moveUpItem()
 		m_ui->currentActionsListWidget->insertItem((currentRow - 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
 
-		saveToolBar();
+		storeToolBar();
 	}
 }
 
@@ -282,7 +282,7 @@ void ToolBarsManager::moveDownItem()
 		m_ui->currentActionsListWidget->insertItem((currentRow + 1), currentItem);
 		m_ui->currentActionsListWidget->setCurrentItem(currentItem);
 
-		saveToolBar();
+		storeToolBar();
 	}
 }
 
