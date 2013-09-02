@@ -26,7 +26,7 @@ public:
 
 protected:
 	void reloadToolbars();
-	void saveToolBar();
+	void storeToolBar();
 
 protected slots:
 	void loadToolBar(int index);
