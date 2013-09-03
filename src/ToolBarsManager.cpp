@@ -288,24 +288,31 @@ void ToolBarsManager::moveDownItem()
 
 void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 {
-	switch (m_ui->buttonBox->standardButton(button))
+	const QDialogButtonBox::StandardButton standardButton = m_ui->buttonBox->standardButton(button);
+
+	switch (standardButton)
 	{
+		case QDialogButtonBox::Apply:
 		case QDialogButtonBox::Ok:
 //			saveToolBar();
-			deleteLater();
-		break;
-		case QDialogButtonBox::Apply:
-//			saveToolBar();
-		break;
+
+			if (standardButton == QDialogButtonBox::Ok)
+			{
+				deleteLater();
+			}
+
+			break;
 		case QDialogButtonBox::RestoreDefaults:
 			SettingsManager::restore("toolBars");
 			SettingsManager::restore("ToolBars");
 
 			reloadToolbars();
-		break;
+
+			break;
 		default:
 			deleteLater();
-		break;
+
+			break;
 	}
 }
 
