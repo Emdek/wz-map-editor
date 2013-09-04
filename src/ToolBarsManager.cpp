@@ -13,29 +13,12 @@
 namespace WZMapEditor
 {
 
-ToolBarsManager::ToolBarsManager(const QString &selectedToolBar, QObject *parent) : QObject(parent),
+ToolBarsManager::ToolBarsManager(const QString &selectToolBar, QObject *parent) : QObject(parent),
 	m_ui(new Ui::ToolBarEditorDialog())
 {
 	QDialog managerDialog(QApplication::topLevelWidgets().at(0));
 
 	m_ui->setupUi(&managerDialog);
-
-	const QStringList toolBars = SettingsManager::getValue("toolBars").toStringList();
-	int toolBarToLoad = 0;
-
-	for (int i = 0; i < toolBars.count(); ++i)
-	{
-		QVariantHash hash;
-		hash["identifier"] = toolBars.at(i);
-		hash["actions"] = SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/actions").toStringList();
-
-		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/title").toString(), hash);
-
-		if (toolBars.at(i) == selectedToolBar)
-		{
-			toolBarToLoad = i;
-		}
-	}
 
 	connect(&managerDialog, SIGNAL(finished(int)), this, SLOT(deleteLater()));
 	connect(m_ui->toolBarComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(loadToolBar(int)));
@@ -51,7 +34,7 @@ ToolBarsManager::ToolBarsManager(const QString &selectedToolBar, QObject *parent
 	connect(m_ui->moveDownButton, SIGNAL(clicked()), this, SLOT(moveDownItem()));
 	connect(m_ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonCliked(QAbstractButton*)));
 
-	loadToolBar(toolBarToLoad);
+	reloadToolbars(selectToolBar);
 
 	managerDialog.exec();
 }
@@ -61,9 +44,26 @@ ToolBarsManager::~ToolBarsManager()
 	delete m_ui;
 }
 
-void ToolBarsManager::reloadToolbars()
+void ToolBarsManager::reloadToolbars(const QString &selectToolBar)
 {
-///TODO
+	const QStringList toolBars = SettingsManager::getValue("toolBars").toStringList();
+	int toolBarToLoad = 0;
+
+	for (int i = 0; i < toolBars.count(); ++i)
+	{
+		QVariantHash hash;
+		hash["identifier"] = toolBars.at(i);
+		hash["actions"] = SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/actions").toStringList();
+
+		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/title").toString(), hash);
+
+		if (toolBars.at(i) == selectToolBar)
+		{
+			toolBarToLoad = i;
+		}
+	}
+
+	loadToolBar(toolBarToLoad);
 }
 
 void ToolBarsManager::loadToolBar(int index)

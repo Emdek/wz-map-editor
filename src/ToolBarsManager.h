@@ -20,12 +20,12 @@ class ToolBarsManager : public QObject
 	Q_OBJECT
 
 public:
-	ToolBarsManager(const QString &configureToolBar = QString(), QObject *parent = NULL);
+	ToolBarsManager(const QString &selectToolBar = QString(), QObject *parent = NULL);
 	~ToolBarsManager();
 
 
 protected:
-	void reloadToolbars();
+	void reloadToolbars(const QString &selectToolBar = QString());
 	void storeToolBar();
 
 protected slots:
