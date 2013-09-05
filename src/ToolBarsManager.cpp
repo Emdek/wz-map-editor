@@ -289,12 +289,24 @@ void ToolBarsManager::moveDownItem()
 void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 {
 	const QDialogButtonBox::StandardButton standardButton = m_ui->buttonBox->standardButton(button);
+	QStringList toolBars;
 
 	switch (standardButton)
 	{
 		case QDialogButtonBox::Apply:
 		case QDialogButtonBox::Ok:
-//			saveToolBar();
+			SettingsManager::restore("toolBars");
+
+			for (int i = 0; i < m_ui->toolBarComboBox->count(); ++i)
+			{
+				const QVariantHash hash = m_ui->toolBarComboBox->itemData(i).toHash();
+
+				toolBars.append(hash["identifier"].toString());
+
+				SettingsManager::setValue(("ToolBars/" + hash["identifier"].toString() + "/actions"), hash["actions"]);
+			}
+
+			SettingsManager::setValue("ToolBars", toolBars);
 
 			if (standardButton == QDialogButtonBox::Ok)
 			{
