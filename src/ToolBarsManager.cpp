@@ -25,7 +25,6 @@ ToolBarsManager::ToolBarsManager(const QString &selectToolBar, QObject *parent) 
 	connect(m_ui->addToolBarButton, SIGNAL(clicked()), this, SLOT(addToolBar()));
 	connect(m_ui->removeToolBarButton, SIGNAL(clicked()), this, SLOT(removeToolBar()));
 	connect(m_ui->renameToolBarButton, SIGNAL(clicked()), this, SLOT(renameToolBar()));
-	connect(m_ui->visibleCheckBox, SIGNAL(clicked()), this, SLOT(setModified()));
 	connect(m_ui->availableActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(availableActionsCurrentItemChanged(int)));
 	connect(m_ui->currentActionsListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(currentActionsCurrentItemChanged(int)));
 	connect(m_ui->removeButton, SIGNAL(clicked()), this, SLOT(removeItem()));
@@ -120,7 +119,6 @@ void ToolBarsManager::loadToolBar(int index)
 		}
 	}
 
-//	m_ui->visibleCheckBox->setChecked(m_widgets.at(index)->isVisible());
 	m_ui->toolBarComboBox->setCurrentIndex(index);
 }
 
@@ -159,7 +157,6 @@ void ToolBarsManager::addToolBar()
 
 	m_ui->toolBarComboBox->insertItem(index, name, identifier.arg(i));
 	m_ui->toolBarComboBox->setCurrentIndex(index);
-	m_ui->visibleCheckBox->setChecked(true);
 	m_ui->removeToolBarButton->setEnabled(true);
 	m_ui->renameToolBarButton->setEnabled(true);
 }

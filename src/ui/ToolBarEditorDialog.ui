@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
-    <height>332</height>
+    <width>632</width>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -203,13 +203,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="visibleCheckBox">
-     <property name="text">
-      <string>Visible</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -235,7 +228,6 @@
   <tabstop>moveDownButton</tabstop>
   <tabstop>removeButton</tabstop>
   <tabstop>currentActionsListWidget</tabstop>
-  <tabstop>visibleCheckBox</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
