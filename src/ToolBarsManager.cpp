@@ -50,11 +50,8 @@ void ToolBarsManager::reloadToolbars(const QString &selectToolBar)
 
 	for (int i = 0; i < toolBars.count(); ++i)
 	{
-		QVariantHash hash;
-		hash["identifier"] = toolBars.at(i);
-		hash["actions"] = SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/actions").toStringList();
-
-		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/title").toString(), hash);
+		m_ui->toolBarComboBox->addItem(SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/title").toString(), toolBars.at(i));
+		m_ui->toolBarComboBox->setItemData(i, SettingsManager::getValue("ToolBars/" + toolBars.at(i) + "/actions").toStringList(), (Qt::UserRole + 1));
 
 		if (toolBars.at(i) == selectToolBar)
 		{
@@ -77,7 +74,7 @@ void ToolBarsManager::loadToolBar(int index)
 	m_ui->availableActionsListWidget->addItem(tr("--- separator ---"));
 
 	const QStringList availableIdentifiers = ActionsManager::getIdentifiers();
-	const QStringList currentIdentifiers = m_ui->toolBarComboBox->itemData(index, Qt::UserRole).toHash()["actions"].toStringList();
+	const QStringList currentIdentifiers = m_ui->toolBarComboBox->itemData(index, (Qt::UserRole + 1)).toStringList();
 	QMultiMap<QString, QAction*> actionsMap;
 
 	for (int i = 0; i < availableIdentifiers.count(); ++i)
@@ -131,10 +128,7 @@ void ToolBarsManager::storeToolBar()
 		actions.append(m_ui->currentActionsListWidget->item(i)->data(Qt::UserRole).toString());
 	}
 
-	QVariantHash hash = m_ui->toolBarComboBox->itemData(m_ui->toolBarComboBox->currentIndex()).toHash();
-	hash["actions"] = actions;
-
-	m_ui->toolBarComboBox->setItemData(m_ui->toolBarComboBox->currentIndex(), hash);
+	m_ui->toolBarComboBox->setItemData(m_ui->toolBarComboBox->currentIndex(), actions, (Qt::UserRole + 1));
 }
 
 void ToolBarsManager::addToolBar()
@@ -296,11 +290,9 @@ void ToolBarsManager::dialogButtonCliked(QAbstractButton *button)
 
 			for (int i = 0; i < m_ui->toolBarComboBox->count(); ++i)
 			{
-				const QVariantHash hash = m_ui->toolBarComboBox->itemData(i).toHash();
+				toolBars.append(m_ui->toolBarComboBox->itemData(i).toString());
 
-				toolBars.append(hash["identifier"].toString());
-
-				SettingsManager::setValue(("ToolBars/" + hash["identifier"].toString() + "/actions"), hash["actions"]);
+				SettingsManager::setValue(("ToolBars/" + m_ui->toolBarComboBox->itemData(i).toString() + "/actions"), m_ui->toolBarComboBox->itemData(i, (Qt::UserRole + 1)).toStringList());
 			}
 
 			SettingsManager::setValue("ToolBars", toolBars);
