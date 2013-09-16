@@ -25,7 +25,8 @@ SOURCES += src/main.cpp \
 	src/PreferencesManager.cpp \
 	src/FileSystemCompleterModel.cpp \
 	src/MapWriter.cpp \
-	src/MapSettingsManager.cpp
+	src/MapSettingsManager.cpp \
+    src/backends/classic/ClassicBackend.cpp
 
 HEADERS += src/MainWindow.h \
 	src/Map2DViewWidget.h \
@@ -43,7 +44,8 @@ HEADERS += src/MainWindow.h \
 	src/PreferencesManager.h \
 	src/FileSystemCompleterModel.h \
 	src/MapWriter.h \
-	src/MapSettingsManager.h
+	src/MapSettingsManager.h \
+    src/backends/classic/ClassicBackend.h
 
 FORMS += src/ui/MainWindow.ui \
 	src/ui/ToolBarEditorDialog.ui \
