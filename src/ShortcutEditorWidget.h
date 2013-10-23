@@ -5,6 +5,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QToolButton>
+#include <QtWidgets/QKeySequenceEdit>
 
 namespace WZMapEditor
 {
@@ -16,23 +17,20 @@ class ShortcutEditorWidget : public QWidget
 public:
 	ShortcutEditorWidget(const QString &action, const QString &shortcut, QWidget *parent = NULL);
 
-	void updateDisplay();
 	QString getAction() const;
 	QKeySequence getShortcut() const;
-	bool eventFilter(QObject *object, QEvent *event);
 
 public slots:
-	void clear();
 	void setShortcut(const QKeySequence &shortcut);
 
+protected slots:
+	void shortcutChanged();
+
 private:
-	QString m_action;
-	QString m_recording;
-	QKeySequence m_shortcut;
-	QLineEdit *m_lineEdit;
+	QKeySequenceEdit *m_sequenceEdit;
 	QToolButton *m_clearButton;
 	QToolButton *m_restoreButton;
-	bool m_isRecording;
+	QString m_action;
 
 signals:
 	void restore();

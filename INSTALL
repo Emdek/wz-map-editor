@@ -1,4 +1,4 @@
-To install Warzone 2100 Map Editor from source you need to have Qt SDK installed (http://qt-project.org/), at least version 5.0 of framework.
+To install Warzone 2100 Map Editor from source you need to have Qt SDK installed (http://qt-project.org/), at least version 5.2 of framework.
 
 You can use either Qt Creator IDE to compile sources or execute following commands in directory containing WZMapEdit.pro file:
 mkdir build
