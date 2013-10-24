@@ -23,14 +23,12 @@ ShortcutEditorWidget::ShortcutEditorWidget(const QString &action, const QString 
 
 	m_clearButton->setToolTip(tr("Clear"));
 	m_clearButton->setIcon(QIcon(":/icons/edit-clear-locationbar-rtl.png"));
-	m_clearButton->setCheckable(false);
-	m_clearButton->setEnabled(!shortcut.isEmpty());
 
 	m_restoreButton->setToolTip(tr("Restore Default"));
 	m_restoreButton->setIcon(QIcon(":/icons/edit-undo.png"));
 
+	shortcutChanged();
 	setLayout(layout);
-
 	setFocusPolicy(Qt::StrongFocus);
 
 	connect(m_sequenceEdit, SIGNAL(keySequenceChanged(QKeySequence)), this, SLOT(shortcutChanged()));
